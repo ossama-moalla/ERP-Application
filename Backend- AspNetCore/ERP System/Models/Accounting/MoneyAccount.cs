@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Models.Accounting
 {
-    public class Money_Account
+    public class MoneyAccount
     {
         public uint AccountIDID;
         public string AccountIDName;
-        public Money_Account(uint AccountIDID_,
+        public MoneyAccount(uint AccountIDID_,
          string AccountIDName_)
         {
             AccountIDID = AccountIDID_;

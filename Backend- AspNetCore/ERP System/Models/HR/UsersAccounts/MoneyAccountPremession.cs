@@ -8,9 +8,9 @@ namespace ERP_System.Models.HR.UsersAccounts
 {
     public class MoneyAccountPremession
     {
-        public Money_Account _MoneyAccount;
+        public MoneyAccount _MoneyAccount;
         public bool Allow;
-        public MoneyAccountPremession(Money_Account MoneyAccount_, bool Allow_)
+        public MoneyAccountPremession(MoneyAccount MoneyAccount_, bool Allow_)
         {
             _MoneyAccount = MoneyAccount_;
             Allow = Allow_;

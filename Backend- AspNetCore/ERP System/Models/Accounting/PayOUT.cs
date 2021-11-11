@@ -9,7 +9,7 @@ namespace ERP_System.Models.Accounting
 {
     public class PayOUT
     {
-        public Money_Account _Money_Account;
+        public MoneyAccount _Money_Account;
         public uint PayOprID;
         public DateTime PayOprDate;
         public IBill _Bill;
@@ -21,7 +21,7 @@ namespace ERP_System.Models.Accounting
         public double ExchangeRate;
         public string Notes;
 
-        public PayOUT(Money_Account Money_Account_, uint PayOprID_, DateTime PayOprDate_, IBill Bill_, string PayDescription_, double Value_, double ExchangeRate_, Currency Currency_, string Notes_)
+        public PayOUT(MoneyAccount Money_Account_, uint PayOprID_, DateTime PayOprDate_, IBill Bill_, string PayDescription_, double Value_, double ExchangeRate_, Currency Currency_, string Notes_)
         {
             _Money_Account = Money_Account_;
             PayOprID = PayOprID_;
@@ -33,7 +33,7 @@ namespace ERP_System.Models.Accounting
             ExchangeRate = ExchangeRate_;
             Notes = Notes_;
         }
-        public PayOUT(Money_Account Money_Account_, uint PayOprID_, DateTime PayOprDate_, EmployeePayOrder EmployeePayOrder_, string PayDescription_, double Value_, double ExchangeRate_, Currency Currency_, string Notes_)
+        public PayOUT(MoneyAccount Money_Account_, uint PayOprID_, DateTime PayOprDate_, EmployeePayOrder EmployeePayOrder_, string PayDescription_, double Value_, double ExchangeRate_, Currency Currency_, string Notes_)
         {
             _Money_Account = Money_Account_;
             PayOprID = PayOprID_;

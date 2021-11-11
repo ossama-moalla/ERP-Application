@@ -11,8 +11,8 @@ namespace ERP_System.Models.Accounting
         public Employee Creator_Employee;
         public uint MoneyTransFormOPRID;
         public DateTime MoneyTransFormOPRDate;
-        public Money_Account SourceMoney_Account;
-        public Money_Account TargetMoney_Account;
+        public MoneyAccount SourceMoney_Account;
+        public MoneyAccount TargetMoney_Account;
         public double Value;
         public Currency _Currency;
         public double ExchangeRate;
@@ -22,8 +22,8 @@ namespace ERP_System.Models.Accounting
             Employee Creator_Employee_,
         uint MoneyTransFormOPRID_,
          DateTime MoneyTransFormOPRDate_,
-         Money_Account SourceMoney_Account_,
-         Money_Account TargetMoney_Account_,
+         MoneyAccount SourceMoney_Account_,
+         MoneyAccount TargetMoney_Account_,
          double Value_,
          double ExchangeRate_,
          Currency Currency_,
