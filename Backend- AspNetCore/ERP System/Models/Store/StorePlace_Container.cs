@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Models.Store
 {
-    public class StorePlaces_Container
+    public class StorePlace_Container
     {
         public uint ID;
         public string Name;
         public uint? ParentID;
         public string Desc;
-        public StorePlaces_Container(uint ID_, string Name_, uint? ParentID_, string Desc_)
+        public StorePlace_Container(uint ID_, string Name_, uint? ParentID_, string Desc_)
         {
             ID = ID_;
             Name = Name_;

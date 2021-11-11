@@ -1,20 +1,19 @@
-﻿using ERP_System.Models.Accounting;
-using ERP_System.Models.Trade;
+﻿using ERP_System.Models.Trade;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ERP_System.Repositories.Accounting_Repository
+namespace ERP_System.Repositories.Trade_Repository
 {
-    public class PayIN_Repo : IApplicationRepository<PayIN>
+    public class RavageOPR_Repo : IApplicationRepository<RavageOPR>
     {
         Application_Identity_DbContext DbContext;
-        public PayIN_Repo(Application_Identity_DbContext DbContext_)
+        public RavageOPR_Repo(Application_Identity_DbContext DbContext_)
         {
             DbContext = DbContext_;
         }
-        public void Add(PayIN entity)
+        public void Add(RavageOPR entity)
         {
             throw new NotImplementedException();
         }
@@ -24,21 +23,16 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(PayIN entity)
+        public void Edit(RavageOPR entity)
         {
             throw new NotImplementedException();
         }
 
-        public PayIN GetByID(int id)
+        public RavageOPR GetByID(int id)
         {
             throw new NotImplementedException();
         }
-        internal List<Money_Currency> GetPayINList_As_Money_Currency(Operation opeartion)
-        {
-            throw new NotImplementedException();
-
-        }
-        internal List<PayIN> Get_All_PayINList(MoneyAccount moneyAccount)
+        internal List<RavageOPR> Get_All_RavageOPR_List()
         {
             throw new NotImplementedException();
         }

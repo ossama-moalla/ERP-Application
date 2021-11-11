@@ -9,9 +9,9 @@ namespace ERP_System.Models.Store
     {
         public uint ID;
         public string Name;
-        public StorePlaces_Container _Container;
+        public StorePlace_Container _Container;
         public string Desc;
-        public StorePlace(uint ID_, string Name_, StorePlaces_Container Container_, string Desc_)
+        public StorePlace(uint ID_, string Name_, StorePlace_Container Container_, string Desc_)
         {
             ID = ID_;
             Name = Name_;

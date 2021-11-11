@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Models.Store
 {
-    public class StoredItem
+    public class StorePlace_Item_VM
     {
         public const uint ITEMIN_STORE_TYPE = 0;
         public const uint MAINTENANCE_ITEM_STORE_TYPE = 1;
@@ -17,7 +17,7 @@ namespace ERP_System.Models.Store
         public uint StoreType;
         public double Amount;
         public ConsumeUnit _ConsumeUnit;
-        public StoredItem(StorePlace StorePlace_, uint ItemSourceOPRID_, uint StoreType_, double Amount_, ConsumeUnit ConsumeUnit_)
+        public StorePlace_Item_VM(StorePlace StorePlace_, uint ItemSourceOPRID_, uint StoreType_, double Amount_, ConsumeUnit ConsumeUnit_)
         {
 
             _StorePlace = StorePlace_;

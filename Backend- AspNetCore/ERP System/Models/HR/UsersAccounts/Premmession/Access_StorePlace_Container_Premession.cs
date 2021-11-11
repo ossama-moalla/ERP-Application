@@ -10,10 +10,10 @@ namespace ERP_System.Models.HR.UsersAccounts.Premmession
     {
         public uint PermissionID;
         public uint UserID;
-        public StorePlaces_Container Container;
+        public StorePlace_Container Container;
         public Access_StorePlace_Container_Premession(uint PermissionID_,
          uint UserID_,
-         StorePlaces_Container Container_)
+         StorePlace_Container Container_)
         {
             PermissionID = PermissionID_;
             UserID = UserID_;

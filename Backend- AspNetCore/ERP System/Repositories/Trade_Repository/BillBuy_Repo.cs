@@ -1,14 +1,20 @@
 ﻿using ERP_System.Models.Accounting;
+using ERP_System.Models.Trade;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ERP_System.Repositories.Accounting_Repository
+namespace ERP_System.Repositories.Trade_Repository
 {
-    public class MoneyTransFormOPR_Repo : IApplicationRepository<MoneyTransFormOPR>
+    public class BillBuy_Repo : IApplicationRepository<BillBuy>
     {
-        public void Add(MoneyTransFormOPR entity)
+        Application_Identity_DbContext DbContext;
+        public BillBuy_Repo(Application_Identity_DbContext DbContext_)
+        {
+            DbContext = DbContext_;
+        }
+        public void Add(BillBuy entity)
         {
             throw new NotImplementedException();
         }
@@ -18,28 +24,30 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(MoneyTransFormOPR entity)
+        public void Edit(BillBuy entity)
         {
             throw new NotImplementedException();
         }
 
-        public MoneyTransFormOPR GetByID(int id)
+        public BillBuy GetByID(int id)
         {
             throw new NotImplementedException();
         }
-        internal List<MoneyTransFormOPR> Get_All_MoneyTransFormOPRList()
+        public List<BillBuy> Get_All_BillBuy_List()
+        {
+            throw new NotImplementedException();
+
+        }
+        internal double GetBillBuyValue(uint billid)
+        {
+            throw new NotImplementedException();
+
+        }
+        internal double GetBillBuy_PaysValue(uint billid)
         {
             throw new NotImplementedException();
         }
-        internal List<Money_Currency> GetMoneyTransFormOPRList_As_MoneyCurrency()
-        {
-            throw new NotImplementedException();
-        }
-        internal List<MoneyTransFormOPR> Get_Stuck_MoneyTransformOPR_IN_List(MoneyAccount moneyAccount)
-        {
-            throw new NotImplementedException();
-        }
-        internal List<MoneyTransFormOPR> Get_Stuck_MoneyTransformOPR_OUT_List(MoneyAccount moneyAccount)
+        internal List<PayIN> Get_Billbuy__Returns_Pays(uint billbuyid)
         {
             throw new NotImplementedException();
         }

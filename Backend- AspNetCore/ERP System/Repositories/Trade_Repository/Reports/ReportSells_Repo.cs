@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ERP_System.Repositories.Sell_Repository.Reports
+namespace ERP_System.Repositories.Trade_Repositorys.Reports
 {
     public class ReportSells_Repo
     {
