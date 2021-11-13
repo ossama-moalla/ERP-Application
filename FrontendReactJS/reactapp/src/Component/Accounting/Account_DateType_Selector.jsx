@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './Styles.css'
+
 function mapStateToProps(state) {
     return {
 

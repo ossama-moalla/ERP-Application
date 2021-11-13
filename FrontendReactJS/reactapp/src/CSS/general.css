@@ -1,0 +1,98 @@
+body{
+    font-size: 17px;
+    font-weight: bold;
+
+}
+#root>div{
+    padding: 10px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    border-bottom-width: 2px;
+    border-bottom-style:solid  ;
+    border-bottom-color: rgba(187, 189, 197, 0.8);
+
+}
+.div-main{
+    display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.path>a{
+    margin-left: 0;
+    margin-right: 0;
+}
+.div-inlineblock{
+    display: inline-block;
+}
+.div-general{
+    margin-top: 10px;
+
+    padding: 10px;
+
+    
+}
+table{
+
+   width: 80%;
+   margin-left: auto;
+   margin-right: auto;
+}
+label{
+
+    
+    vertical-align: middle;
+    margin-right: 10px;
+    
+
+}
+
+select{
+    min-width: 40px;
+    background-color:#0dcaf000;
+}
+
+#main-window {
+    display: flex;
+    flex-flow: column;
+    height: 600px;
+    position: relative;
+  }
+   
+  #main-header {
+      padding: 5px;
+    height: 40px;
+   border: 1px solid;
+  }
+   
+  #main-data {
+    background-color: #DDDDDD;
+    flex-grow : 1;
+  }
+
+  #btn-270{
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+    position: absolute;
+    top:45%;
+    left: -69px;
+    border: 1px solid;
+}
+#btn-90{
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+    position: absolute;
+    top:45%;
+    right: -84px;
+    border: 1px solid;
+}

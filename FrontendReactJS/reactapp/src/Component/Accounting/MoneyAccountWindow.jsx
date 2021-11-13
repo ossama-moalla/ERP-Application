@@ -4,7 +4,7 @@ import MoneyAccountInfo from "./MoneyAccountInfo";
 import Account_DataType_Selector from './Account_DateType_Selector.jsx';
 import MoneyAccountRecordsByDateType from './MoneyAccountRecordsByDateType.jsx';
 import MoneyAccountReportByDateType from "./MoneyAccountReportByDateType.jsx";
-import './Styles.css'
+
 function mapStateToProps(state) {
   return {};
 }
