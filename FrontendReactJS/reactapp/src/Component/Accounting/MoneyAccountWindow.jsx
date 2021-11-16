@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import MoneyAccountInfo from "./MoneyAccountInfo";
-import Account_DataType_Selector from './Account_DateType_Selector.jsx';
+import AccountDataTypeSelector from './Account_DateType_Selector.jsx';
 import MoneyAccountRecordsByDateType from './MoneyAccountRecordsByDateType.jsx';
 import MoneyAccountReportByDateType from "./MoneyAccountReportByDateType.jsx";
 
@@ -15,7 +15,7 @@ class MoneyAccountWindow extends Component {
       <div>
         <div className="div-container">
           <MoneyAccountInfo />
-          <Account_DataType_Selector />
+          <AccountDataTypeSelector />
           <MoneyAccountRecordsByDateType/>
           <MoneyAccountReportByDateType/>
         </div>

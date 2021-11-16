@@ -1,9 +1,19 @@
 import React, { Component, Fragment } from 'react';
+import {mainRoutes,materialsRoutes} from '../../AppRoutes.js';
 
-class DisplayMaterials extends Component {
-    
+class ShowMaterials extends Component {
+    constructor(){
+        super();
+        this.state={
+            ParentItemCategoryID:null,
+            ItemCategorysList:[],
+            ItemsList:[],  
+            PathItemCategorys:[]
+        }
+    }
     render() {
-        console.log('fffff')
+                console.log('show materials')
+
         return (
             <Fragment>
                
@@ -48,12 +58,12 @@ class DisplayMaterials extends Component {
                         <button id="btn-90">Filter By ItemCategory Spec's</button>
                         <div  style={{padding:"0px",margin:'0px 8px 0px 6px'}}>  
                             <span >Path:</span>
-                            <a href="#" style={{float:"right"}}>Create Item Category</a>
+                            <a href={mainRoutes.materials+"/"+ materialsRoutes.addItemCategory} style={{float:"right"}}>Create Item Category</a>
                         </div>
                         
                         <div id="main-header">
                            
-                            Root\<a href="#">Computer </a>\<a href="#">Printer </a>
+                            Root\<a href="/">Computer </a>\<a href="/">Printer </a>
                         </div>
                         <div className="main-data" style={{border:'solid 1px',height:'100%'}}>
 
@@ -70,5 +80,11 @@ class DisplayMaterials extends Component {
         );
     }
 }
-
-export default DisplayMaterials;
+ShowMaterials.defaultProps={
+    
+    ParentItemCategoryID:null,
+    ItemCategorysList:[],
+    ItemsList:[],  
+    PathItemCategorys:[]
+}
+export default ShowMaterials;

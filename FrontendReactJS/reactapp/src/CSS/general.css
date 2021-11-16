@@ -16,6 +16,14 @@ body{
     border-bottom-color: rgba(187, 189, 197, 0.8);
 
 }
+.navbar{
+    border-bottom-width: 2px;
+    border-bottom-style:solid  ;
+    border-bottom-color: rgba(187, 189, 197, 0.8);
+    background-color: #f8f9fa;
+
+}
+
 .div-main{
     display: flex;
   flex-flow: column;

@@ -28,7 +28,11 @@ namespace ERP_System
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers()
+                .ConfigureApiBehaviorOptions(options=> {
+                   // options.SuppressModelStateInvalidFilter = true;//disable automatic 400 response
+                   // options.SuppressInferBindingSourcesForParameters=true; //disable inference  rule
+                });
             services.AddDbContext<Application_Identity_DbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("ConnStr"));
                 });
