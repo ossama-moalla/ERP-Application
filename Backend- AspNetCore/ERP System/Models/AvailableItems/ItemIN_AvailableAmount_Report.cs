@@ -7,37 +7,37 @@ namespace ERP_System.Models.AvailableItems
 {
     public class ItemIN_AvailableAmount_Report
     {
-        public uint OperationType { get; }
-        public uint OperationID { get; }
-        public uint ItemINID { get; }
+        public int OperationType { get; }
+        public int OperationID { get; }
+        public int ItemINID { get; }
         public string ConsumeUnit { get; }
         public double Amount { get; }
-        public uint ItemID { get; }
+        public int ItemID { get; }
         public string ItemName { get; }
 
         public string ItemCompany { get; }
-        public uint FolderID { get; }
+        public int FolderID { get; }
 
         public string FolderName { get; }
         public string FolderPath { get; }
-        public uint TradeStateID { get; }
+        public int TradeStateID { get; }
         public string TradeStateName { get; }
         public double AvailableAmount { get; }
 
         public ItemIN_AvailableAmount_Report(
-              uint OperationType_,
-         uint OperationID_,
-        uint ItemINID_,
+              int OperationType_,
+         int OperationID_,
+        int ItemINID_,
          string ConsumeUnit_,
          double Amount_,
-        uint ItemID_,
+        int ItemID_,
          string ItemName_,
 
          string ItemCompany_,
-         uint FolderID_,
+         int FolderID_,
          string FolderName_,
          string FolderPath_,
-         uint TradeStateID_,
+         int TradeStateID_,
          string TradeStateName_,
          double AvailableAmount_
     )
@@ -65,20 +65,20 @@ namespace ERP_System.Models.AvailableItems
     //            List<ItemIN_AvailableAmount_Report> list = new List<ItemIN_AvailableAmount_Report>();
     //            for (int i = 0; i < table.Rows.Count; i++)
     //            {
-    //                uint OperationType = Convert.ToUInt32(table.Rows[i]["OperationType"]);
-    //                uint OperationID = Convert.ToUInt32(table.Rows[i]["OperationID"]);
+    //                int OperationType = Convert.ToInt32(table.Rows[i]["OperationType"]);
+    //                int OperationID = Convert.ToInt32(table.Rows[i]["OperationID"]);
 
-    //                uint ItemINID = Convert.ToUInt32(table.Rows[i]["ItemINID"]);
+    //                int ItemINID = Convert.ToInt32(table.Rows[i]["ItemINID"]);
     //                string ConsumeUnit = table.Rows[i]["ConsumeUnit"].ToString();
     //                double Amount = Convert.ToDouble(table.Rows[i]["Amount"]);
 
-    //                uint ItemID = Convert.ToUInt32(table.Rows[i]["ItemID"]);
+    //                int ItemID = Convert.ToInt32(table.Rows[i]["ItemID"]);
     //                string ItemName = table.Rows[i]["ItemName"].ToString();
     //                string ItemCompany = table.Rows[i]["ItemCompany"].ToString();
-    //                uint FolderID = Convert.ToUInt32(table.Rows[i]["FolderID"]);
+    //                int FolderID = Convert.ToInt32(table.Rows[i]["FolderID"]);
     //                string FolderName = table.Rows[i]["FolderName"].ToString();
     //                string FolderPath = table.Rows[i]["FolderPath"].ToString();
-    //                uint TradeStateID = Convert.ToUInt32(table.Rows[i]["TradeStateID"]);
+    //                int TradeStateID = Convert.ToInt32(table.Rows[i]["TradeStateID"]);
 
     //                string TradeStateName = table.Rows[i]["TradeStateName"].ToString();
     //                double AvailableAmount = Convert.ToDouble(table.Rows[i]["AvailableAmount"]);

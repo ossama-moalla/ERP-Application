@@ -8,7 +8,7 @@ namespace ERP_System.Models.HR
 {
     public class EmployeePayOrder
     {
-        public uint PayOrderID;
+        public int PayOrderID;
         public DateTime PayOrderDate;
         public SalarysPayOrder _SalarysPayOrder;
         public string PayOrderDesc;
@@ -16,7 +16,7 @@ namespace ERP_System.Models.HR
         public Currency _Currency;
         public double ExchangeRate;
         public double Value;
-        public EmployeePayOrder(uint PayOrderID_,
+        public EmployeePayOrder(int PayOrderID_,
          DateTime PayOrderDate_,
          SalarysPayOrder SalarysPayOrder_,
          string PayOrderDesc_,

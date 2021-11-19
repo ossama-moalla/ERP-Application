@@ -15,7 +15,7 @@ namespace ERP_System.Models.Maintenance
         public string RepairReport { get; }
         public int InstalledItem_Count { get; }
         public int TestInstallOPR_Count { get; }
-        public RepairOPR(uint RepairOPRID,
+        public RepairOPR(int RepairOPRID,
          MaintenanceOPR MaintenanceOPR_,
          DateTime RepairOPRDate_,
          string RepairDesc_,

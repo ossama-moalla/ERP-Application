@@ -25,7 +25,7 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(BillAdditionalClause entity)
+        public void Update(BillAdditionalClause entity)
         {
             throw new NotImplementedException();
         }
@@ -39,6 +39,11 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
         internal IEnumerable<Money_Currency> GetBill_AdditionalClauses_AS_Money_Currency(Currency _Currency, double exchangeRate, Operation _Operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<BillAdditionalClause> List()
         {
             throw new NotImplementedException();
         }

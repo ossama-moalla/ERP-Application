@@ -32,12 +32,12 @@ namespace ERP_System.Repositories.Materials_Repository
         {
             throw new NotImplementedException();
         }
-        public bool UNSet_Item_Equivalence_Relation(uint Itemid_, uint Equivalence_Groupid_)
+        public bool UNSet_Item_Equivalence_Relation(int Itemid_, int Equivalence_Groupid_)
         {
             throw new NotImplementedException();
 
         }
-        public void Delete_Item_Equivalence_Relation_For_Group(uint Equivalence_GroupID)
+        public void Delete_Item_Equivalence_Relation_For_Group(int Equivalence_GroupID)
         {
             throw new NotImplementedException();
 

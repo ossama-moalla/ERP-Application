@@ -10,13 +10,13 @@ namespace ERP_System.Models.Customers
         public const bool CUSTOMER_PERSON = false;
         public const bool CUSTOMER_COMPANY = true;
 
-        public uint CustomerID;
+        public int CustomerID;
         public bool CustomerType;
         public string CustomerName;
         public string Phone;
         public string Mobile;
         public string Address;
-        public Customer(uint CustomerID_, bool CustomerType_, string CustomerName_, string Phone_, string Mobile_, string Address_)
+        public Customer(int CustomerID_, bool CustomerType_, string CustomerName_, string Phone_, string Mobile_, string Address_)
         {
             CustomerID = CustomerID_;
             CustomerType = CustomerType_;

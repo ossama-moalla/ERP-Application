@@ -8,16 +8,16 @@ namespace ERP_System.Models.Store
 {
     public class StorePlace_Item_VM
     {
-        public const uint ITEMIN_STORE_TYPE = 0;
-        public const uint MAINTENANCE_ITEM_STORE_TYPE = 1;
-        public const uint MAINTENANCE_ACCESSORIES_ITEM_STORE_TYPE = 2;
+        public const int ITEMIN_STORE_TYPE = 0;
+        public const int MAINTENANCE_ITEM_STORE_TYPE = 1;
+        public const int MAINTENANCE_ACCESSORIES_ITEM_STORE_TYPE = 2;
         ///// 
         public StorePlace _StorePlace;
-        public uint ItemSourceOPRID;
-        public uint StoreType;
+        public int ItemSourceOPRID;
+        public int StoreType;
         public double Amount;
         public ConsumeUnit _ConsumeUnit;
-        public StorePlace_Item_VM(StorePlace StorePlace_, uint ItemSourceOPRID_, uint StoreType_, double Amount_, ConsumeUnit ConsumeUnit_)
+        public StorePlace_Item_VM(StorePlace StorePlace_, int ItemSourceOPRID_, int StoreType_, double Amount_, ConsumeUnit ConsumeUnit_)
         {
 
             _StorePlace = StorePlace_;

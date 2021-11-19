@@ -38,7 +38,7 @@ namespace ERP_System.Models.Trade
         //    try
         //    {
 
-        //        List<uint> currencyIDlist = ItemOUTWithCurrencyInfoList.Select(x => x._Currency.CurrencyID).Distinct().ToList();
+        //        List<int> currencyIDlist = ItemOUTWithCurrencyInfoList.Select(x => x._Currency.CurrencyID).Distinct().ToList();
         //        for (int i = 0; i < currencyIDlist.Count; i++)
         //        {
 

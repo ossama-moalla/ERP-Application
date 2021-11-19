@@ -9,14 +9,14 @@ namespace ERP_System.Models.Maintenance
 {
     public class MaintenanceOPR_Accessory
     {
-        public uint AccessoryID;
+        public int AccessoryID;
         public MaintenanceOPR _MaintenanceOPR;
         public Item _Item;
         public string ItemSerialNumber;
         public string Notes;
         public StorePlace Place;
         public MaintenanceOPR_Accessory(
-         uint AccessoryID_,
+         int AccessoryID_,
          MaintenanceOPR MaintenanceOPR_,
          Item Item_,
          string ItemSerialNumber_,

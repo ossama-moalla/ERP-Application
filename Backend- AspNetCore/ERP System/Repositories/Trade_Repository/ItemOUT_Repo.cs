@@ -26,7 +26,7 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(ItemOUT entity)
+        public void Update(ItemOUT entity)
         {
             throw new NotImplementedException();
         }
@@ -36,11 +36,11 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
 
-        private OUTValue GetOUTValue(uint itemoutid)
+        private OUTValue GetOUTValue(int itemoutid)
         {
             throw new NotImplementedException();
         }
-        public bool Does_Operation_Has_ItemsOUT(uint oprtype, uint oprid)
+        public bool Does_Operation_Has_ItemsOUT(int oprtype, int oprid)
         {
             throw new NotImplementedException();
         }
@@ -57,6 +57,11 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
         internal List<ItemOUT> GetItemOUTList_ForItem(Item Item_)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<ItemOUT> List()
         {
             throw new NotImplementedException();
         }

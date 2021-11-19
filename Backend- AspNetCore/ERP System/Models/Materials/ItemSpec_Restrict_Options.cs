@@ -12,7 +12,7 @@ namespace ERP_System.Models.Materials
         public ItemSpec_Restrict ItemSpecRestrict_ { get; set; }
         public string OptionName { get; set; }
         [Key]
-        public uint OptionID { get; set; }
+        public int OptionID { get; set; }
 
    
     }

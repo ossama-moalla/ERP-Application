@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(ItemSpec_Restrict_Options entity)
+        public void Update(ItemSpec_Restrict_Options entity)
         {
             throw new NotImplementedException();
         }
@@ -37,6 +37,11 @@ namespace ERP_System.Repositories.Materials_Repository
         public List<ItemSpec_Restrict_Options> GetItemSpec_Restrict_Options_List(ItemSpec_Restrict ItemSpec_Restrict_)
         {
             return new List<ItemSpec_Restrict_Options>();
+        }
+
+        public IList<ItemSpec_Restrict_Options> List()
+        {
+            throw new NotImplementedException();
         }
     }
 }

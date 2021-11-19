@@ -11,7 +11,7 @@ namespace ERP_System.Models.Maintenance
     {
         public SellType _SellType { get; }
         public MaintenanceOPR _MaintenanceOPR { get; }
-        public BillMaintenance(MaintenanceOPR MaintenanceOPR_, uint BillID_, DateTime BillDate_, SellType SellType_, Currency Currency_, double ExchangeRate_, double Discount_, string Notes_)
+        public BillMaintenance(MaintenanceOPR MaintenanceOPR_, int BillID_, DateTime BillDate_, SellType SellType_, Currency Currency_, double ExchangeRate_, double Discount_, string Notes_)
         {
             _MaintenanceOPR = MaintenanceOPR_;
             _Operation = new Operation(Operation.BILL_MAINTENANCE, BillID_);

@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(ItemSpec entity)
+        public void Update(ItemSpec entity)
         {
             throw new NotImplementedException();
         }
@@ -37,6 +37,11 @@ namespace ERP_System.Repositories.Materials_Repository
         public List<ItemSpec> GetItemSpecList(ItemCategory ItemCategory_)
         {
             return new List<ItemSpec>();
+        }
+
+        public IList<ItemSpec> List()
+        {
+            throw new NotImplementedException();
         }
     }
 }

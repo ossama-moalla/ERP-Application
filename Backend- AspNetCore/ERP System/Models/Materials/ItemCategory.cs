@@ -9,9 +9,9 @@ namespace ERP_System.Models.Materials
     public class ItemCategory
     {
         [Key]
-        public uint ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
-        public uint? ParentID { get; set; }
+        public int? ParentID { get; set; }
         public DateTime CreateDate { get; set; }
         public string DefaultConsumeUnit { get; set; }
 

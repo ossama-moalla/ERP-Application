@@ -15,20 +15,20 @@ namespace ERP_System.Models.HR.Reports
             NON_SALARY = 1
         }
         public bool PayOrderType;
-        public uint PayOrderID;
+        public int PayOrderID;
         public DateTime PayOrderDate;
         public string PayOrderDesc;
-        public uint EmployeeID;
+        public int EmployeeID;
         public string EmployeeName;
         public Currency _Currency;
         public double ExchangeRate;
         public double Value;
         public string PaysAmount;
         public PayOrderReport(bool PayOrderType_,
-            uint PayOrderID_,
+            int PayOrderID_,
          DateTime PayOrderDate_,
          string PayOrderDesc_,
-         uint EmployeeID_,
+         int EmployeeID_,
          string EmployeeName_,
          Currency Currency_,
         double ExchangeRate_,

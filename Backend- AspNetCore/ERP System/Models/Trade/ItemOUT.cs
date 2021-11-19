@@ -9,7 +9,7 @@ namespace ERP_System.Models.Trade
 {
     public class ItemOUT
     {
-        public uint ItemOUTID { get; }
+        public int ItemOUTID { get; }
         public Operation _Operation { get; set; }
         public ItemIN _ItemIN { get; set; }
         public StorePlace Place { get; set; }
@@ -17,7 +17,7 @@ namespace ERP_System.Models.Trade
         public ConsumeUnit _ConsumeUnit { get; set; }
         public OUTValue _OUTValue { get; set; }
         public string Notes { get; set; }
-        public ItemOUT(uint ItemOUTID_, Operation Operation_, ItemIN ItemIN_,StorePlace Place_, double Amount_, ConsumeUnit ConsumeUnit_, OUTValue OUTValue_, string Notes_)
+        public ItemOUT(int ItemOUTID_, Operation Operation_, ItemIN ItemIN_,StorePlace Place_, double Amount_, ConsumeUnit ConsumeUnit_, OUTValue OUTValue_, string Notes_)
         {
             ItemOUTID = ItemOUTID_;
             _Operation = Operation_;

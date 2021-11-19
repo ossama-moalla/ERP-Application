@@ -7,13 +7,13 @@ namespace ERP_System.Models.HR
 {
     public class SalarysPayOrder
     {
-        public uint SalarysPayOrderID;
+        public int SalarysPayOrderID;
         public DateTime OrderDate;
         public int ExecuteYear;
         public int ExecuteMonth;
         public string Notes;
 
-        public SalarysPayOrder(uint SalarysPayOrderID_, DateTime OrderDate_, int ExecuteYear_, int ExecuteMonth_,
+        public SalarysPayOrder(int SalarysPayOrderID_, DateTime OrderDate_, int ExecuteYear_, int ExecuteMonth_,
            string Notes_)
         {
             SalarysPayOrderID = SalarysPayOrderID_;

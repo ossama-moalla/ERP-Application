@@ -9,8 +9,8 @@ namespace ERP_System.Models.Maintenance
     public class DiagnosticOPR
     {
         public MaintenanceOPR _MaintenanceOPR;
-        public uint? ParentDiagnosticOPRID;
-        public uint DiagnosticOPRID;
+        public int? ParentDiagnosticOPRID;
+        public int DiagnosticOPRID;
         public DateTime DiagnosticOPRDate;
         public Item _Item;
         public string Desc;
@@ -19,8 +19,8 @@ namespace ERP_System.Models.Maintenance
         public string Report;
         public DiagnosticOPR(
             MaintenanceOPR MaintenanceOPR_,
-            uint? ParentDiagnosticOPRID_,
-            uint DiagnosticOPRID_,
+            int? ParentDiagnosticOPRID_,
+            int DiagnosticOPRID_,
             DateTime DiagnosticOPRDate_,
              Item Item_,
             string Desc_,

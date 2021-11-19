@@ -11,15 +11,15 @@ namespace ERP_System.Models.Store
 {
     public class StorePlace_Item
     {
-        public const uint ITEMIN_STORE_TYPE = 0;
-        public const uint MAINTENANCE_ITEM_STORE_TYPE = 1;
-        public const uint MAINTENANCE_ACCESSORIES_ITEM_STORE_TYPE = 2;
+        public const int ITEMIN_STORE_TYPE = 0;
+        public const int MAINTENANCE_ITEM_STORE_TYPE = 1;
+        public const int MAINTENANCE_ACCESSORIES_ITEM_STORE_TYPE = 2;
         ///// 
         public StorePlace _StorePlace { get; }
         public ItemIN _ItemIN { get; }
         public MaintenanceOPR _MaintenanceOPR { get; }
         public MaintenanceOPR_Accessory _MaintenanceOPR_Accessory { get; }
-        public uint StoreType { get; }
+        public int StoreType { get; }
         public double Amount { get; }
         public ConsumeUnit _ConsumeUnit { get; }
         public StorePlace_Item(StorePlace StorePlace_, ItemIN ItemIN_, double Amount_, ConsumeUnit ConsumeUnit_)

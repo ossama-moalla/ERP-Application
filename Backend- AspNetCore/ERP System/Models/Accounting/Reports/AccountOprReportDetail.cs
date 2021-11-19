@@ -11,30 +11,30 @@ namespace ERP_System.Models.Accounting.Reports
         public const bool DIRECTION_IN = false;
         public const bool DIRECTION_OUT = true;
 
-        public const uint TYPE_PAY_OPR = 0;
-        public const uint TYPE_EXCHANGE_OPR = 1;
-        public const uint TYPE_MoneyTransform_OPR = 2;
+        public const int TYPE_PAY_OPR = 0;
+        public const int TYPE_EXCHANGE_OPR = 1;
+        public const int TYPE_MoneyTransform_OPR = 2;
 
         public DateTime OprTime;
-        public uint OprType;
+        public int OprType;
         public bool OprDirection;
-        public uint OprID;
+        public int OprID;
         public string OprOwner;
 
         public double Value;
-        public uint CurrencyID;
+        public int CurrencyID;
         public string CurrencyName;
         public string CurrencySymbol;
         public double ExchangeRate;
         public double RealValue;
         public AccountOprReportDetail(
          DateTime OprTime_,
-         uint OprType_,
+         int OprType_,
          bool OprDirection_,
-         uint OprID_,
+         int OprID_,
          string OprOwner_,
          double Value_,
-          uint CurrencyID_,
+          int CurrencyID_,
          string CurrencyName_,
          string CurrencySymbol_,
         double ExchangeRate_,
@@ -63,13 +63,13 @@ namespace ERP_System.Models.Accounting.Reports
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
                     DateTime OprTime = Convert.ToDateTime(table.Rows[i]["OprTime"]);
-                    uint OprType = Convert.ToUInt32(table.Rows[i]["OprType"]);
+                    int OprType = Convert.ToInt32(table.Rows[i]["OprType"]);
                     bool OprDirection = Convert.ToBoolean(table.Rows[i]["OprDirection"]); ;
 
-                    uint OprID = Convert.ToUInt32(table.Rows[i]["OprID"]);
+                    int OprID = Convert.ToInt32(table.Rows[i]["OprID"]);
                     string OprOwner = table.Rows[i]["OprOwner"].ToString();
                     double Value = Convert.ToDouble(table.Rows[i]["Value"]);
-                    uint CurrencyID = Convert.ToUInt32(table.Rows[i]["CurrencyID"]);
+                    int CurrencyID = Convert.ToInt32(table.Rows[i]["CurrencyID"]);
                     string CurrencyName = table.Rows[i]["CurrencyName"].ToString();
                     string CurrencySymbol = table.Rows[i]["CurrencySymbol"].ToString();
                     double ExchangeRate = Convert.ToDouble(table.Rows[i]["ExchangeRate"]);

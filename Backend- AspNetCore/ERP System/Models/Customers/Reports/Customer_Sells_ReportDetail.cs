@@ -8,11 +8,11 @@ namespace ERP_System.Models.Customers.Reports
     public class Customer_Sells_ReportDetail
     {
         public DateTime Bill_Date;
-        public uint Bill_ID;
+        public int Bill_ID;
         public string SellType;
         public int ClauseS_Count;
         public double BillValue;
-        public uint CurrencyID;
+        public int CurrencyID;
         public string CurrencyName;
         public string CurrencySymbol;
         public double ExchangeRate;
@@ -24,11 +24,11 @@ namespace ERP_System.Models.Customers.Reports
         public double BillValue_RealValue;
         public double RealPaysValue;
         public Customer_Sells_ReportDetail(DateTime Bill_Date_,
-         uint Bill_ID_,
+         int Bill_ID_,
          string SellType_,
          int ClauseS_Count_,
          double BillValue_,
-         uint CurrencyID_,
+         int CurrencyID_,
          string CurrencyName_,
          string CurrencySymbol_,
         double ExchangeRate_,
@@ -70,11 +70,11 @@ namespace ERP_System.Models.Customers.Reports
                 {
 
                     DateTime Bill_Date = Convert.ToDateTime(table.Rows[i]["Bill_Date"]);
-                    uint Bill_ID = Convert.ToUInt32(table.Rows[i]["Bill_ID"]);
+                    int Bill_ID = Convert.ToInt32(table.Rows[i]["Bill_ID"]);
                     string SellType = table.Rows[i]["SellType"].ToString();
                     int ClauseS_Count = Convert.ToInt32(table.Rows[i]["ClauseS_Count"]);
                     double BillValue = Convert.ToDouble(table.Rows[i]["BillValue"]);
-                    uint CurrencyID = Convert.ToUInt32(table.Rows[i]["CurrencyID"]);
+                    int CurrencyID = Convert.ToInt32(table.Rows[i]["CurrencyID"]);
                     string CurrencyName = table.Rows[i]["CurrencyName"].ToString();
                     string CurrencySymbol = table.Rows[i]["CurrencySymbol"].ToString();
                     double ExchangeRate = Convert.ToDouble(table.Rows[i]["ExchangeRate"]);

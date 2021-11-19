@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(ItemSpec_Restrict entity)
+        public void Update(ItemSpec_Restrict entity)
         {
             throw new NotImplementedException();
         }

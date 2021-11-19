@@ -7,12 +7,12 @@ namespace ERP_System.Models.HR
 {
     public class EmployeeMent
     {
-        public uint EmployeeMentID;
+        public int EmployeeMentID;
         public string EmployeeMentName;
         public DateTime CreateDate;
         public EmployeeMentLevel Level;
         public Department _Department;
-        public EmployeeMent(uint EmployeeMentID_, string EmployeeMentName_, DateTime CreateDate_, EmployeeMentLevel Level_, Department Department_)
+        public EmployeeMent(int EmployeeMentID_, string EmployeeMentName_, DateTime CreateDate_, EmployeeMentLevel Level_, Department Department_)
         {
             EmployeeMentID = EmployeeMentID_;
             EmployeeMentName = EmployeeMentName_;

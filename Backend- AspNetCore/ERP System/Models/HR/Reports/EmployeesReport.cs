@@ -10,7 +10,7 @@ namespace ERP_System.Models.HR.Reports
         
     
         
-        public uint EmployeeID;
+        public int EmployeeID;
         public string EmployeeName;
         public bool Gender;
         public DateTime BirthDate;
@@ -24,9 +24,9 @@ namespace ERP_System.Models.HR.Reports
 
         public string JobState;
         public string EmployeeMentState;
-        public uint EmployeeStateCode;
-        public EmployeesReport(uint EmployeeID_, string EmployeeName_, bool Gender_, DateTime BirthDate_, string NationalID_,
-         string MaritalStatusName_, string Mobile_, string Phone_, string EmailAddress_, string Address_, string Report_, string JobState_, string EmployeeMentState_, uint EmployeeStateCode_)
+        public int EmployeeStateCode;
+        public EmployeesReport(int EmployeeID_, string EmployeeName_, bool Gender_, DateTime BirthDate_, string NationalID_,
+         string MaritalStatusName_, string Mobile_, string Phone_, string EmailAddress_, string Address_, string Report_, string JobState_, string EmployeeMentState_, int EmployeeStateCode_)
         {
             EmployeeID = EmployeeID_;
             EmployeeName = EmployeeName_;
@@ -51,7 +51,7 @@ namespace ERP_System.Models.HR.Reports
                 List<EmployeesReport> list = new List<EmployeesReport>();
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    uint EmployeeID = Convert.ToUInt32(table.Rows[i]["EmployeeID"]);
+                    int EmployeeID = Convert.ToInt32(table.Rows[i]["EmployeeID"]);
                     string EmployeeName = table.Rows[i]["EmployeeName"].ToString();
 
                     bool Gender = Convert.ToBoolean(table.Rows[i]["Gender"]);
@@ -66,7 +66,7 @@ namespace ERP_System.Models.HR.Reports
 
                     string JobState = table.Rows[i]["JobState"].ToString();
                     string EmployeeMentState = table.Rows[i]["EmployeeMentState"].ToString();
-                    uint EmployeeStateCode = Convert.ToUInt32(table.Rows[i]["EmployeeStateCode"]);
+                    int EmployeeStateCode = Convert.ToInt32(table.Rows[i]["EmployeeStateCode"]);
 
 
                     list.Add(new EmployeesReport(EmployeeID, EmployeeName, Gender, BirthDate, NationalID, MaritalStatusName, Mobile,

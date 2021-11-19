@@ -7,19 +7,19 @@ namespace ERP_System.Models.HR.Reports
 {
     public class EmployeeMent_Employee_Report
     {
-        public uint LevelID;
+        public int LevelID;
         public string LevelName;
-        public uint EmployeeMentID;
+        public int EmployeeMentID;
         public string EmployeeMentName;
         public string PartName;
-        public uint? EmployeeID;
+        public int? EmployeeID;
         public string EmployeeName;
-        public uint? JobstartID;
+        public int? JobstartID;
         public DateTime? JobStartDate;
-        public uint? AssignID;
+        public int? AssignID;
         public DateTime? AssignDate;
-        public EmployeeMent_Employee_Report(uint LevelID_, string LevelName_, uint EmployeeMentID_, string EmployeeMentName_, string PartName_,
-         uint? EmployeeID_, string EmployeeName_, uint? JobstartID_, DateTime? JobStartDate_, uint? AssignID_, DateTime? AssignDate_)
+        public EmployeeMent_Employee_Report(int LevelID_, string LevelName_, int EmployeeMentID_, string EmployeeMentName_, string PartName_,
+         int? EmployeeID_, string EmployeeName_, int? JobstartID_, DateTime? JobStartDate_, int? AssignID_, DateTime? AssignDate_)
         {
             LevelID = LevelID_;
             LevelName = LevelName_;
@@ -40,26 +40,26 @@ namespace ERP_System.Models.HR.Reports
                 List<EmployeeMent_Employee_Report> list = new List<EmployeeMent_Employee_Report>();
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    uint LevelID = Convert.ToUInt32(table.Rows[i]["LevelID"]);
+                    int LevelID = Convert.ToInt32(table.Rows[i]["LevelID"]);
                     string LevelName = table.Rows[i]["LevelName"].ToString();
 
-                    uint EmployeeMentID = Convert.ToUInt32(table.Rows[i]["EmployeeMentID"]);
+                    int EmployeeMentID = Convert.ToInt32(table.Rows[i]["EmployeeMentID"]);
                     string EmployeeMentName = table.Rows[i]["EmployeeMentName"].ToString();
                     string PartName = table.Rows[i]["PartName"].ToString();
-                    uint? EmployeeID;
+                    int? EmployeeID;
 
                     if (table.Rows[i]["EmployeeID"] != DBNull.Value)
-                        EmployeeID = Convert.ToUInt32(table.Rows[i]["EmployeeID"]);
+                        EmployeeID = Convert.ToInt32(table.Rows[i]["EmployeeID"]);
                     else
                         EmployeeID = null;
                     string EmployeeName;
 
                     EmployeeName = table.Rows[i]["EmployeeName"].ToString();
-                    uint? JobstartID;
+                    int? JobstartID;
 
                     if (table.Rows[i]["JobstartID"] != DBNull.Value)
 
-                        JobstartID = Convert.ToUInt32(table.Rows[i]["JobstartID"]);
+                        JobstartID = Convert.ToInt32(table.Rows[i]["JobstartID"]);
                     else
                         JobstartID = null;
                     DateTime? JobStartDate;
@@ -69,9 +69,9 @@ namespace ERP_System.Models.HR.Reports
                     else
                         JobStartDate = null;
 
-                    uint? AssignID;
+                    int? AssignID;
                     if (table.Rows[i]["AssignID"] != DBNull.Value)
-                        AssignID = Convert.ToUInt32(table.Rows[i]["AssignID"]);
+                        AssignID = Convert.ToInt32(table.Rows[i]["AssignID"]);
 
                     else
 

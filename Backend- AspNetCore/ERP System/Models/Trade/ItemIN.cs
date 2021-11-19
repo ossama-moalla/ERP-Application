@@ -8,7 +8,7 @@ namespace ERP_System.Models.Trade
 {
     public class ItemIN
     {
-        public uint ItemINID;
+        public int ItemINID;
         public Operation _Operation;
         public Item _Item;
         public TradeState _TradeState;
@@ -16,7 +16,7 @@ namespace ERP_System.Models.Trade
         public ConsumeUnit _ConsumeUnit;
         public INCost _INCost;
         public string Notes;
-        public ItemIN(uint ItemINID_, Operation Operation_,
+        public ItemIN(int ItemINID_, Operation Operation_,
             Item Item_, TradeState TradeState_, double Amount_,
             ConsumeUnit ConsumeUnit_, INCost INCost_, string Notes_)
         {

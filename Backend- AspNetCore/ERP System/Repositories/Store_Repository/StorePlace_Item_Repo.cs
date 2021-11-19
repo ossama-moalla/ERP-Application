@@ -16,26 +16,26 @@ namespace ERP_System.Repositories.Store_Repository
         {
             DbContext = DbContext_;
         }
-        public StorePlace_Item GetTradeItemStoreINFO(StorePlace place, uint ItemSourceOPRID_, uint StoreType_)
+        public StorePlace_Item GetTradeItemStoreINFO(StorePlace place, int ItemSourceOPRID_, int StoreType_)
         {
             throw new NotImplementedException();
         }
 
-        public bool IS_ItemStoredInPlace(uint PlaceID, uint ItemSourceOPRID_, uint StoreType_)
+        public bool IS_ItemStoredInPlace(int PlaceID, int ItemSourceOPRID_, int StoreType_)
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdateItemAmountStored(uint PlaceID, uint ItemSourceOPRID_, uint StoreType_, double amount, ConsumeUnit ConsumeUnit_)
+        public bool UpdateItemAmountStored(int PlaceID, int ItemSourceOPRID_, int StoreType_, double amount, ConsumeUnit ConsumeUnit_)
         {
             throw new NotImplementedException();
         }
 
-        public bool Store_Item_INPlace(uint PlaceID, uint ItemSourceOPRID_, uint StoreType_, double amount, ConsumeUnit ConsumeUnit_)
+        public bool Store_Item_INPlace(int PlaceID, int ItemSourceOPRID_, int StoreType_, double amount, ConsumeUnit ConsumeUnit_)
         {
             throw new NotImplementedException();
         }
-        public bool UNStore_Item_INPlace(uint PlaceID, uint ItemSourceOPRID_, uint StoreType_)
+        public bool UNStore_Item_INPlace(int PlaceID, int ItemSourceOPRID_, int StoreType_)
         {
             throw new NotImplementedException();
         }

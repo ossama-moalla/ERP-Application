@@ -9,11 +9,11 @@ namespace ERP_System.Models.HR.UsersAccounts.Premmession
 
     public class Access_ItemCategory_Premession
     {
-        public uint PermissionID;
-        public uint UserID;
+        public int PermissionID;
+        public int UserID;
         public ItemCategory _ItemCategory;
-        public Access_ItemCategory_Premession(uint PermissionID_,
-         uint UserID_,
+        public Access_ItemCategory_Premession(int PermissionID_,
+         int UserID_,
          ItemCategory ItemCategory_)
         {
             PermissionID = PermissionID_;

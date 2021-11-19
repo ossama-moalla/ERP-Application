@@ -12,10 +12,10 @@ namespace ERP_System.Models.AvailableItems
         public StorePlace Place;
         public Item _Item;
         public string ItemStoreType;
-        public uint StoreType;
-        public uint OprID;
+        public int StoreType;
+        public int OprID;
         public string ParentOperationDesc;
-        public uint ParentOperationID;
+        public int ParentOperationID;
         public string consumeunitname;
         public double StoredAmount;
         public double SpentAmount;
@@ -24,10 +24,10 @@ namespace ERP_System.Models.AvailableItems
          StorePlace Place_,
          Item Item_,
           string ItemStoreType_,
-          uint StoreType_,
-           uint OprID_,
+          int StoreType_,
+           int OprID_,
          string ParentOperationDesc_,
-         uint ParentOperationID_,
+         int ParentOperationID_,
          string consumeunitname_,
          double StoredAmount_,
          double SpentAmount_,

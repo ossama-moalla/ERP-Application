@@ -8,10 +8,10 @@ namespace ERP_System.Models.Trade
     public class BillAdditionalClause
     {
         public Operation _Operation;
-        public uint ClauseID;
+        public int ClauseID;
         public string Description;
         public double Value;
-        public BillAdditionalClause(Operation Operation_, uint ClauseID_
+        public BillAdditionalClause(Operation Operation_, int ClauseID_
             , string Description_, double Value_)
         {
             _Operation = Operation_;

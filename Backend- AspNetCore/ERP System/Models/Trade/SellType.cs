@@ -7,7 +7,7 @@ namespace ERP_System.Models.Trade
 {
     public class SellType
     {
-        public uint SellTypeID { get; set; }
+        public int SellTypeID { get; set; }
         public string SellTypeName { get; set; }
 
 

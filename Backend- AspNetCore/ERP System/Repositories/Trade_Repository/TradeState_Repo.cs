@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Repositories.Trade_Repository
 {
-    public class TradeState_Repo:IApplicationRepository<TradeState>
+    public class TradeState_Repo : IApplicationRepository<TradeState>
     {
         Application_Identity_DbContext DbContext;
         public TradeState_Repo(Application_Identity_DbContext DbContext_)
@@ -24,7 +24,7 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(TradeState entity)
+        public void Update(TradeState entity)
         {
             throw new NotImplementedException();
         }
@@ -34,6 +34,11 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
         public List<TradeState> GetTradeStateList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<TradeState> List()
         {
             throw new NotImplementedException();
         }

@@ -25,11 +25,11 @@ namespace ERP_System.Repositories.Trade_Repository
         {
             throw new NotImplementedException();
         }
-        public double Get_OperationValue(uint OperationType, uint OperationID)
+        public double Get_OperationValue(int OperationType, int OperationID)
         { 
             throw new NotImplementedException();
         }
-        public double Get_OperationPaysValue_UPON_OperationCurrency(uint OperationType, uint OperationID)
+        public double Get_OperationPaysValue_UPON_OperationCurrency(int OperationType, int OperationID)
         {
             throw new NotImplementedException();
         }

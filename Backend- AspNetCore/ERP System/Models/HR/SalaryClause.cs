@@ -17,16 +17,16 @@ namespace ERP_System.Models.HR
         /// ////
         /// </summary>
         public Employee _Employee;
-        public uint SalaryClauseID;
+        public int SalaryClauseID;
         public DateTime CreateDate;
         public string SalaryClauseDesc;
         public bool ClauseType;
         public DateTime ExecuteDate;
-        public uint? MonthsCount;
+        public int? MonthsCount;
         public double Value;
         public string Notes;
-        public SalaryClause(Employee Employee_, uint SalaryClauseID_, DateTime CreateDate_, string SalaryClauseDesc_,
-            bool ClauseType_, DateTime ExecuteDate_, uint? MonthsCount_, double Value_, string Notes_)
+        public SalaryClause(Employee Employee_, int SalaryClauseID_, DateTime CreateDate_, string SalaryClauseDesc_,
+            bool ClauseType_, DateTime ExecuteDate_, int? MonthsCount_, double Value_, string Notes_)
         {
             _Employee = Employee_;
             SalaryClauseID = SalaryClauseID_;

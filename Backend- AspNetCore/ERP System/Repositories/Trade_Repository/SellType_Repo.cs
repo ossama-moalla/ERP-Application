@@ -24,7 +24,7 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(SellType entity)
+        public void Update(SellType entity)
         {
             throw new NotImplementedException();
         }
@@ -34,6 +34,11 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
         public List<SellType> GetSellTypeList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<SellType> List()
         {
             throw new NotImplementedException();
         }

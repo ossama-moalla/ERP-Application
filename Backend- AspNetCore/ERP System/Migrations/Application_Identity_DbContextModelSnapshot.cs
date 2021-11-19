@@ -16,7 +16,7 @@ namespace ERP_System.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
+                .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ERP_System.Models.HR.UsersAccounts.Employee_UserAccount", b =>
@@ -30,9 +30,6 @@ namespace ERP_System.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Disabled")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -70,15 +67,9 @@ namespace ERP_System.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<long>("UserID")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime>("adddate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -95,10 +86,10 @@ namespace ERP_System.Migrations
 
             modelBuilder.Entity("ERP_System.Models.Materials.ConsumeUnit", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Factor")
                         .HasColumnType("float");
@@ -113,7 +104,7 @@ namespace ERP_System.Migrations
 
                     b.HasIndex("Item_ID");
 
-                    b.ToTable("Materials_ConsumeUnit_Table");
+                    b.ToTable("Materials_ConsumeUnit");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.Equivalence_Group", b =>
@@ -138,6 +129,9 @@ namespace ERP_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CategoryID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Company")
                         .HasColumnType("nvarchar(max)");
 
@@ -153,20 +147,41 @@ namespace ERP_System.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("TypeID")
-                        .HasColumnType("bigint");
+                    b.HasKey("ID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Materials_Item");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Materials.ItemCategory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DefaultConsumeUnit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentID")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("TypeID");
-
-                    b.ToTable("Materials_Item_Table");
+                    b.ToTable("Materials_ItemCategory");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCommonSellPrice", b =>
                 {
-                    b.Property<long?>("ConsumeUnit_ID")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ConsumeUnit_ID")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Item_ID")
                         .HasColumnType("int");
@@ -174,11 +189,11 @@ namespace ERP_System.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<long?>("SellType_SellTypeID")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("SellType_SellTypeID")
+                        .HasColumnType("int");
 
-                    b.Property<long?>("_TradeStateTradeStateID")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("_TradeStateTradeStateID")
+                        .HasColumnType("int");
 
                     b.HasIndex("ConsumeUnit_ID");
 
@@ -188,7 +203,7 @@ namespace ERP_System.Migrations
 
                     b.HasIndex("_TradeStateTradeStateID");
 
-                    b.ToTable("Materials_ItemCommonSellPrice_Table");
+                    b.ToTable("Materials_ItemCommonSellPrice");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemFile", b =>
@@ -217,7 +232,7 @@ namespace ERP_System.Migrations
 
                     b.HasIndex("Item_ID");
 
-                    b.ToTable("Materials_ItemFile_Table");
+                    b.ToTable("Materials_ItemFile");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemRelation", b =>
@@ -234,71 +249,71 @@ namespace ERP_System.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("Relation_")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Relation_")
+                        .HasColumnType("int");
 
                     b.HasIndex("AnotherItemID");
 
                     b.HasIndex("Item_ID");
 
-                    b.ToTable("Materials_ItemRelation_Table");
+                    b.ToTable("Materials_ItemRelation");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemSpec", b =>
                 {
-                    b.Property<long>("SpecID")
+                    b.Property<int>("SpecID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("SpecIndex")
-                        .HasColumnType("bigint");
+                    b.Property<int>("SpecIndex")
+                        .HasColumnType("int");
 
                     b.Property<string>("SpecName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("TypeID")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("TypeID")
+                        .HasColumnType("int");
 
                     b.HasKey("SpecID");
 
                     b.HasIndex("TypeID");
 
-                    b.ToTable("Materials_ItemSpec_Table");
+                    b.ToTable("Materials_ItemSpec");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemSpec_Restrict", b =>
                 {
-                    b.Property<long>("SpecID")
+                    b.Property<int>("SpecID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("SpecIndex")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpecIndex")
+                        .HasColumnType("int");
 
                     b.Property<string>("SpecName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("TypeID")
-                        .HasColumnType("bigint");
-
                     b.HasKey("SpecID");
 
-                    b.HasIndex("TypeID");
+                    b.HasIndex("CategoryID");
 
-                    b.ToTable("Materials_ItemSpec_Restrict_Table");
+                    b.ToTable("Materials_ItemSpec_Restrict");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemSpec_Restrict_Options", b =>
                 {
-                    b.Property<long>("OptionID")
+                    b.Property<int>("OptionID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("ItemSpecRestrict_SpecID")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ItemSpecRestrict_SpecID")
+                        .HasColumnType("int");
 
                     b.Property<string>("OptionName")
                         .HasColumnType("nvarchar(max)");
@@ -307,16 +322,16 @@ namespace ERP_System.Migrations
 
                     b.HasIndex("ItemSpecRestrict_SpecID");
 
-                    b.ToTable("Materials_ItemSpec_Restrict_Options_Table");
+                    b.ToTable("Materials_ItemSpec_Restrict_Options");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemSpec_Restrict_Value", b =>
                 {
-                    b.Property<long?>("ItemSpecRestrict_SpecID")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ItemSpecRestrict_SpecID")
+                        .HasColumnType("int");
 
-                    b.Property<long?>("ItemSpec_Restrict_Options_OptionID")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ItemSpec_Restrict_Options_OptionID")
+                        .HasColumnType("int");
 
                     b.Property<int?>("itemID")
                         .HasColumnType("int");
@@ -327,13 +342,13 @@ namespace ERP_System.Migrations
 
                     b.HasIndex("itemID");
 
-                    b.ToTable("Materials_ItemSpec_Restrict_Value_Table");
+                    b.ToTable("Materials_ItemSpec_Restrict_Value");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemSpec_Value", b =>
                 {
-                    b.Property<long?>("ItemSpec_SpecID")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ItemSpec_SpecID")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Item_ID")
                         .HasColumnType("int");
@@ -345,31 +360,7 @@ namespace ERP_System.Migrations
 
                     b.HasIndex("Item_ID");
 
-                    b.ToTable("Materials_ItemSpec_Value_Table");
-                });
-
-            modelBuilder.Entity("ERP_System.Models.Materials.ItemCategory", b =>
-                {
-                    b.Property<long>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DefaultConsumeUnit")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("ParentID")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Materials_ItemCategory_Table");
+                    b.ToTable("Materials_ItemSpec_Value");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.Item_Equivalence_Relation", b =>
@@ -384,15 +375,15 @@ namespace ERP_System.Migrations
 
                     b.HasIndex("_ItemID");
 
-                    b.ToTable("Materials_Item_Equivalence_Relation_Table");
+                    b.ToTable("Materials_Item_Equivalence_Relation");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Trade.SellType", b =>
                 {
-                    b.Property<long>("SellTypeID")
+                    b.Property<int>("SellTypeID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("SellTypeName")
                         .HasColumnType("nvarchar(max)");
@@ -404,10 +395,10 @@ namespace ERP_System.Migrations
 
             modelBuilder.Entity("ERP_System.Models.Trade.TradeState", b =>
                 {
-                    b.Property<long>("TradeStateID")
+                    b.Property<int>("TradeStateID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("TradeStateName")
                         .HasColumnType("nvarchar(max)");
@@ -559,11 +550,11 @@ namespace ERP_System.Migrations
 
             modelBuilder.Entity("ERP_System.Models.Materials.Item", b =>
                 {
-                    b.HasOne("ERP_System.Models.Materials.ItemCategory", "Type")
+                    b.HasOne("ERP_System.Models.Materials.ItemCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("TypeID");
+                        .HasForeignKey("CategoryID");
 
-                    b.Navigation("Type");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCommonSellPrice", b =>
@@ -628,11 +619,11 @@ namespace ERP_System.Migrations
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemSpec_Restrict", b =>
                 {
-                    b.HasOne("ERP_System.Models.Materials.ItemCategory", "Type")
+                    b.HasOne("ERP_System.Models.Materials.ItemCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("TypeID");
+                        .HasForeignKey("CategoryID");
 
-                    b.Navigation("Type");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemSpec_Restrict_Options", b =>

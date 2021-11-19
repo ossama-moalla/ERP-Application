@@ -24,7 +24,7 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(BillBuy entity)
+        public void Update(BillBuy entity)
         {
             throw new NotImplementedException();
         }
@@ -38,18 +38,24 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
 
         }
-        internal double GetBillBuyValue(uint billid)
-        {
-            throw new NotImplementedException();
 
-        }
-        internal double GetBillBuy_PaysValue(uint billid)
+        public IList<BillBuy> List()
         {
             throw new NotImplementedException();
         }
-        internal List<PayIN> Get_Billbuy__Returns_Pays(uint billbuyid)
-        {
-            throw new NotImplementedException();
-        }
+
+        //internal double GetBillBuyValue(int billid)
+        //{
+        //    throw new NotImplementedException();
+
+        //}
+        //internal double GetBillBuy_PaysValue(int billid)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        //internal List<PayIN> Get_Billbuy__Returns_Pays(int billbuyid)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

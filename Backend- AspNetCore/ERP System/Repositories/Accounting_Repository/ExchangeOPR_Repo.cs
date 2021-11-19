@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(ExchangeOPR entity)
+        public void Update(ExchangeOPR entity)
         {
             throw new NotImplementedException();
         }
@@ -32,6 +32,12 @@ namespace ERP_System.Repositories.Accounting_Repository
         {
             throw new NotImplementedException();
         }
+
+        public IList<ExchangeOPR> List()
+        {
+            throw new NotImplementedException();
+        }
+
         internal List<ExchangeOPR> Get_List(MoneyAccount moneyAccount)
         {
             throw new NotImplementedException();

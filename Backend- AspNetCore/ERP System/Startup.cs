@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+[assembly:ApiController]
 namespace ERP_System
 {
     public class Startup
@@ -37,6 +38,7 @@ namespace ERP_System
                 options.UseSqlServer(Configuration.GetConnectionString("ConnStr"));
                 });
             services.Add_ERP_System_Authentication_Configuration(Configuration);
+            services.Add_ApplicationRepositories();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ERP_System", Version = "v1" });

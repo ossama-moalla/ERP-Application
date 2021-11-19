@@ -9,12 +9,12 @@ namespace ERP_System.Models.Trade.Report_Bills_Sell
     public class Report_Sells_Day_ReportDetail
     {
         public DateTime Bill_Time;
-        public uint Bill_ID;
+        public int Bill_ID;
         public string SellType;
         public string Bill_Owner;
         public int ClauseS_Count;
         public double BillValue;
-        public uint CurrencyID;
+        public int CurrencyID;
         public string CurrencyName;
         public string CurrencySymbol;
         public double ExchangeRate;
@@ -26,12 +26,12 @@ namespace ERP_System.Models.Trade.Report_Bills_Sell
         public double ItemsOut_RealValue;
         public double RealPaysValue;
         public Report_Sells_Day_ReportDetail(DateTime Bill_Time_,
-         uint Bill_ID_,
+         int Bill_ID_,
          string SellType_,
          string Bill_Owner_,
          int ClauseS_Count_,
          double BillValue_,
-         uint CurrencyID_,
+         int CurrencyID_,
          string CurrencyName_,
          string CurrencySymbol_,
          double ExchangeRate_,
@@ -74,12 +74,12 @@ namespace ERP_System.Models.Trade.Report_Bills_Sell
                 {
 
                     DateTime Bill_Date = Convert.ToDateTime(table.Rows[i]["Bill_Time"]);
-                    uint Bill_ID = Convert.ToUInt32(table.Rows[i]["Bill_ID"]);
+                    int Bill_ID = Convert.ToInt32(table.Rows[i]["Bill_ID"]);
                     string SellType = table.Rows[i]["SellType"].ToString();
                     string Bill_Owner = table.Rows[i]["Bill_Owner"].ToString();
                     int ClauseS_Count = Convert.ToInt32(table.Rows[i]["ClauseS_Count"]);
                     double BillValue = Convert.ToDouble(table.Rows[i]["BillValue"]);
-                    uint CurrencyID = Convert.ToUInt32(table.Rows[i]["CurrencyID"]);
+                    int CurrencyID = Convert.ToInt32(table.Rows[i]["CurrencyID"]);
                     string CurrencyName = table.Rows[i]["CurrencyName"].ToString();
                     string CurrencySymbol = table.Rows[i]["CurrencySymbol"].ToString();
                     double ExchangeRate = Convert.ToDouble(table.Rows[i]["ExchangeRate"]);

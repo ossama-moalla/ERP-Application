@@ -7,9 +7,9 @@ namespace ERP_System.Models.HR
 {
     public class EmployeeMentLevel
     {
-        public uint LevelID;
+        public int LevelID;
         public string LevelName;
-        public EmployeeMentLevel(uint LevelID_, string LevelName_)
+        public EmployeeMentLevel(int LevelID_, string LevelName_)
         {
             LevelID = LevelID_;
             LevelName = LevelName_;

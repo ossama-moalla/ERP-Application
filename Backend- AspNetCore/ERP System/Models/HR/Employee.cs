@@ -13,7 +13,7 @@ namespace ERP_System.Models.HR
             Male = 0,
             Female = 1
         }
-        public enum MaritalStatus : uint
+        public enum MaritalStatus : int
         {
              SINGLE = 0,
              MARRIED = 1,
@@ -22,7 +22,7 @@ namespace ERP_System.Models.HR
 
         }
 
-        public uint EmployeeID;
+        public int EmployeeID;
         public string EmployeeName;
         public bool Gender;
         public DateTime BirthDate;
@@ -34,7 +34,7 @@ namespace ERP_System.Models.HR
         public string Address;
         public string Report;
         public Currency SalaryCurrency;
-        public Employee(uint EmployeeID_, string EmployeeName_, bool Gender_, DateTime BirthDate_
+        public Employee(int EmployeeID_, string EmployeeName_, bool Gender_, DateTime BirthDate_
             , string NationalID_, MaritalStatus MaritalStatus_
             , string Mobile_, string Phone_, string EmailAddress_, string Address_, string Report_, Currency SalaryCurrency_)
         {

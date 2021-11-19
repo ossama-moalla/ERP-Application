@@ -28,9 +28,5 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public ItemSpec_Value GetByID(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

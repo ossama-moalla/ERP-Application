@@ -11,7 +11,7 @@ namespace ERP_System.Models.Materials
     {
         public Item Item_ { get; set; }
         public Item AnotherItem { get; set; }
-        public uint Relation_ { get; set; }
+        public int Relation_ { get; set; }
         public bool Inherit { get; set; }
         public string Notes { get; set; }
  

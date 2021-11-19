@@ -11,9 +11,9 @@ namespace ERP_System.Models.Materials
         //specs assigned to category and item inherit it
         public ItemCategory Category { get; set; }
         [Key]
-        public uint SpecID { get; set; }
+        public int SpecID { get; set; }
         public string SpecName { get; set; }
-        public uint SpecIndex { get; set; }
+        public int SpecIndex { get; set; }
 
     }
 }

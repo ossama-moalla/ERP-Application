@@ -7,9 +7,9 @@ namespace ERP_System.Models.Accounting
 {
     public class MoneyAccount
     {
-        public uint AccountIDID;
+        public int AccountIDID;
         public string AccountIDName;
-        public MoneyAccount(uint AccountIDID_,
+        public MoneyAccount(int AccountIDID_,
          string AccountIDName_)
         {
             AccountIDID = AccountIDID_;

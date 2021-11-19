@@ -9,7 +9,7 @@ namespace ERP_System.Repositories.Materials_Repository
     public class ConsumeUnit_Repo:IApplicationRepository<ConsumeUnit>
     {
         Application_Identity_DbContext Db_Context;
-        public ItemSpec_Value_Repo(Application_Identity_DbContext Db_Context_)
+        public ConsumeUnit_Repo(Application_Identity_DbContext Db_Context_)
         {
             Db_Context = Db_Context_;
         }
@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(ConsumeUnit entity)
+        public void Update(ConsumeUnit entity)
         {
             throw new NotImplementedException();
         }
@@ -33,14 +33,9 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public List<ConsumeUnit> GetConsumeUnitList(Item item_)
-        {
-            return new List<ConsumeUnit>();
-        }
-        internal bool IsConsumeUnitBelongToItem(Item _Item, ConsumeUnit consumeUnit_)
+        public IList<ConsumeUnit> List()
         {
             throw new NotImplementedException();
-
         }
     }
 }

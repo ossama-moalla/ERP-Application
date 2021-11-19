@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Repositories.Customer_Repository
 {
-    public class Customer_Repo:IApplicationRepository<Customer>
+    public class Customer_Repo : IApplicationRepository<Customer>
     {
         Application_Identity_DbContext DbContext;
         public Customer_Repo(Application_Identity_DbContext DbContext_)
@@ -24,7 +24,7 @@ namespace ERP_System.Repositories.Customer_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(Customer entity)
+        public void Update(Customer entity)
         {
             throw new NotImplementedException();
         }
@@ -37,6 +37,11 @@ namespace ERP_System.Repositories.Customer_Repository
         {
             throw new NotImplementedException();
 
+        }
+
+        public IList<Customer> List()
+        {
+            throw new NotImplementedException();
         }
     }
 }

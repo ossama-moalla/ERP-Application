@@ -15,7 +15,7 @@ namespace ERP_System.Models.Trade
         public int ClauseCount { get; }
         public string Notes { get; }
 
-        public RavageOPR(uint RavageOPRID_, DateTime RavageOPRDate_,
+        public RavageOPR(int RavageOPRID_, DateTime RavageOPRDate_,
             Department Part_, int ClauseCount_, string Notes_)
         {
 

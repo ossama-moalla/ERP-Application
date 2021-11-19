@@ -16,34 +16,34 @@ namespace ERP_System.Models.Maintenance
             AdditionalClause_TYPE = 4,
         }
         public readonly ushort ClauseType;
-        public uint BillID { get; }
+        public int BillID { get; }
         public RepairOPR _RepairOPR { get; }
         public ItemOUT _ItemOUT { get; }
         public BillAdditionalClause _BillAdditionalClause { get; }
         public DiagnosticOPR _DiagnosticOPR { get; }
         public double? Value { get; }
-        public BillMaintenance_Clause(uint BillID_, ItemOUT ItemOUT_)
+        public BillMaintenance_Clause(int BillID_, ItemOUT ItemOUT_)
         {
             ClauseType = (ushort)BillMaintenance_Clause_Types. ITEMOUT_TYPE;
             BillID = BillID_;
             _ItemOUT = ItemOUT_;
             Value = _ItemOUT._OUTValue.Value;
         }
-        public BillMaintenance_Clause(uint BillID_, BillAdditionalClause BillAdditionalClause_)
+        public BillMaintenance_Clause(int BillID_, BillAdditionalClause BillAdditionalClause_)
         {
             ClauseType = (ushort)BillMaintenance_Clause_Types.AdditionalClause_TYPE;
             BillID = BillID_;
             _BillAdditionalClause = BillAdditionalClause_;
             Value = _BillAdditionalClause.Value;
         }
-        public BillMaintenance_Clause(uint BillID_, RepairOPR RepairOPR_, double? Value_)
+        public BillMaintenance_Clause(int BillID_, RepairOPR RepairOPR_, double? Value_)
         {
             ClauseType = (ushort)BillMaintenance_Clause_Types.REPAIR_OPR_TYPE;
             BillID = BillID_;
             _RepairOPR = RepairOPR_;
             Value = Value_;
         }
-        public BillMaintenance_Clause(uint BillID_, DiagnosticOPR DiagnosticOPR_, double? Value_)
+        public BillMaintenance_Clause(int BillID_, DiagnosticOPR DiagnosticOPR_, double? Value_)
         {
             ClauseType = (ushort)BillMaintenance_Clause_Types.DIAGNOSTIC_OPR_TYPE;
             BillID = BillID_;

@@ -8,8 +8,8 @@ namespace ERP_System.Models.Customers.Reports
     public class Customer_MaintenanceOPRs_ReportDetail
     {
         public DateTime MaintenanceOPR_Date;
-        public uint MaintenanceOPR_ID;
-        public uint ItemID;
+        public int MaintenanceOPR_ID;
+        public int ItemID;
         public string ItemName;
         public string ItemCompany;
         public string FolderName;
@@ -18,9 +18,9 @@ namespace ERP_System.Models.Customers.Reports
         public bool? MaintenanceOPR_Rpaired;
         public DateTime? MaintenanceOPR_DeliverDate;
         public DateTime? MaintenanceOPR_EndWarrantyDate;
-        public uint? BillMaintenanceID;
+        public int? BillMaintenanceID;
         public double? BillValue;
-        public uint? CurrencyID;
+        public int? CurrencyID;
         public string CurrencyName;
         public string CurrencySymbol;
         public double? ExchangeRate;
@@ -33,8 +33,8 @@ namespace ERP_System.Models.Customers.Reports
 
         public Customer_MaintenanceOPRs_ReportDetail(
             DateTime MaintenanceOPR_Date_,
-         uint MaintenanceOPR_ID_,
-           uint ItemID_,
+         int MaintenanceOPR_ID_,
+           int ItemID_,
          string ItemName_,
          string ItemCompany_,
          string FolderName_,
@@ -43,9 +43,9 @@ namespace ERP_System.Models.Customers.Reports
          bool? MaintenanceOPR_Rpaired_,
          DateTime? MaintenanceOPR_DeliverDate_,
          DateTime? MaintenanceOPR_EndWarrantyDate_,
-         uint? BillMaintenanceID_,
+         int? BillMaintenanceID_,
           double? BillValue_,
-           uint? CurrencyID_,
+           int? CurrencyID_,
          string CurrencyName_,
          string CurrencySymbol_,
         double? ExchangeRate_,
@@ -94,8 +94,8 @@ namespace ERP_System.Models.Customers.Reports
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
                     DateTime MaintenanceOPR_Date = Convert.ToDateTime(table.Rows[i]["MaintenanceOPR_Date"]);
-                    uint MaintenanceOPR_ID = Convert.ToUInt32(table.Rows[i]["MaintenanceOPR_ID"]);
-                    uint ItemID = Convert.ToUInt32(table.Rows[i]["ItemID"]);
+                    int MaintenanceOPR_ID = Convert.ToInt32(table.Rows[i]["MaintenanceOPR_ID"]);
+                    int ItemID = Convert.ToInt32(table.Rows[i]["ItemID"]);
                     string ItemName = table.Rows[i]["ItemName"].ToString();
                     string ItemCompany = table.Rows[i]["ItemCompany"].ToString();
                     string FolderName = table.Rows[i]["FolderName"].ToString();
@@ -143,10 +143,10 @@ namespace ERP_System.Models.Customers.Reports
                         MaintenanceOPR_EndWarrantyDate = null;
                     }
 
-                    uint? BillMaintenanceID;
+                    int? BillMaintenanceID;
                     try
                     {
-                        BillMaintenanceID = Convert.ToUInt32(table.Rows[i]["BillMaintenanceID"]);
+                        BillMaintenanceID = Convert.ToInt32(table.Rows[i]["BillMaintenanceID"]);
                     }
                     catch
                     {
@@ -163,10 +163,10 @@ namespace ERP_System.Models.Customers.Reports
                         BillValue = null;
                     }
 
-                    uint? CurrencyID;
+                    int? CurrencyID;
                     try
                     {
-                        CurrencyID = Convert.ToUInt32(table.Rows[i]["CurrencyID"]);
+                        CurrencyID = Convert.ToInt32(table.Rows[i]["CurrencyID"]);
                     }
                     catch
                     {

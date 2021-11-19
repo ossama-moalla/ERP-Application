@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 namespace ERP_System.Models.Materials
 {
     public class Relation
-    {//public const uint ITEM_EQUAL = 0;
-        public const uint ITEM_CONTAIN = 1;
-        public const uint ITEM_FOUNDIN = 2;
-        public  uint Value { get; set; }
+    {//public const int ITEM_EQUAL = 0;
+        public const int ITEM_CONTAIN = 1;
+        public const int ITEM_FOUNDIN = 2;
+        public  int Value { get; set; }
         public  string Name { get; set; }
  
         public static List<Relation> GetRealtions()
@@ -20,7 +20,7 @@ namespace ERP_System.Models.Materials
             RelationList.Add(new Relation { Value = Relation.ITEM_FOUNDIN, Name = "موجود في" });
             return RelationList;
         }
-        public static Relation GetRealtionByValue(uint value)
+        public static Relation GetRealtionByValue(int value)
         {
             switch (value)
             {

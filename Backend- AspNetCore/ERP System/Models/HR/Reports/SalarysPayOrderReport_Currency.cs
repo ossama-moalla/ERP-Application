@@ -7,7 +7,7 @@ namespace ERP_System.Models.HR.Reports
 {
     public class SalarysPayOrderReport_Currency
     {
-        public uint CurrencyID;
+        public int CurrencyID;
         public string CurrencyName;
         public string CurrencySymbol;
         public double SalarysValue;
@@ -15,7 +15,7 @@ namespace ERP_System.Models.HR.Reports
         public double RealSalarysValue;
         public double RealPaysValue;
         public SalarysPayOrderReport_Currency(
-             uint CurrencyID_,
+             int CurrencyID_,
          string CurrencyName_,
          string CurrencySymbol_,
          double SalarysValue_,

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Repositories
 {
-    interface IApplicationRepository<TEntity>
+    public interface IApplicationRepository<TEntity>
     {
-        //IList<TEntity> List();
+        IList<TEntity> List();
         TEntity GetByID(int id);
         void Add(TEntity entity);
-        void Edit(TEntity entity);
+        void Update(TEntity entity);
         void Delete(int id);
     }
 }

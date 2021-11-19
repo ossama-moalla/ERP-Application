@@ -28,11 +28,11 @@ namespace ERP_System.Repositories.AvailableItem_Repository
         {
             throw new NotImplementedException();
         }
-        public string Get_AvailabeAmount_For_Item(uint itemid)
+        public string Get_AvailabeAmount_For_Item(int itemid)
         {
             throw new NotImplementedException();
         }
-        public string Get_AvailabeAmount_For_Item_IN_Place(uint itemid, uint placeid)
+        public string Get_AvailabeAmount_For_Item_IN_Place(int itemid, int placeid)
         {
             throw new NotImplementedException();
         }

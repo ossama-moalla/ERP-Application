@@ -7,26 +7,26 @@ namespace ERP_System.Models.Trade
 {
     public class Operation
     {
-        public const uint BILL_BUY = 1;
-        public const uint BILL_SELL = 2;
-        public const uint BILL_MAINTENANCE = 3;
-        public const uint Employee_PayOrder = 4;
-        public const uint MAINTENANCE_OPR = 5;
-        public const uint ASSEMBLAGE = 6;
-        public const uint DISASSEMBLAGE = 7;
-        public const uint RavageOPR = 8;
-        public const uint REPAIROPR = 9;
+        public const int BILL_BUY = 1;
+        public const int BILL_SELL = 2;
+        public const int BILL_MAINTENANCE = 3;
+        public const int Employee_PayOrder = 4;
+        public const int MAINTENANCE_OPR = 5;
+        public const int ASSEMBLAGE = 6;
+        public const int DISASSEMBLAGE = 7;
+        public const int RavageOPR = 8;
+        public const int REPAIROPR = 9;
         /// <summary>
         /// ////////////
         /// </summary>
-        public uint OperationType { get; }
-        public uint OperationID { get; }
-        public Operation(uint OperationType_, uint OperationID_)
+        public int OperationType { get; }
+        public int OperationID { get; }
+        public Operation(int OperationType_, int OperationID_)
         {
             OperationType = OperationType_;
             OperationID = OperationID_;
         }
-        public static string GetOperationName(uint operationtype)
+        public static string GetOperationName(int operationtype)
         {
             string operationname = "";
             switch (operationtype)
@@ -61,7 +61,7 @@ namespace ERP_System.Models.Trade
             }
             return operationname;
         }
-        public static string GetOperationItemOutDesc(uint operationtype)
+        public static string GetOperationItemOutDesc(int operationtype)
         {
 
             string operationname = "";

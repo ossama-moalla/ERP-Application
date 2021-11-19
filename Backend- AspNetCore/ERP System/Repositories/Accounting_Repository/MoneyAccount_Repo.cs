@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(MoneyAccount entity)
+        public void Update(MoneyAccount entity)
         {
             throw new NotImplementedException();
         }
@@ -33,6 +33,11 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
         public List<MoneyAccount> GetMoneyAccount_List()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<MoneyAccount> List()
         {
             throw new NotImplementedException();
         }

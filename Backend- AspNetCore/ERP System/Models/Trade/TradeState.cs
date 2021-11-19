@@ -9,7 +9,7 @@ namespace ERP_System.Models.Trade
     public class TradeState
     {
         [Key]
-        public uint TradeStateID { get; set; }
+        public int TradeStateID { get; set; }
         public string TradeStateName { get; set; }
     }
 }

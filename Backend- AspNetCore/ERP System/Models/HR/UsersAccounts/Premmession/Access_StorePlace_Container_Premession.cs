@@ -8,11 +8,11 @@ namespace ERP_System.Models.HR.UsersAccounts.Premmession
 {
     public class Access_StorePlace_Container_Premession
     {
-        public uint PermissionID;
-        public uint UserID;
+        public int PermissionID;
+        public int UserID;
         public StorePlace_Container Container;
-        public Access_StorePlace_Container_Premession(uint PermissionID_,
-         uint UserID_,
+        public Access_StorePlace_Container_Premession(int PermissionID_,
+         int UserID_,
          StorePlace_Container Container_)
         {
             PermissionID = PermissionID_;

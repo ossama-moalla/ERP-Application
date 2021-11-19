@@ -9,7 +9,7 @@ namespace ERP_System.Models.Accounting
     public class MoneyTransFormOPR
     {
         public Employee Creator_Employee;
-        public uint MoneyTransFormOPRID;
+        public int MoneyTransFormOPRID;
         public DateTime MoneyTransFormOPRDate;
         public MoneyAccount SourceMoney_Account;
         public MoneyAccount TargetMoney_Account;
@@ -20,7 +20,7 @@ namespace ERP_System.Models.Accounting
         public Employee Confirm_Employee;
         public MoneyTransFormOPR(
             Employee Creator_Employee_,
-        uint MoneyTransFormOPRID_,
+        int MoneyTransFormOPRID_,
          DateTime MoneyTransFormOPRDate_,
          MoneyAccount SourceMoney_Account_,
          MoneyAccount TargetMoney_Account_,

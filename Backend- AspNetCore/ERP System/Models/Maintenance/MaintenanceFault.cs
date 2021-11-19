@@ -10,12 +10,12 @@ namespace ERP_System.Models.Maintenance
     {
         public MaintenanceOPR _MaintenanceOPR;
         public Item _Item;
-        public uint FaultID;
+        public int FaultID;
         public DateTime FaultDate;
         public string FaultDesc;
         public string FaultReport;
         public MaintenanceFault(MaintenanceOPR MaintenanceOPR_, Item Item_,
-           uint FaultID_, DateTime FaultDate_, string FaultDesc_, string FaultReport_)
+           int FaultID_, DateTime FaultDate_, string FaultDesc_, string FaultReport_)
         {
             _MaintenanceOPR = MaintenanceOPR_;
             _Item = Item_;

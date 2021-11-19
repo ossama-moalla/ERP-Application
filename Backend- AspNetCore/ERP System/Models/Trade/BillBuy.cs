@@ -9,7 +9,7 @@ namespace ERP_System.Models.Trade
 {
     public class BillBuy:IBill
     {
-        public BillBuy(uint BillID_, DateTime BillDate_, string BillDescription_, Customer Customer_, Currency Currency_, double ExchangeRate_, double Discount_, string Notes_)
+        public BillBuy(int BillID_, DateTime BillDate_, string BillDescription_, Customer Customer_, Currency Currency_, double ExchangeRate_, double Discount_, string Notes_)
 
         {
             _Operation = new Operation(Operation.BILL_BUY, BillID_);

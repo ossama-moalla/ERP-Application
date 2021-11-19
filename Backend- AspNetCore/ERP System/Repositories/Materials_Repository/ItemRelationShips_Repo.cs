@@ -24,7 +24,7 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(ItemSpec entity)
+        public void Update(ItemSpec entity)
         {
             throw new NotImplementedException();
         }
@@ -33,17 +33,21 @@ namespace ERP_System.Repositories.Materials_Repository
         {
             throw new NotImplementedException();
         }
-        internal ItemRelation GetItemRealtion(Item sourceItem, Item anotherItem)
+        //internal ItemRelation GetItemRealtion(Item sourceItem, Item anotherItem)
+        //{
+        //    throw new NotImplementedException();
+
+        //}
+        //public List<ItemRelation> GetItemRelationsList(Item item)
+        //{
+
+        //    return new List<ItemRelation>();
+        
+        //}
+
+        public IList<ItemSpec> List()
         {
             throw new NotImplementedException();
-
         }
-        public List<ItemRelation> GetItemRelationsList(Item item)
-        {
-
-            return new List<ItemRelation>();
-        
-        }
-
     }
 }

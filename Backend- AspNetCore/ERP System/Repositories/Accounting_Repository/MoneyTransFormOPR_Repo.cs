@@ -18,7 +18,7 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(MoneyTransFormOPR entity)
+        public void Update(MoneyTransFormOPR entity)
         {
             throw new NotImplementedException();
         }
@@ -40,6 +40,11 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
         internal List<MoneyTransFormOPR> Get_Stuck_MoneyTransformOPR_OUT_List(MoneyAccount moneyAccount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<MoneyTransFormOPR> List()
         {
             throw new NotImplementedException();
         }

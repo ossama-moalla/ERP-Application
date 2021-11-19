@@ -8,26 +8,26 @@ namespace ERP_System.Models.HR.Reports
 {
     public class SalarysPayOrderEmployeeReport
     {
-        public uint EmployeeID;
+        public int EmployeeID;
         public string EmployeeName;
         public string JobState;
         public string EmployeeMentState;
-        public uint EmployeeStateCode;
+        public int EmployeeStateCode;
         public string ExcpectedSalary;
-        public uint? PayOrderID;
+        public int? PayOrderID;
         public double? PayedSalaryValue;
         public Currency PayedSalaryCurrecny;
         public double? PayedSalaryExchangeRate;
         public string Paid;
         public double? Remain;
         public double? PaysRealValue;
-        public SalarysPayOrderEmployeeReport(uint EmployeeID_,
+        public SalarysPayOrderEmployeeReport(int EmployeeID_,
          string EmployeeName_,
          string JobState_,
          string EmployeeMentState_,
-         uint EmployeeStateCode_,
+         int EmployeeStateCode_,
          string ExcpectedSalary_,
-         uint? PayOrderID_,
+         int? PayOrderID_,
          double? PayedSalaryValue_,
          Currency PayedSalaryCurrecny_,
          double? PayedSalaryExchangeRate_,

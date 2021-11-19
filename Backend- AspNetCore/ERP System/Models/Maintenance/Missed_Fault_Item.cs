@@ -13,14 +13,14 @@ namespace ERP_System.Models.Maintenance
             FAULT=1,
             MISSED=2
         }
-        public uint ID { get; }
+        public int ID { get; }
         public ushort Type { get; }
         public DiagnosticOPR _DiagnosticOPR { get; }
         public Item _Item { get; }
         public string Location { get; }
         public string Notes { get; }
         public int TagsCount { get; }
-        public Missed_Fault_Item(uint ID_,
+        public Missed_Fault_Item(int ID_,
          ushort Type_,
          DiagnosticOPR DiagnosticOPR_,
          Item Item_,

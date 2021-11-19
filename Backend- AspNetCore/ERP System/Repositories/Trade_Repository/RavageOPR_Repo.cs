@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Trade_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(RavageOPR entity)
+        public void Update(RavageOPR entity)
         {
             throw new NotImplementedException();
         }
@@ -32,6 +32,12 @@ namespace ERP_System.Repositories.Trade_Repository
         {
             throw new NotImplementedException();
         }
+
+        public IList<RavageOPR> List()
+        {
+            throw new NotImplementedException();
+        }
+
         internal List<RavageOPR> Get_All_RavageOPR_List()
         {
             throw new NotImplementedException();

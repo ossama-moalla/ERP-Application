@@ -24,7 +24,7 @@ namespace ERP_System.Models.HR
         }
 
 
-    public uint DocumentID;
+    public int DocumentID;
         public DateTime DocumentDate;
         public Employee _Employee;
         public ushort DocumentType;
@@ -32,7 +32,7 @@ namespace ERP_System.Models.HR
         public Document TargetDocument;
         public EmployeeMent _EmployeeMent;
         public string Details;
-        public Document(uint DocumentID_, DateTime DocumentDate_, Employee Employee_,
+        public Document(int DocumentID_, DateTime DocumentDate_, Employee Employee_,
             ushort DocumentType_, DateTime ExecuteDate_, Document TargetDocument_, EmployeeMent EmployeeMent_, string Details_)
         {
             DocumentID = DocumentID_;

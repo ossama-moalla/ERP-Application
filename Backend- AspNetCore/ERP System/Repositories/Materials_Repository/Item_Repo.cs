@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(Item entity)
+        public void Update(Item entity)
         {
             throw new NotImplementedException();
         }
@@ -38,37 +38,7 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public List<Item> FilterItemsBySpec(List<ItemSpec_Restrict_Options> ItemSpec_Restrict_Options_List, List<ItemSpec_Value> ItemSpec_Value_List)
-        {
-            return new List<Item>();
-        }
-        public List<Item> Get_ItemCategory_Items(ItemCategory category)
-        {
-            return new List<Item>();
-
-        }
-
-        public List<Item> SearchItem(ItemCategory ItemCategory, string n)
-        {
-            return new List<Item>();
-
-        }
-        public void MoveItems(ItemCategory DestinationItemCategory, List<Item> ItemsList)
-        {
-            
-        }
-        public byte[] GetItemImage(Item Item_)
-        {
-            byte[] image= { 0x00 };
-            return  image;
-        }
-        public void SetItemImage(uint ItemID, byte[] Image_)
-        {
-
-        }
-        public void UnSetItemImage(uint ItemID)
-        {
-
-        }
+        
+        
     }
 }

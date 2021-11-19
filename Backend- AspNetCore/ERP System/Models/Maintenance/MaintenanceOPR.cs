@@ -20,7 +20,7 @@ namespace ERP_System.Models.Maintenance
         public StorePlace Place { get; }
         public MaintenanceOPR_EndWork _MaintenanceOPR_EndWork { get; set; }
         public string Notes { get; }
-        public MaintenanceOPR(uint MaintenanceOPRID_
+        public MaintenanceOPR(int MaintenanceOPRID_
             , DateTime EntryDate_
              , Customer Customer_
             , Item Item_

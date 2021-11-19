@@ -7,14 +7,14 @@ namespace ERP_System.Models.Maintenance
 {
     public class MaintenanceTagSummary
     {
-        public uint TagID { get; }
-        public uint TagType { get; }
-        public uint ID { get; }
+        public int TagID { get; }
+        public int TagType { get; }
+        public int ID { get; }
         public string Desc { get; }
         public string TagINFO { get; }
-        public MaintenanceTagSummary(uint TagID_,
-         uint TagType_,
-         uint ID_,
+        public MaintenanceTagSummary(int TagID_,
+         int TagType_,
+         int ID_,
          string Desc_,
          string TagINFO_)
         {

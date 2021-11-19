@@ -7,7 +7,7 @@ namespace ERP_System.Models.Accounting.Reports
 {
     public class PayCurrencyReport
     {
-        public uint CurrencyID;
+        public int CurrencyID;
         public string CurrencyName;
         public string CurrencySymbol;
 
@@ -24,7 +24,7 @@ namespace ERP_System.Models.Accounting.Reports
 
         public PayCurrencyReport(
 
-         uint CurrencyID_,
+         int CurrencyID_,
          string CurrencyName_,
          string CurrencySymbol_,
          double PaysIN_Sell_,
@@ -60,7 +60,7 @@ namespace ERP_System.Models.Accounting.Reports
                 List<PayCurrencyReport> list = new List<PayCurrencyReport>();
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
-                    uint CurrencyID = Convert.ToUInt32(table.Rows[i]["CurrencyID"]);
+                    int CurrencyID = Convert.ToInt32(table.Rows[i]["CurrencyID"]);
                     string CurrencyName = table.Rows[i]["CurrencyName"].ToString();
                     string CurrencySymbol = table.Rows[i]["CurrencySymbol"].ToString();
 

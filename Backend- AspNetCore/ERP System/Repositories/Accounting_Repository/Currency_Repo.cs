@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(Currency entity)
+        public void Update(Currency entity)
         {
             throw new NotImplementedException();
         }
@@ -41,6 +41,11 @@ namespace ERP_System.Repositories.Accounting_Repository
         {
             throw new NotImplementedException();
 
+        }
+
+        public IList<Currency> List()
+        {
+            throw new NotImplementedException();
         }
     }
 }

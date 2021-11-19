@@ -24,7 +24,7 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(PayOUT entity)
+        public void Update(PayOUT entity)
         {
             throw new NotImplementedException();
         }
@@ -33,6 +33,12 @@ namespace ERP_System.Repositories.Accounting_Repository
         {
             throw new NotImplementedException();
         }
+
+        public IList<PayOUT> List()
+        {
+            throw new NotImplementedException();
+        }
+
         internal List<PayOUT> GetPaysOUT_List(Operation Operation_)
         {
             throw new NotImplementedException();

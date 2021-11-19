@@ -19,9 +19,9 @@ namespace ERP_System.Models.HR.UsersAccounts
              INDUSTRY_GROUP = 7,
              CONTAINER_GROUP = 8,
         }
-        public uint GroupID;
+        public int GroupID;
         public bool Join;
-        public Premession(uint GroupID_, bool Join_)
+        public Premession(int GroupID_, bool Join_)
         {
             GroupID = GroupID_;
             Join = Join_;

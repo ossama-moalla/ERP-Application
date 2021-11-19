@@ -7,7 +7,7 @@ namespace ERP_System.Models.Customers.Reports
 {
     public class Customer_PayCurrencyReport
     {
-        public uint CurrencyID;
+        public int CurrencyID;
         public string CurrencyName;
         public string CurrencySymbol;
         public double PaysIN_Sell;
@@ -15,7 +15,7 @@ namespace ERP_System.Models.Customers.Reports
         public double PaysOUT_Buy;
 
 
-        public Customer_PayCurrencyReport(uint CurrencyID_, string CurrencyName_, string CurrencySymbol_,
+        public Customer_PayCurrencyReport(int CurrencyID_, string CurrencyName_, string CurrencySymbol_,
         double PaysIN_Sell_, double PaysIN_Maintenance_, double PaysOUT_Buy_)
         {
             CurrencyID = CurrencyID_;
@@ -34,7 +34,7 @@ namespace ERP_System.Models.Customers.Reports
                 for (int i = 0; i < table.Rows.Count; i++)
                 {
 
-                    uint CurrencyID = Convert.ToUInt32(table.Rows[i]["CurrencyID"]);
+                    int CurrencyID = Convert.ToInt32(table.Rows[i]["CurrencyID"]);
                     string CurrencyName = table.Rows[i]["CurrencyName"].ToString();
                     string CurrencySymbol = table.Rows[i]["CurrencySymbol"].ToString();
                     double PaysIN_Sell = Convert.ToDouble(table.Rows[i]["PaysIN_Sell"]);

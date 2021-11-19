@@ -24,7 +24,7 @@ namespace ERP_System.Repositories.Store_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(StorePlace entity)
+        public void Update(StorePlace entity)
         {
             throw new NotImplementedException();
         }
@@ -41,6 +41,12 @@ namespace ERP_System.Repositories.Store_Repository
         {
             throw new NotImplementedException();
         }
+
+        public IList<StorePlace> List()
+        {
+            throw new NotImplementedException();
+        }
+
         internal List<StorePlace> SearchPlace(string text)
         {
             throw new NotImplementedException();

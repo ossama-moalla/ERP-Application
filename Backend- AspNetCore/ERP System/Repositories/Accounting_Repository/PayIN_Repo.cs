@@ -24,7 +24,7 @@ namespace ERP_System.Repositories.Accounting_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(PayIN entity)
+        public void Update(PayIN entity)
         {
             throw new NotImplementedException();
         }
@@ -33,6 +33,12 @@ namespace ERP_System.Repositories.Accounting_Repository
         {
             throw new NotImplementedException();
         }
+
+        public IList<PayIN> List()
+        {
+            throw new NotImplementedException();
+        }
+
         internal List<Money_Currency> GetPayINList_As_Money_Currency(Operation opeartion)
         {
             throw new NotImplementedException();

@@ -7,14 +7,14 @@ namespace ERP_System.Models.Maintenance
 {
     public class MaintenanceOPR_EndWork
     {
-        public uint MaintenanceOPRID { get; }
+        public int MaintenanceOPRID { get; }
         public DateTime EndWorkDate { get; }
         public bool Repaired { get; }
         public string Report { get; }
         public DateTime? DeliveredDate { get; }
         public DateTime? EndwarrantyDate { get; }
 
-        public MaintenanceOPR_EndWork(uint MaintenanceOPRID_,
+        public MaintenanceOPR_EndWork(int MaintenanceOPRID_,
          DateTime EndWorkDate_,
          bool Repaired_,
          string Report_,

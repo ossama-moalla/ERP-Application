@@ -23,7 +23,7 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(Equivalence_Group entity)
+        public void Update(Equivalence_Group entity)
         {
             throw new NotImplementedException();
         }
@@ -32,10 +32,10 @@ namespace ERP_System.Repositories.Materials_Repository
         {
             throw new NotImplementedException();
         }
-        public List<Equivalence_Group> GetEquivalence_GroupList()
+
+        public IList<Equivalence_Group> List()
         {
             throw new NotImplementedException();
-
         }
     }
 }

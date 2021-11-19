@@ -33,12 +33,12 @@ namespace ERP_System.Repositories.Materials_Repository
         {
             throw new NotImplementedException();
         }
-        public List<ItemSellPriceS> GetItemPrices(Item item_, TradeState TradeState_)
+        public List<ItemSellPrice> GetItemPrices(Item item_, TradeState TradeState_)
         {
             throw new NotImplementedException();
 
         }
-        public List<ItemSellPriceS> GetItemPrices(Item item_)
+        public List<ItemSellPrice> GetItemPrices(Item item_)
         {
             throw new NotImplementedException();
 

@@ -24,7 +24,7 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Edit(ItemFile entity)
+        public void Update(ItemFile entity)
         {
             throw new NotImplementedException();
         }
@@ -38,11 +38,11 @@ namespace ERP_System.Repositories.Materials_Repository
         {
             throw new NotImplementedException();
         }
-        public long GetFileSize(uint fileid)
+        public long GetFileSize(int fileid)
         {
             return 0;
         }
-        public byte[] GetFileData(uint fileid)
+        public byte[] GetFileData(int fileid)
         {
             byte[] file = { 0x00 };
             return file;

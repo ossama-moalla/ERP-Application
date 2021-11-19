@@ -27,7 +27,7 @@ namespace ERP_System.Models.Accounting
             try
             {
                 List<Currency> currencyList = Money_CurrencyList.Select(x => x._Currency).ToList();
-                List<uint> currencylist = Money_CurrencyList.Select(x => x._Currency.CurrencyID).Distinct().ToList();
+                List<int> currencylist = Money_CurrencyList.Select(x => x._Currency.CurrencyID).Distinct().ToList();
                 for (int i = 0; i < currencylist.Count; i++)
                 {
                     Currency currency = currencyList.Where(y => y.CurrencyID == currencylist[i]).ToList()[0];
