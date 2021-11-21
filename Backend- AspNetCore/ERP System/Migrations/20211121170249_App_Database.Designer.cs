@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP_System.Migrations
 {
     [DbContext(typeof(Application_Identity_DbContext))]
-    [Migration("20211118213246_appDatabase")]
-    partial class appDatabase
+    [Migration("20211121170249_App_Database")]
+    partial class App_Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

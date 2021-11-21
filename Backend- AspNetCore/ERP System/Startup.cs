@@ -56,7 +56,11 @@ namespace ERP_System
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors(options=>
+            {
+                options.AllowAnyHeader();
+                options.AllowAnyOrigin();
+            });
             app.UseRouting();
             app.UseAuthentication();
 

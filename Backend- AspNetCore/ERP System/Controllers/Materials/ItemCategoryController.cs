@@ -62,6 +62,7 @@ namespace ERP_System.Controllers.Materials
         [Consumes(MediaTypeNames.Application.Json)]
         public async Task<ActionResult> add([FromBody] ItemCategory itemCategory)
         {
+            logger.LogInformation("add");
             try
             {
                 repo.Add(itemCategory);

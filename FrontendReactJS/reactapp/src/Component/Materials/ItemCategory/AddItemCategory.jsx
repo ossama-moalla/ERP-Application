@@ -5,42 +5,52 @@ class AddItemCategory extends Component {
     constructor(props){
         super(props);
         this.state={
-            ParentItemCategoryID:1,
-            ItemCategoryName:''
+            parentID:null,
+            name:'',
+            defaultConsumeUnit:''
         }
     }
     
     onsubmit=async(e)=>{
 
         e.preventDefault();
-       /* const ItemCategory={
-            ItemCategoryName:this.state.ItemCategoryName,
-            ParentItemCategoryID: this.state.ParentItemCategoryID
+        const ItemCategory={
+            name:this.state.name,
+            parentID: this.state.parentID,
+            defaultConsumeUnit:this.state.defaultConsumeUnit
         }
-        await axios.post("http://localhost:5000/ItemCategorys/additemcategory/",ItemCategory)
+        console.log(ItemCategory);
+        await axios.post("https://localhost:5001/materials/ItemCategory/add",ItemCategory)
         .then(res=>console.log('ItemCategory added'))
         .catch(err=>console.log('Client:ItemCategory add error:'+err.response.data)); 
-       this.props.history.push({
+      /* this.props.history.push({
             pathname: '/ItemCategorys/',
-            state: { ParentItemCategoryID: this.state.ParentItemCategoryID }
+            state: { parentID: this.state.parentID }
 
             
         })*/
     }
     onChangeInput=async(e)=>{
         await this.setState({[e.target.name]:e.target.value});
-        console.log(this.state)
+
 
     }
+
     render() {
         return (
              <div>
                 <form onSubmit={this.onsubmit}>
                 <div className="form-group" >
                     <label>ItemCategory Name</label>
-                    <input type="text" name="ItemCategoryName"
+                    <input type="text" name="name"
                      required className="form-control" 
-                     value={this.state.ItemCategoryName}
+                     value={this.state.name}
+                     onChange={this.onChangeInput}
+                     />
+                     <label>Default Consume Unit</label>
+                    <input type="text" name="defaultConsumeUnit"
+                     required className="form-control" 
+                     value={this.state.defaultConsumeUnit}
                      onChange={this.onChangeInput}
                      />
                 </div>  
@@ -48,7 +58,7 @@ class AddItemCategory extends Component {
                     <input type="submit"  value="add ItemCategory" className="btn btn-primary" style={{margin:5}}/>
                     <button className="btn btn-primary" onClick={()=>{this.props.history.push({
             pathname: '/materials/',
-            state: { ParentItemCategoryID: this.state.ParentItemCategoryID }
+            state: { parentID: this.state.parentID }
         })}}>Back</button>
                 </div>
             </form>

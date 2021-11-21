@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
 
     Routes,
@@ -6,16 +6,16 @@ import {
   } from "react-router-dom";
   import {materialsRoutes} from '../../AppRoutes.js';
   import ShowMaterials from './ShowMaterials.jsx';
-  import AddItemCategory from './ItemCategory/AddItemCategory.jsx'
+  import AddItemCategoryFormik from './ItemCategory/AddItemCategoryFormik.jsx'
 const MaterialGate =()=>(
     
-        <div>
+        <Fragment>
             <Routes>
                 <Route path="/" element={<ShowMaterials />} />
-                <Route path={materialsRoutes.addItemCategory} element={<AddItemCategory />} />
+                <Route path={materialsRoutes.addItemCategory} element={<AddItemCategoryFormik />} />
     
             </Routes>   
-        </div>     
+        </Fragment>     
         );
     
 

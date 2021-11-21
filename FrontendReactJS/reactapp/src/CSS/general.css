@@ -3,7 +3,7 @@ body{
     font-weight: bold;
 
 }
-#root>div{
+.standalone-div{
     padding: 10px;
     width: 70%;
     margin-left: auto;
@@ -64,7 +64,7 @@ select{
     background-color:#0dcaf000;
 }
 
-#main-window {
+.main-window {
     display: flex;
     flex-flow: column;
     height: 600px;
@@ -78,7 +78,7 @@ select{
   }
    
   #main-data {
-    background-color: #DDDDDD;
+    
     flex-grow : 1;
   }
 
