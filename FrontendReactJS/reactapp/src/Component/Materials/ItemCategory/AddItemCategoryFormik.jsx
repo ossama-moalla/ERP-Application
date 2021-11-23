@@ -10,14 +10,15 @@ class AddItemCategoryFormik extends Component {
             defaultConsumeUnit:''
         }
     }
-    form=()=>{
+    form=(props)=>{
         return(
         <Form className="form-group">
             <label>ItemCategory Name</label>
             <Field className="form-control"  name="name"></Field>
             <label>Default Consume Unit</label>
             <Field className="form-control"  name="defaultConsumeUnit"></Field>
-            <button className="btn btn-primary" style={{margin:5}} className="btn btn-primary" type="submit">Add</button>
+            <button className="btn btn-primary" style={{margin:5}} 
+            className="btn btn-primary" type="submit">Add</button>
         </Form>)
     }
     onSubmit=(values)=>{
