@@ -12,7 +12,7 @@ class AddItemCategoryFormik extends Component {
     }
     form=(props)=>{
         return(
-        <Form className="form-group">
+        <Form className="form-group" style={{width:400}}>
             <label>ItemCategory Name</label>
             <Field className="form-control"  name="name"></Field>
             <label>Default Consume Unit</label>
@@ -26,7 +26,7 @@ class AddItemCategoryFormik extends Component {
     }
     render() {
         return (
-            <div >
+            <div  className="container">
                 <Formik initialValues={{name:'',ParentID:null,defaultConsumeUnit:''}}
                         onSubmit={this.onSubmit}
                         

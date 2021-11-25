@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import propTypes from 'prop-types'
+
+
 class AddItemCategory extends Component {
     constructor(props){
+        
         super(props);
+        console.log(this.props)
         this.state={
             parentID:null,
             name:'',
@@ -24,7 +28,7 @@ class AddItemCategory extends Component {
         .then(res=>console.log('ItemCategory added'))
         .catch(err=>console.log('Client:ItemCategory add error:'+err.response.data)); 
       /* this.props.history.push({
-            pathname: '/ItemCategorys/',
+            pathname: '/materials/',
             state: { parentID: this.state.parentID }
 
             
@@ -37,9 +41,10 @@ class AddItemCategory extends Component {
     }
 
     render() {
+       
         return (
-             <div>
-                <form onSubmit={this.onsubmit}>
+             <div className="standalone-div" style={{maxWidth:500}}>
+
                 <div className="form-group" >
                     <label>ItemCategory Name</label>
                     <input type="text" name="name"
@@ -55,24 +60,25 @@ class AddItemCategory extends Component {
                      />
                 </div>  
                 <div className="form-group">
-                    <input type="submit"  value="add ItemCategory" className="btn btn-primary" style={{margin:5}}/>
-                    <button className="btn btn-primary" onClick={()=>{this.props.history.push({
-            pathname: '/materials/',
-            state: { parentID: this.state.parentID }
-        })}}>Back</button>
+                    <input type="submit"  value="Add" className="btn btn-primary" style={{margin:5}}/>
+                    <button className="btn btn-primary" onClick={()=>{
+                        console.log("g")
+                        console.log(this.state.parentID)
+                        document.location.href="/materials"
+                       }}>Back</button>
                 </div>
-            </form>
+
 
              </div>           
             
         );
     }
 }
-AddItemCategory.defaultProps ={
+/*AddItemCategory.defaultProps ={
     ID:'',
     Name:'',
     ParentID:''
-}
+}*/
 AddItemCategory.propTypes   ={
     
     ParentID:propTypes.string.isRequired

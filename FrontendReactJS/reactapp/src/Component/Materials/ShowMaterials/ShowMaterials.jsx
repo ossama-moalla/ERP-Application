@@ -3,7 +3,8 @@ import AddItemCategoryFormik from '../ItemCategory/AddItemCategoryFormik.jsx';
 import SearchBar from './SearchBar.jsx';
 import FilterBar from './FilterBar.jsx';
 import ItemCategoryDiv from './ItemCategoryDiv.jsx';
-
+import * as Routes from '../../../AppRoutes';
+import {Link} from 'react-router-dom'
 class ShowMaterials extends Component {
     constructor(){
         super();
@@ -73,13 +74,21 @@ class ShowMaterials extends Component {
                 </div>
                     
                 <div className="standalone-div main-window ">   
-                    <span >Path:</span>
+                    <div>
+                        <label >Path:</label>
+                        <Link style={{float:"right"}} to={Routes.materialsRoutes.addItemCategory+":"+this.state.ParentID} props={{ testvalue: "hello" }}>Create Category</Link>
+                    </div>
+                   
                     <div id="main-header">
                         Root\<a href="/">Computer </a>\<a href="/">Printer </a>
                     </div>   
                     <div id="main-data">    
                         <div  id="filterBySpec" style={{display:"none",marginRight:"2px",border:"solid 1px",float:"left",height:"100%",padding:"5px"}}>
-                            <label>inser value</label><br/><input type="text"/>
+                            <label>inser value</label><br/><input type="text"/><br/>
+                            <label>inser value</label><br/><input type="text"/><br/>
+                            <label>inser value</label><br/><input type="text"/><br/>
+                            <label>inser value</label><br/><input type="text"/><br/>
+                            <button className="btn btn-primary">Filter</button>
                         </div>
                         <div  style={{float:"none",height:"100%",width:"100%"}}>
                             {

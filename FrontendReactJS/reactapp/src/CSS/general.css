@@ -47,6 +47,10 @@ body{
 
     
 }
+.div-form *{
+    margin-left:10px ;
+    margin-right:10px ;
+}
 table{
 
    width: 80%;
@@ -70,15 +74,16 @@ select{
 .main-window {
     display: flex;
     flex-flow: column;
-    height: 400px;
+  
     position: relative;
-    border:solid 1px
+
   }
    
   #main-header {
       padding: 5px;
     height: 40px;
    border: 1px solid;
+   border-radius: 5px;
    overflow: auto;
   }
    
@@ -87,27 +92,13 @@ select{
     flex-grow : 1;
   }
 
-  #btn-270{
-    -webkit-transform: rotate(270deg);
-    -moz-transform: rotate(270deg);
-    -o-transform: rotate(270deg);
-    -ms-transform: rotate(270deg);
-    transform: rotate(270deg);
-    position: absolute;
-    top:45%;
-    left: -67px;
-    border: 1px solid;
-}
-#btn-90{
-    -webkit-transform: rotate(270deg);
-    -moz-transform: rotate(270deg);
-    -o-transform: rotate(270deg);
-    -ms-transform: rotate(270deg);
-    transform: rotate(270deg);
-    position: absolute;
-    top:45%;
-    right: -80px;
-    border: 1px solid;
+  #filterBySpec{
+    display: none;
+    margin-right: 2px;
+    border: solid 1px;
+    border-radius: 10px;
+    float: left;
+    padding: 10px;
 }
 .btn-text{
     margin:0;
