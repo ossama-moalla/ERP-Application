@@ -1,58 +1,44 @@
 import React, { Component, Fragment } from 'react';
+import axios from 'axios'
 import AddItemCategoryFormik from '../ItemCategory/AddItemCategoryFormik.jsx';
 import SearchBar from './SearchBar.jsx';
 import FilterBar from './FilterBar.jsx';
 import ItemCategoryDiv from './ItemCategoryDiv.jsx';
 import * as Routes from '../../../AppRoutes';
 import {Link} from 'react-router-dom'
-class ShowMaterials extends Component {
+class ShowMaterials  extends Component {
     constructor(){
         super();
         this.state={
-            ID:null,
-            ParentID:null,
-            ItemCategorysList:[
-                {
-                    ID:0,
-                    ParentID:null,
-                    name:'Computer',
-                    defaultConsumeUnit:'piece'
-                },
-                {
-                    ID:1,
-                    ParentID:null,
-                    name:'Printer',
-                    defaultConsumeUnit:'piece'
-                },
-                {
-                    ID:2,
-                    ParentID:null,
-                    name:'Lcd',
-                    defaultConsumeUnit:'piece'
-                }
-            ],
-            ItemsList:[],  
-            PathItemCategorys:[]
+            currentCategory:null,
+            CategorysList:[]
         }
     }
-   
+     toggleDiv=(e,divId)=>{
+        var s=document.getElementById(divId);
+        if(e.target.checked) s.style.display="block";
+        else s.style.display="none"
+    }
+    componentDidMount(){
+        var url=new URL(window.location);
+        var pid = url.searchParams.get("pid");
+        axios.get("https://localhost:5001/materials/ItemCategory/GetCategories?parentid:"+pid)
+        .then(res=>this.setState({CategorysList:res.data}))
+        .catch(err=>console.log('error:'+err.response.data)); 
+    }
     openCategory=(ID)=>{
         alert(ID);
     };
     deleteCategory=(ID)=>{
         alert("delete:"+ID)
     }
-    toggleDiv=(e,divId)=>{
-        var s=document.getElementById(divId);
-        if(e.target.checked) s.style.display="block";
-        else s.style.display="none"
-    }
-    render() {
-                console.log('show materials')
-
+    render(){
         return (
             <Fragment>
-               
+                <div className="standalone-div" style={{overflow:"auto"}} >
+                        <a>Add Category</a>
+                        <a >Add Item</a>
+                    </div>
                 <div className="standalone-div" style={{overflow:"auto"}} >
                     <label>Allowed Access Item Category:</label>
                     <select >
@@ -74,11 +60,7 @@ class ShowMaterials extends Component {
                 </div>
                     
                 <div className="standalone-div main-window ">   
-                    <div>
-                        <label >Path:</label>
-                        <Link style={{float:"right"}} to={Routes.materialsRoutes.addItemCategory+":"+this.state.ParentID} props={{ testvalue: "hello" }}>Create Category</Link>
-                    </div>
-                   
+                    <label >Path:</label>
                     <div id="main-header">
                         Root\<a href="/">Computer </a>\<a href="/">Printer </a>
                     </div>   
@@ -92,9 +74,9 @@ class ShowMaterials extends Component {
                         </div>
                         <div  style={{float:"none",height:"100%",width:"100%"}}>
                             {
-                                this.state.ItemCategorysList.map(category=>
-                                    <ItemCategoryDiv category={category} onDelete={this.deleteCategory} 
-                                onClick={this.openCategory } key={category.ID}/>
+                                this.state.CategorysList.map((category,i)=>{
+                                   return <ItemCategoryDiv category={category} onDelete={this.deleteCategory} 
+                                onClick={this.openCategory } key={i}/>}
                                 )
                             }
                         </div>
@@ -102,14 +84,12 @@ class ShowMaterials extends Component {
                                        
                 </div>
             </Fragment>
-        );
+        );     
     }
+   
+
 }
-ShowMaterials.defaultProps={
-    
-    ParentItemCategoryID:null,
-    ItemCategorysList:[],
-    ItemsList:[],  
-    PathItemCategorys:[]
-}
+       
+
+
 export default ShowMaterials;

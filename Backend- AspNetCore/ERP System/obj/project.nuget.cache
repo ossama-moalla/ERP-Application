@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6r4T1Lk/4NhCNCtw6TCmOZwhZV7D6apKSvJxfrGJB2/nwGFlZbAc1IjGrAVmcK0y0L9IRkzseJdBEa20c+IRPg==",
+  "dgSpecHash": "JSHZIo7sMEwJQSw360Q5RPrBMOo25Y7jWMVGZWPx3ld/Z+Nz5uyimT1DAYSH1OGXKFkjU/T5IvBo6vavoyqzxg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\o_moalla\\Desktop\\New folder\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
+  "projectFilePath": "C:\\Users\\o_moalla\\Desktop\\New folder (2)\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\o_moalla\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\o_moalla\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",

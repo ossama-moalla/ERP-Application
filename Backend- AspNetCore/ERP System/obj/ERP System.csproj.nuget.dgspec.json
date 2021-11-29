@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\o_moalla\\Desktop\\New folder\\Backend- AspNetCore\\ERP System\\ERP System.csproj": {}
+    "C:\\Users\\o_moalla\\Desktop\\New folder (2)\\Backend- AspNetCore\\ERP System\\ERP System.csproj": {}
   },
   "projects": {
-    "C:\\Users\\o_moalla\\Desktop\\New folder\\Backend- AspNetCore\\ERP System\\ERP System.csproj": {
+    "C:\\Users\\o_moalla\\Desktop\\New folder (2)\\Backend- AspNetCore\\ERP System\\ERP System.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\o_moalla\\Desktop\\New folder\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
+        "projectUniqueName": "C:\\Users\\o_moalla\\Desktop\\New folder (2)\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
         "projectName": "ERP System",
-        "projectPath": "C:\\Users\\o_moalla\\Desktop\\New folder\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
+        "projectPath": "C:\\Users\\o_moalla\\Desktop\\New folder (2)\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
         "packagesPath": "C:\\Users\\o_moalla\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\o_moalla\\Desktop\\New folder\\Backend- AspNetCore\\ERP System\\obj\\",
+        "outputPath": "C:\\Users\\o_moalla\\Desktop\\New folder (2)\\Backend- AspNetCore\\ERP System\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\o_moalla\\AppData\\Roaming\\NuGet\\NuGet.Config",
