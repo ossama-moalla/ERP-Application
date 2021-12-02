@@ -6,6 +6,11 @@ body{
 .hover:hover{
     background-color: burlywood;
 }
+.bordered{
+    border:solid 1px;
+    border-radius: 15px;
+    padding:10px
+}
 .standalone-div{
     padding: 10px;
     width: 90%;

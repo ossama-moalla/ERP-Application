@@ -13,7 +13,6 @@ import {
 } from "react-router-dom";
 //import Footer from './Component/Footer'
 import Navbar from './Component/Navbar.jsx';
- import {mainRoutes} from './AppRoutes.js'
 import MaterialGate from './Component/Materials/MaterialsGate';
 const ApplicationReducer=(state,action)=>{
   
@@ -29,7 +28,7 @@ const App=()=>(
         <Routes>
         <Route path="/" element={<div>hhhh</div>} />
 
-        <Route  path={mainRoutes.materials+"/*"}  element={<MaterialGate/>} />
+        <Route  path={'materials/*'}  element={<MaterialGate/>} />
         
 
         </Routes>

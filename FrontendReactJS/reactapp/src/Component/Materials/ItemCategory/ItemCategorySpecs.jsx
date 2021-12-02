@@ -9,11 +9,20 @@ class ItemCategorySpecs extends Component {
         
         super(props);
         this.state={
+            Category:null,
             name:'',
-            defaultConsumeUnit:''
+            type:0,
+            index:0
         }
     }
+    componentDidMount(){
+        var url=new URL( window.location);
+        var categoryid = url.searchParams.get("categoryid");
+        axios.get("https://localhost:5001/materials/ItemCategory/info?id="+categoryid)
+        .then(res=>this.setState({Category:res.data}))
+        .catch(err=>console.log('Client:ItemCategory add error:'+err.response.data)); 
     
+    }
     onsubmit=async(e)=>{
 
         e.preventDefault();
@@ -38,12 +47,18 @@ class ItemCategorySpecs extends Component {
     }
 
     render() {
-       
+        if(this.state.Category==null)
+        return(<div className="App" >Loading......</div>)
+
+        if(this.state.Error)
+        return(<div className="App" style={{color:"red"}}>{this.state.Error}</div>)
+
         return (
-            <Fragment>
-            <div className="bordered"  style={{marginLeft:"auto",marginRight:"auto"}} >
-            <h5>Category Shared Item Specefication:</h5>
-                <div className="div-form " >
+            <div   style={{maxwidth:500, marginLeft:"auto",marginRight:"auto"}} >
+                <h4 className="bordered" style={{textAlign:'center',backgroundColor:'lightblue'}}>
+                Category Shared Item Specefication:
+                </h4>
+                <div className="bordered" >
                     
                     <div className="div-inlineblock">
                         <label>Spec Name</label>
@@ -73,26 +88,23 @@ class ItemCategorySpecs extends Component {
                     </div>
                 </div>  
                 <div style={{clear:"both"}}></div>
-                <div>
-                    <table className="table">
+                <div className="bordered" style={{minHeight:150}}>
+                    <table className="table" >
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Index</th>
+                                <th >Name</th>
+                                <th >Type</th>
+                                <th >Index in List</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
-            </div> 
-            
-            <div className="centered">
-            <button className="btn btn-primary " onClick={()=>{          
-                this.props.ViewsInteface.changeView(this.props.ViewsInteface.Views.Materials)
-                }}>Close</button>
-            </div>
-        </Fragment>
-                   
+                <div className="centered">
+                    <button className="btn btn-primary " onClick={()=>{          
+                        window.location.href="/materials"
+                    }}>Materials</button>
+                </div>
+            </div>                    
             
         );
     }
