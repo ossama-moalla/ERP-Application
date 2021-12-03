@@ -55,9 +55,13 @@ class ItemCategorySpecs extends Component {
 
         return (
             <div   style={{maxwidth:500, marginLeft:"auto",marginRight:"auto"}} >
-                <h4 className="bordered" style={{textAlign:'center',backgroundColor:'lightblue'}}>
-                Category Shared Item Specefication:
-                </h4>
+                
+                <div className="bordered" style={{fontWeight:"bold",fontSize:17,textAlign:'center',backgroundColor:'lightblue'}}>
+                    <h4>
+                    Category Shared Item Specefication For Category:
+                    </h4>
+                    <h5 style={{color:"red"}}><strong><span style={{padding:10}}>ID:{this.state.Category.id}</span><span style={{padding:10}}>Name: {this.state.Category.name}</span></strong></h5>
+                </div>
                 <div className="bordered" >
                     
                     <div className="div-inlineblock">

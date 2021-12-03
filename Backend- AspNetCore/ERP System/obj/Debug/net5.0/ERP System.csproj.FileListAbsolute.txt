@@ -474,7 +474,6 @@ C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\obj\Debu
 C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\obj\Debug\net5.0\staticwebassets\ERP System.StaticWebAssets.xml
 C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\obj\Debug\net5.0\scopedcss\bundle\ERP System.styles.css
 C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ERP System.RazorTargetAssemblyInfo.cache
-C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ERP System.csproj.CopyComplete
 C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ERP System.dll
 C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ref\ERP System.dll
 C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ERP System.pdb

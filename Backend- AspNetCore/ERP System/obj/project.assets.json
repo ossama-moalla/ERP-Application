@@ -9541,19 +9541,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ossama\\.nuget\\packages\\": {}
+    "C:\\Users\\o_moalla\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\ERP Application\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
+      "projectUniqueName": "C:\\Users\\o_moalla\\Desktop\\New folder (2)\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
       "projectName": "ERP System",
-      "projectPath": "D:\\ERP Application\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
-      "packagesPath": "C:\\Users\\Ossama\\.nuget\\packages\\",
-      "outputPath": "D:\\ERP Application\\Backend- AspNetCore\\ERP System\\obj\\",
+      "projectPath": "C:\\Users\\o_moalla\\Desktop\\New folder (2)\\Backend- AspNetCore\\ERP System\\ERP System.csproj",
+      "packagesPath": "C:\\Users\\o_moalla\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\o_moalla\\Desktop\\New folder (2)\\Backend- AspNetCore\\ERP System\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Ossama\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\o_moalla\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -9628,7 +9628,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }

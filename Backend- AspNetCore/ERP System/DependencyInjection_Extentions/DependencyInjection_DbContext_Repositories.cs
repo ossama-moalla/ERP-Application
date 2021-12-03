@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection Add_ApplicationRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IApplicationRepository<ItemCategory>, ItemCategory_Repo>();
+            services.AddScoped<IApplicationRepositoryEntityAddReturn<ItemCategory>, ItemCategory_Repo>();
             return services;
         }
     }

@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Repositories.Materials_Repository
 {
-    public class ItemCategory_Repo : IApplicationRepository<ItemCategory>
+    public class ItemCategory_Repo : IApplicationRepositoryEntityAddReturn<ItemCategory>
     {
         Application_Identity_DbContext Db_Context;
         public ItemCategory_Repo(Application_Identity_DbContext Db_Context_)
         {
             Db_Context = Db_Context_;
         }
-        public  void Add(ItemCategory entity)
+        public ItemCategory Add(ItemCategory entity)
         {
              Db_Context.Materials_ItemCategory.Add(entity);
              Db_Context.SaveChanges();
+            return entity;
         }
 
         public void Delete(int id)
@@ -41,41 +42,6 @@ namespace ERP_System.Repositories.Materials_Repository
         {
             return Db_Context.Materials_ItemCategory.ToList();
         }
-        //public string GetItemCategoryPath(ItemCategory ItemCategory_)
-        //{
-        //    return "";
-        //}
-        //public string GetItemCategoryPath(ItemCategory RootItemCategory, ItemCategory ItemCategory_)
-        //{
-        //    return "";
-        //}
-        //internal List<ItemCategory> Get_User_Allowed_ItemCategorys(int userid)
-        //{
-        //    return new List<ItemCategory>();
-        //}
-        //public ItemCategory GetParentItemCategory(ItemCategory f)
-        //{
-        //    return new ItemCategory();
-        //}
-        //public List<ItemCategory> GetItemCategoryChilds(ItemCategory ItemCategory)
-        //{
-        //    return new List<ItemCategory>();
-        //}
-        //public List<ItemCategory> Get_ItemCategory_Tree(ItemCategory ItemCategory)
-        //{
-        //    return new List<ItemCategory>();
-        //}
-        //public List<ItemCategory> SearchItemCategory(ItemCategory RootItemCategory, string n_)
-        //{
-        //    return new List<ItemCategory>();
-        //}
-        //public bool IS_Move_Able(ItemCategory DestinationItemCategory, ItemCategory ItemCategory)
-        //{
-        //    return true;
-        //}
-        //public bool MoveItemCategorys(ItemCategory DestinationItemCategory, List<ItemCategory> ItemCategorysList)
-        //{
-        //    return true;
-        //}
+        
     }
 }

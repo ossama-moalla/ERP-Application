@@ -34,6 +34,7 @@ namespace ERP_System
                    // options.SuppressModelStateInvalidFilter = true;//disable automatic 400 response
                    // options.SuppressInferBindingSourcesForParameters=true; //disable inference  rule
                 });
+            services.AddCors();
             services.AddDbContext<Application_Identity_DbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("ConnStr"));
                 });
@@ -56,12 +57,14 @@ namespace ERP_System
             }
 
             app.UseHttpsRedirection();
-            app.UseCors(options=>
+           
+            app.UseRouting();
+            app.UseCors(options =>
             {
+                options.AllowAnyMethod();
                 options.AllowAnyHeader();
                 options.AllowAnyOrigin();
             });
-            app.UseRouting();
             app.UseAuthentication();
 
             app.UseAuthorization();

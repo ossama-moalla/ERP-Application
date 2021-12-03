@@ -16,9 +16,9 @@ namespace ERP_System.Controllers.Materials
     [Route("materials/[controller]")]
     public class ItemCategoryController : ControllerBase
     {
-        private readonly IApplicationRepository<ItemCategory> repo;
+        private readonly IApplicationRepositoryEntityAddReturn<ItemCategory> repo;
         private readonly ILogger logger;
-        public ItemCategoryController(IApplicationRepository<ItemCategory> repo,ILogger<ItemCategoryController> _logger)
+        public ItemCategoryController(IApplicationRepositoryEntityAddReturn<ItemCategory> repo,ILogger<ItemCategoryController> _logger)
         {
             this.repo = repo;
             logger = _logger;
@@ -32,7 +32,7 @@ namespace ERP_System.Controllers.Materials
             {
                 if(parentid!=null)
                     if (repo.GetByID((int)parentid) == null) return NotFound();
-                return Ok(repo.List().Where(x=>x.ParentID==parentid).ToList());
+                return Ok(repo.List().Where(x => x.ParentID == parentid).ToList());
 
             }
             catch (Exception e)
@@ -41,19 +41,42 @@ namespace ERP_System.Controllers.Materials
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
             }
         }
+        [HttpGet("path")]
+        public ActionResult<IEnumerable<ItemCategory>> GetPath([FromQuery] int id)
+        {
+            try
+            {
 
+                if (repo.GetByID(id) == null) return NotFound("Gategory Not Found");
+
+                List<ItemCategory> list = new List<ItemCategory>();
+                ItemCategory parentcategory = repo.GetByID(id);
+                list.Add(parentcategory);
+                while (parentcategory.ParentID != null)
+                {
+                    parentcategory = repo.GetByID(Convert.ToInt32(parentcategory.ParentID));
+                    list.Add(parentcategory);
+                }
+                return Ok(list);
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Item Category Get Error:" + e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, " Internal Server Error");
+            }
+        }
         [HttpGet("info")]
         public ActionResult<ItemCategory> Get([FromQuery]int id)
         {
             try
             {
-                if (repo.GetByID(id) == null) return NotFound();
+                if (repo.GetByID(id) == null) return NotFound("Gategory Not Found");
                 return Ok(repo.GetByID(id));
             }
             catch (Exception e)
             {
                 logger.LogError("Item Category Get Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, " Internal Server Error");
             }
         }
 
@@ -65,8 +88,8 @@ namespace ERP_System.Controllers.Materials
             logger.LogInformation("add");
             try
             {
-                repo.Add(itemCategory);
-                return Ok();
+                var category=repo.Add(itemCategory);
+                return Ok(category);
             }
             catch (Exception e)
             {
@@ -98,6 +121,7 @@ namespace ERP_System.Controllers.Materials
             try
             {
                 if (repo.GetByID(id) == null) return NotFound();
+                if (repo.List().Where(x => x.ParentID == id).Count()>0) return StatusCode(StatusCodes.Status500InternalServerError, "Category Not Empty,Delete Childs First!");
                 repo.Delete(id);
                 return Ok();
             }
