@@ -14,6 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection Add_ApplicationRepositories(this IServiceCollection services)
         {
             services.AddScoped<IApplicationRepositoryEntityAddReturn<ItemCategory>, ItemCategory_Repo>();
+            services.AddScoped<IApplicationRepository<ItemCategorySpec>, ItemCategorySpec_Repo>();
             return services;
         }
     }

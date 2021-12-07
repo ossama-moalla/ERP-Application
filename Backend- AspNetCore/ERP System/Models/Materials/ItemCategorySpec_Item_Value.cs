@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace ERP_System.Models.Materials
 {
     [Keyless]
-    public class ItemSpec_Value
+    public class ItemCategorySpec_Item_Value
     {
         public Item Item_ { get; set; }
-        public ItemSpec ItemSpec_ { get; set; }
+        public ItemCategorySpec ItemSpec_ { get; set; }
         public string Value { get; set; }
 
     }

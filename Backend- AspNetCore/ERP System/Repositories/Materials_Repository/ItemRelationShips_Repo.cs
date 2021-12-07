@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Repositories.Materials_Repository
 {
-    public class ItemRelationShips_Repo : IApplicationRepository<ItemSpec>
+    public class ItemRelationShips_Repo : IApplicationRepository<ItemCategorySpec>
     {
         Application_Identity_DbContext Db_Context;
         public ItemRelationShips_Repo(Application_Identity_DbContext Db_Context_)
@@ -14,7 +14,7 @@ namespace ERP_System.Repositories.Materials_Repository
             Db_Context = Db_Context_;
         }
 
-        public void Add(ItemSpec entity)
+        public void Add(ItemCategorySpec entity)
         {
             throw new NotImplementedException();
         }
@@ -24,12 +24,12 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Update(ItemSpec entity)
+        public void Update(ItemCategorySpec entity)
         {
             throw new NotImplementedException();
         }
 
-        public ItemSpec GetByID(int id)
+        public ItemCategorySpec GetByID(int id)
         {
             throw new NotImplementedException();
         }
@@ -45,7 +45,7 @@ namespace ERP_System.Repositories.Materials_Repository
         
         //}
 
-        public IList<ItemSpec> List()
+        public IList<ItemCategorySpec> List()
         {
             throw new NotImplementedException();
         }

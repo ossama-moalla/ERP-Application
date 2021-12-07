@@ -99,6 +99,7 @@ namespace ERP_System.Controllers.Materials
         }
 
         [HttpPut("update")]
+        [Consumes(MediaTypeNames.Application.Json)]
         public async Task<ActionResult> update([FromQuery] int id, [FromBody] ItemCategory itemCategory)
         {
             try

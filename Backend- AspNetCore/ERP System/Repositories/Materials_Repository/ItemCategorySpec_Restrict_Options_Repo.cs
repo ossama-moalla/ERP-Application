@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Repositories.Materials_Repository
 {
-    public class ItemSpec_Restrict_Options_Repo : IApplicationRepository<ItemSpec_Restrict_Options>
+    public class ItemCategorySpec_Restrict_Options_Repo : IApplicationRepository<ItemCategorySpec_Restrict_Options>
     {
         Application_Identity_DbContext Db_Context;
-        public ItemSpec_Restrict_Options_Repo(Application_Identity_DbContext Db_Context_)
+        public ItemCategorySpec_Restrict_Options_Repo(Application_Identity_DbContext Db_Context_)
         {
             Db_Context = Db_Context_;
         }
-        public void Add(ItemSpec_Restrict_Options entity)
+        public void Add(ItemCategorySpec_Restrict_Options entity)
         {
             throw new NotImplementedException();
         }
@@ -23,23 +23,23 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Update(ItemSpec_Restrict_Options entity)
+        public void Update(ItemCategorySpec_Restrict_Options entity)
         {
             throw new NotImplementedException();
         }
 
-        public ItemSpec_Restrict_Options GetByID(int id)
+        public ItemCategorySpec_Restrict_Options GetByID(int id)
         {
             throw new NotImplementedException();
         }
 
         
-        public List<ItemSpec_Restrict_Options> GetItemSpec_Restrict_Options_List(ItemSpec_Restrict ItemSpec_Restrict_)
+        public List<ItemCategorySpec_Restrict_Options> GetItemSpec_Restrict_Options_List(ItemCategorySpec_Restrict ItemSpec_Restrict_)
         {
-            return new List<ItemSpec_Restrict_Options>();
+            return new List<ItemCategorySpec_Restrict_Options>();
         }
 
-        public IList<ItemSpec_Restrict_Options> List()
+        public IList<ItemCategorySpec_Restrict_Options> List()
         {
             throw new NotImplementedException();
         }

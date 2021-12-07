@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ERP_System.Migrations
 {
-    public partial class App_Database : Migration
+    public partial class AppDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -232,28 +232,7 @@ namespace ERP_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials_ItemSpec",
-                columns: table => new
-                {
-                    SpecID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TypeID = table.Column<int>(type: "int", nullable: true),
-                    SpecName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SpecIndex = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Materials_ItemSpec", x => x.SpecID);
-                    table.ForeignKey(
-                        name: "FK_Materials_ItemSpec_Materials_ItemCategory_TypeID",
-                        column: x => x.TypeID,
-                        principalTable: "Materials_ItemCategory",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Materials_ItemSpec_Restrict",
+                name: "Materials_ItemCategorySpec",
                 columns: table => new
                 {
                     SpecID = table.Column<int>(type: "int", nullable: false)
@@ -264,9 +243,30 @@ namespace ERP_System.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials_ItemSpec_Restrict", x => x.SpecID);
+                    table.PrimaryKey("PK_Materials_ItemCategorySpec", x => x.SpecID);
                     table.ForeignKey(
-                        name: "FK_Materials_ItemSpec_Restrict_Materials_ItemCategory_CategoryID",
+                        name: "FK_Materials_ItemCategorySpec_Materials_ItemCategory_CategoryID",
+                        column: x => x.CategoryID,
+                        principalTable: "Materials_ItemCategory",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Materials_ItemCategorySpec_Restrict",
+                columns: table => new
+                {
+                    SpecID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryID = table.Column<int>(type: "int", nullable: true),
+                    SpecName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SpecIndex = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Materials_ItemCategorySpec_Restrict", x => x.SpecID);
+                    table.ForeignKey(
+                        name: "FK_Materials_ItemCategorySpec_Restrict_Materials_ItemCategory_CategoryID",
                         column: x => x.CategoryID,
                         principalTable: "Materials_ItemCategory",
                         principalColumn: "ID",
@@ -366,7 +366,7 @@ namespace ERP_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials_ItemSpec_Value",
+                name: "Materials_ItemCategorySpec_Item_Value",
                 columns: table => new
                 {
                     Item_ID = table.Column<int>(type: "int", nullable: true),
@@ -376,21 +376,21 @@ namespace ERP_System.Migrations
                 constraints: table =>
                 {
                     table.ForeignKey(
-                        name: "FK_Materials_ItemSpec_Value_Materials_Item_Item_ID",
+                        name: "FK_Materials_ItemCategorySpec_Item_Value_Materials_Item_Item_ID",
                         column: x => x.Item_ID,
                         principalTable: "Materials_Item",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Materials_ItemSpec_Value_Materials_ItemSpec_ItemSpec_SpecID",
+                        name: "FK_Materials_ItemCategorySpec_Item_Value_Materials_ItemCategorySpec_ItemSpec_SpecID",
                         column: x => x.ItemSpec_SpecID,
-                        principalTable: "Materials_ItemSpec",
+                        principalTable: "Materials_ItemCategorySpec",
                         principalColumn: "SpecID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials_ItemSpec_Restrict_Options",
+                name: "Materials_ItemCategorySpec_Restrict_Options",
                 columns: table => new
                 {
                     OptionID = table.Column<int>(type: "int", nullable: false)
@@ -400,11 +400,11 @@ namespace ERP_System.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials_ItemSpec_Restrict_Options", x => x.OptionID);
+                    table.PrimaryKey("PK_Materials_ItemCategorySpec_Restrict_Options", x => x.OptionID);
                     table.ForeignKey(
-                        name: "FK_Materials_ItemSpec_Restrict_Options_Materials_ItemSpec_Restrict_ItemSpecRestrict_SpecID",
+                        name: "FK_Materials_ItemCategorySpec_Restrict_Options_Materials_ItemCategorySpec_Restrict_ItemSpecRestrict_SpecID",
                         column: x => x.ItemSpecRestrict_SpecID,
-                        principalTable: "Materials_ItemSpec_Restrict",
+                        principalTable: "Materials_ItemCategorySpec_Restrict",
                         principalColumn: "SpecID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -448,7 +448,7 @@ namespace ERP_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials_ItemSpec_Restrict_Value",
+                name: "Materials_ItemCategorySpec_Restrict_Item_Value",
                 columns: table => new
                 {
                     itemID = table.Column<int>(type: "int", nullable: true),
@@ -458,21 +458,21 @@ namespace ERP_System.Migrations
                 constraints: table =>
                 {
                     table.ForeignKey(
-                        name: "FK_Materials_ItemSpec_Restrict_Value_Materials_Item_itemID",
+                        name: "FK_Materials_ItemCategorySpec_Restrict_Item_Value_Materials_Item_itemID",
                         column: x => x.itemID,
                         principalTable: "Materials_Item",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Materials_ItemSpec_Restrict_Value_Materials_ItemSpec_Restrict_ItemSpecRestrict_SpecID",
+                        name: "FK_Materials_ItemCategorySpec_Restrict_Item_Value_Materials_ItemCategorySpec_Restrict_ItemSpecRestrict_SpecID",
                         column: x => x.ItemSpecRestrict_SpecID,
-                        principalTable: "Materials_ItemSpec_Restrict",
+                        principalTable: "Materials_ItemCategorySpec_Restrict",
                         principalColumn: "SpecID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Materials_ItemSpec_Restrict_Value_Materials_ItemSpec_Restrict_Options_ItemSpec_Restrict_Options_OptionID",
+                        name: "FK_Materials_ItemCategorySpec_Restrict_Item_Value_Materials_ItemCategorySpec_Restrict_Options_ItemSpec_Restrict_Options_OptionID",
                         column: x => x.ItemSpec_Restrict_Options_OptionID,
-                        principalTable: "Materials_ItemSpec_Restrict_Options",
+                        principalTable: "Materials_ItemCategorySpec_Restrict_Options",
                         principalColumn: "OptionID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -537,6 +537,46 @@ namespace ERP_System.Migrations
                 column: "_ItemID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_CategoryID",
+                table: "Materials_ItemCategorySpec",
+                column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_Item_Value_Item_ID",
+                table: "Materials_ItemCategorySpec_Item_Value",
+                column: "Item_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_Item_Value_ItemSpec_SpecID",
+                table: "Materials_ItemCategorySpec_Item_Value",
+                column: "ItemSpec_SpecID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_Restrict_CategoryID",
+                table: "Materials_ItemCategorySpec_Restrict",
+                column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_Restrict_Item_Value_itemID",
+                table: "Materials_ItemCategorySpec_Restrict_Item_Value",
+                column: "itemID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_Restrict_Item_Value_ItemSpec_Restrict_Options_OptionID",
+                table: "Materials_ItemCategorySpec_Restrict_Item_Value",
+                column: "ItemSpec_Restrict_Options_OptionID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_Restrict_Item_Value_ItemSpecRestrict_SpecID",
+                table: "Materials_ItemCategorySpec_Restrict_Item_Value",
+                column: "ItemSpecRestrict_SpecID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_Restrict_Options_ItemSpecRestrict_SpecID",
+                table: "Materials_ItemCategorySpec_Restrict_Options",
+                column: "ItemSpecRestrict_SpecID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Materials_ItemCommonSellPrice__TradeStateTradeStateID",
                 table: "Materials_ItemCommonSellPrice",
                 column: "_TradeStateTradeStateID");
@@ -570,46 +610,6 @@ namespace ERP_System.Migrations
                 name: "IX_Materials_ItemRelation_Item_ID",
                 table: "Materials_ItemRelation",
                 column: "Item_ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemSpec_TypeID",
-                table: "Materials_ItemSpec",
-                column: "TypeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemSpec_Restrict_CategoryID",
-                table: "Materials_ItemSpec_Restrict",
-                column: "CategoryID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemSpec_Restrict_Options_ItemSpecRestrict_SpecID",
-                table: "Materials_ItemSpec_Restrict_Options",
-                column: "ItemSpecRestrict_SpecID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemSpec_Restrict_Value_itemID",
-                table: "Materials_ItemSpec_Restrict_Value",
-                column: "itemID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemSpec_Restrict_Value_ItemSpec_Restrict_Options_OptionID",
-                table: "Materials_ItemSpec_Restrict_Value",
-                column: "ItemSpec_Restrict_Options_OptionID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemSpec_Restrict_Value_ItemSpecRestrict_SpecID",
-                table: "Materials_ItemSpec_Restrict_Value",
-                column: "ItemSpecRestrict_SpecID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemSpec_Value_Item_ID",
-                table: "Materials_ItemSpec_Value",
-                column: "Item_ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemSpec_Value_ItemSpec_SpecID",
-                table: "Materials_ItemSpec_Value",
-                column: "ItemSpec_SpecID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -633,6 +633,12 @@ namespace ERP_System.Migrations
                 name: "Materials_Item_Equivalence_Relation");
 
             migrationBuilder.DropTable(
+                name: "Materials_ItemCategorySpec_Item_Value");
+
+            migrationBuilder.DropTable(
+                name: "Materials_ItemCategorySpec_Restrict_Item_Value");
+
+            migrationBuilder.DropTable(
                 name: "Materials_ItemCommonSellPrice");
 
             migrationBuilder.DropTable(
@@ -640,12 +646,6 @@ namespace ERP_System.Migrations
 
             migrationBuilder.DropTable(
                 name: "Materials_ItemRelation");
-
-            migrationBuilder.DropTable(
-                name: "Materials_ItemSpec_Restrict_Value");
-
-            migrationBuilder.DropTable(
-                name: "Materials_ItemSpec_Value");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -657,6 +657,12 @@ namespace ERP_System.Migrations
                 name: "Equivalence_Group");
 
             migrationBuilder.DropTable(
+                name: "Materials_ItemCategorySpec");
+
+            migrationBuilder.DropTable(
+                name: "Materials_ItemCategorySpec_Restrict_Options");
+
+            migrationBuilder.DropTable(
                 name: "Materials_ConsumeUnit");
 
             migrationBuilder.DropTable(
@@ -666,16 +672,10 @@ namespace ERP_System.Migrations
                 name: "TradeState");
 
             migrationBuilder.DropTable(
-                name: "Materials_ItemSpec_Restrict_Options");
-
-            migrationBuilder.DropTable(
-                name: "Materials_ItemSpec");
+                name: "Materials_ItemCategorySpec_Restrict");
 
             migrationBuilder.DropTable(
                 name: "Materials_Item");
-
-            migrationBuilder.DropTable(
-                name: "Materials_ItemSpec_Restrict");
 
             migrationBuilder.DropTable(
                 name: "Materials_ItemCategory");

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Repositories.Materials_Repository
 {
-    public class ItemSpec_Restrict_Repo : IApplicationRepository<ItemSpec_Restrict>
+    public class ItemCategorySpec_Restrict_Repo : IApplicationRepository<ItemCategorySpec_Restrict>
     {
         Application_Identity_DbContext Db_Context;
-        public ItemSpec_Restrict_Repo(Application_Identity_DbContext Db_Context_)
+        public ItemCategorySpec_Restrict_Repo(Application_Identity_DbContext Db_Context_)
         {
             Db_Context = Db_Context_;
         }
-        public void Add(ItemSpec_Restrict entity)
+        public void Add(ItemCategorySpec_Restrict entity)
         {
             throw new NotImplementedException();
         }
@@ -23,23 +23,23 @@ namespace ERP_System.Repositories.Materials_Repository
             throw new NotImplementedException();
         }
 
-        public void Update(ItemSpec_Restrict entity)
+        public void Update(ItemCategorySpec_Restrict entity)
         {
             throw new NotImplementedException();
         }
 
-        public ItemSpec_Restrict GetByID(int id)
+        public ItemCategorySpec_Restrict GetByID(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IList<ItemSpec_Restrict> List()
+        public IList<ItemCategorySpec_Restrict> List()
         {
             throw new NotImplementedException();
         }
-        public List<ItemSpec_Restrict> GetItemSpecRestrictList(ItemCategory ItemCategory_)
+        public List<ItemCategorySpec_Restrict> GetItemSpecRestrictList(ItemCategory ItemCategory_)
         {
-            return new List<ItemSpec_Restrict>();
+            return new List<ItemCategorySpec_Restrict>();
         }
 
     }

@@ -13,17 +13,17 @@ namespace ERP_System.Repositories.Materials_Repository
         {
             Db_Context = Db_Context_;
         }
-        public void SetItemValue(Item Item_, ItemSpec ItemSpec_, string value)
+        public void SetItemValue(Item Item_, ItemCategorySpec ItemSpec_, string value)
         {
             throw new NotImplementedException();
         }
 
-        public void UNSetItemValueRestrict(Item Item_, ItemSpec ItemSpec_)
+        public void UNSetItemValueRestrict(Item Item_, ItemCategorySpec ItemSpec_)
         {
             throw new NotImplementedException();
         }
 
-        public ItemSpec_Value GetItemSpec_Value(Item item, ItemSpec ItemSpec_)
+        public ItemCategorySpec_Item_Value GetItemSpec_Value(Item item, ItemCategorySpec ItemSpec_)
         {
             throw new NotImplementedException();
         }

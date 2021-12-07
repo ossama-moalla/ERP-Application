@@ -22,12 +22,11 @@ namespace ERP_System
         public DbSet<ItemCommonSellPrice> Materials_ItemCommonSellPrice { get; set; }
         public DbSet<ItemFile> Materials_ItemFile { get; set; }
         public DbSet<ItemRelation> Materials_ItemRelation { get; set; }
-        public DbSet<ItemSpec> Materials_ItemSpec { get; set; }
-        public DbSet<ItemSpec_Value> Materials_ItemSpec_Value { get; set; }
-
-        public DbSet<ItemSpec_Restrict> Materials_ItemSpec_Restrict { get; set; }
-        public DbSet<ItemSpec_Restrict_Options> Materials_ItemSpec_Restrict_Options { get; set; }
-        public DbSet<ItemSpec_Restrict_Value> Materials_ItemSpec_Restrict_Value { get; set; }
+        public DbSet<ItemCategorySpec> Materials_ItemCategorySpec { get; set; }
+        public DbSet<ItemCategorySpec_Restrict> Materials_ItemCategorySpec_Restrict { get; set; }
+        public DbSet<ItemCategorySpec_Restrict_Options> Materials_ItemCategorySpec_Restrict_Options { get; set; }
+        public DbSet<ItemCategorySpec_Item_Value> Materials_ItemCategorySpec_Item_Value { get; set; }
+        public DbSet<ItemCategorySpec_Restrict_Item_Value> Materials_ItemCategorySpec_Restrict_Item_Value { get; set; }
         //public DbSet<Equivalence_Group> Materials_Equivalence_Group { get; set; }
 
 

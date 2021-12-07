@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ERP_System.Models.Materials
 {
-    public class ItemSpec
+    public class ItemCategorySpec
     {
-        public ItemCategory Type { get; set; }
+        public ItemCategory Category { get; set; }
         [Key]
         public int SpecID { get; set; }
         public string SpecName { get; set; }

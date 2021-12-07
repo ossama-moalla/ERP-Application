@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ERP_System.Models.Materials
 {
-    public class ItemSpec_Restrict
+    public class ItemCategorySpec_Restrict
     {
         //specs assigned to category and item inherit it
         public ItemCategory Category { get; set; }
