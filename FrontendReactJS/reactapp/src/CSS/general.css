@@ -11,17 +11,31 @@ body{
     border-radius: 15px;
     padding: 10px;
 }
-.standalone-div{
-    padding: 10px;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-
+.radius{
+    border-radius:10px ;
+    box-shadow: none;
+}
+.center-screen {
+    position: absolute;
+    top:10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 1;
+  }
+.borderbuttom{
+    
     border-bottom-width: 2px;
     border-bottom-style:solid  ;
     border-bottom-color: rgba(187, 189, 197, 0.8);
+}
+.standalone-div{
+    padding-bottom: 7px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+
 
 }
 .navbar{

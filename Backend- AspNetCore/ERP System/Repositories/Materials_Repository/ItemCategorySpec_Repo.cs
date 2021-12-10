@@ -22,7 +22,7 @@ namespace ERP_System.Repositories.Materials_Repository
         public void Delete(int id)
         {
             Db_Context.Materials_ItemCategorySpec.Remove(GetByID(id));
-            Db_Context.SaveChanges(); throw new NotImplementedException();
+            Db_Context.SaveChanges(); 
         }
 
         public void Update(ItemCategorySpec entity)
@@ -33,7 +33,7 @@ namespace ERP_System.Repositories.Materials_Repository
 
         public ItemCategorySpec GetByID(int id)
         {
-            return Db_Context.Materials_ItemCategorySpec.SingleOrDefault(x => x.SpecID == id);
+            return Db_Context.Materials_ItemCategorySpec.SingleOrDefault(x => x.id == id);
         }
 
 

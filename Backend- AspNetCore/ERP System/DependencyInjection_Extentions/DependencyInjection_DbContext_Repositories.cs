@@ -15,6 +15,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IApplicationRepositoryEntityAddReturn<ItemCategory>, ItemCategory_Repo>();
             services.AddScoped<IApplicationRepository<ItemCategorySpec>, ItemCategorySpec_Repo>();
+            services.AddScoped<IApplicationRepository<ItemCategorySpec_Restrict>, ItemCategorySpec_Restrict_Repo>();
+
             return services;
         }
     }

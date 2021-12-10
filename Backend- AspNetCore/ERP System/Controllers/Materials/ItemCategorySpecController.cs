@@ -12,12 +12,11 @@ using System.Threading.Tasks;
 namespace ERP_System.Controllers.Materials
 {
     [Route("materials/[controller]")]
-    [ApiController]
-    public class ItemCategorySpecsController : ControllerBase
+    public class ItemCategorySpecController : ControllerBase
     {
         ILogger logger;
         IApplicationRepository<ItemCategorySpec> ItemCategorySpec_Repo;
-        public ItemCategorySpecsController(ILogger<ItemCategorySpecsController> logger, IApplicationRepository<ItemCategorySpec> ItemCategorySpec_Repo)
+        public ItemCategorySpecController(ILogger<ItemCategorySpecController> logger, IApplicationRepository<ItemCategorySpec> ItemCategorySpec_Repo)
         {
             this.logger = logger;
             this.ItemCategorySpec_Repo = ItemCategorySpec_Repo;
@@ -52,6 +51,7 @@ namespace ERP_System.Controllers.Materials
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Errror");
             }
         }
+        [HttpDelete("delete")]
         public ActionResult Delete([FromQuery] int id)
         {
             try

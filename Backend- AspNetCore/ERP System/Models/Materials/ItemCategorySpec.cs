@@ -10,9 +10,9 @@ namespace ERP_System.Models.Materials
     {
         public ItemCategory Category { get; set; }
         [Key]
-        public int SpecID { get; set; }
-        public string SpecName { get; set; }
-        public int SpecIndex { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public int index { get; set; }
 
     }
 }

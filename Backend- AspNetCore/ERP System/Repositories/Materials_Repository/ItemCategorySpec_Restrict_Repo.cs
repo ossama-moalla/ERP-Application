@@ -15,31 +15,30 @@ namespace ERP_System.Repositories.Materials_Repository
         }
         public void Add(ItemCategorySpec_Restrict entity)
         {
-            throw new NotImplementedException();
+            Db_Context.Materials_ItemCategorySpec_Restrict.Add(entity);
+            Db_Context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Db_Context.Materials_ItemCategorySpec_Restrict.Remove(GetByID(id));
+            Db_Context.SaveChanges();
         }
 
         public void Update(ItemCategorySpec_Restrict entity)
         {
-            throw new NotImplementedException();
+            Db_Context.Materials_ItemCategorySpec_Restrict.Update(entity);
+            Db_Context.SaveChanges();
         }
 
         public ItemCategorySpec_Restrict GetByID(int id)
         {
-            throw new NotImplementedException();
+            return Db_Context.Materials_ItemCategorySpec_Restrict.SingleOrDefault(x => x.id == id);
         }
 
         public IList<ItemCategorySpec_Restrict> List()
         {
-            throw new NotImplementedException();
-        }
-        public List<ItemCategorySpec_Restrict> GetItemSpecRestrictList(ItemCategory ItemCategory_)
-        {
-            return new List<ItemCategorySpec_Restrict>();
+            return Db_Context.Materials_ItemCategorySpec_Restrict.ToList();
         }
 
     }

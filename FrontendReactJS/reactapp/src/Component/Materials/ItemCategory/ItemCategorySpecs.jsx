@@ -1,41 +1,36 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import propTypes from 'prop-types'
-import { Field } from 'formik';
-
+import $ from 'jquery'
 
 class ItemCategorySpecs extends Component {
     constructor(props){
-        
         super(props);
         this.state={
-            Category:null,
+            Category:props.Category,
             name:'',
             type:0,
             index:0
         }
     }
     componentDidMount(){
-        var url=new URL( window.location);
-        var categoryid = url.searchParams.get("categoryid");
-        axios.get("https://localhost:5001/materials/ItemCategory/info?id="+categoryid)
-        .then(res=>this.setState({Category:res.data}))
-        .catch(err=>console.log('Client:ItemCategory add error:'+err.response.data)); 
-    
+        $('#specscontainer').fadeIn(700);
     }
-    onsubmit=async(e)=>{
-
+    
+    addSpec=async(e)=>{
         e.preventDefault();
-        const ItemCategory={
+        const spec={
+            
             name:this.state.name,
-            parentID: this.state.parentID,
-            defaultConsumeUnit:this.state.defaultConsumeUnit
+            type: this.state.type,
+            index:this.state.index
         }
-        console.log(ItemCategory);
-        await axios.post("https://localhost:5001/materials/ItemCategory/add",ItemCategory)
+        await axios.post("https://localhost:5001/materials/"
+                +(this.state.type==0?"ItemCategorySpec":"ItemCategorySpecRestricted")+"/add",spec)
         .then(res=>console.log('ItemCategory added'))
-        .catch(err=>console.log('Client:ItemCategory add error:'+err.response.data)); 
-      /* this.props.history.push({
+        .catch(err=>{
+            document.getElementById("spec_displayerror").innerHTML='Server Replay:'+err.response.data
+            $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow');        });       /* this.props.history.push({
             pathname: '/materials/',
             state: { parentID: this.state.parentID }
 
@@ -47,23 +42,17 @@ class ItemCategorySpecs extends Component {
     }
 
     render() {
-        if(this.state.Category==null)
-        return(<div className="App" >Loading......</div>)
-
-        if(this.state.Error)
-        return(<div className="App" style={{color:"red"}}>{this.state.Error}</div>)
-
         return (
-            <div   style={{maxwidth:500, marginLeft:"auto",marginRight:"auto"}} >
-                
-                <div className="bordered" style={{fontWeight:"bold",fontSize:17,textAlign:'center',backgroundColor:'lightblue'}}>
-                    <h4>
-                    Category Shared Item Specefication For Category:
-                    </h4>
-                    <h5 style={{color:"red"}}><strong><span style={{padding:10}}>ID:{this.state.Category.id}</span><span style={{padding:10}}>Name: {this.state.Category.name}</span></strong></h5>
+            <div id="specscontainer" className="bordered" style={{backgroundColor:"#e9ecef",display:"none"}}>
+                <div id="spec_displayerror" className="App" 
+                    style={{backgroundColor:"red",color:"white",display:"none"}}>
                 </div>
-                <div className="bordered" >
-                    
+                <div className="borderbuttom " style={{padding:5,backgroundColor:"#20505e" ,color:"#f8f9fa"}}>
+                    <h5 >
+                    Category Shared Item Specefication For Category:<strong>{this.state.Category.name}</strong>
+                    </h5>
+                </div>
+                <div className="borderbuttom" >
                     <div className="div-inlineblock">
                         <label>Spec Name</label>
                         <input type="text" name="name"
@@ -74,25 +63,26 @@ class ItemCategorySpecs extends Component {
                     </div>
                     <div className="div-inlineblock">
                         <label>Type</label>
-                        <select>
-                            <option>Restricted</option>
-                            <option>NonRestricted</option>
+                        <select name="type" value={this.state.type}
+                                                 onChange={this.onChangeInput}>
+                            <option value="0">Restricted</option>
+                            <option value="1">NonRestricted</option>
                         </select>
                     </div>
                     <div className="div-inlineblock">
                         <label>Index</label>
-                        <input type="text" name="Index" style={{maxWidth:50}}
+                        <input type="text" name="index" style={{maxWidth:50}}
                         required 
-                        value={this.state.defaultConsumeUnit}
+                        value={this.state.index}
                         onChange={this.onChangeInput}
                         />
                     </div>
                     <div className="div-inlineblock">
-                        <button className="btn btn-primary" >Add Spec</button>
+                        <button className="btn btn-primary" onClick={this.addSpec} >Add Spec</button>
                     </div>
                 </div>  
                 <div style={{clear:"both"}}></div>
-                <div className="bordered" style={{minHeight:150}}>
+                <div className="borderbuttom" style={{minHeight:100}}>
                     <table className="table" >
                         <thead>
                             <tr>
@@ -103,10 +93,15 @@ class ItemCategorySpecs extends Component {
                         </thead>
                     </table>
                 </div>
-                <div className="centered">
-                    <button className="btn btn-primary " onClick={()=>{          
-                        window.location.href="/materials"
-                    }}>Materials</button>
+                <div >
+                    <button className="btn btn-primary " style={{marginLeft:20,marginRight:20}} 
+                    onClick={()=>{
+                        $('#specscontainer').fadeOut(500,this.props.Return)}}>
+                        Finish
+                    </button>
+                    <button className="btn btn-primary" 
+                        onClick={ this.props.Close}>Close
+                    </button>
                 </div>
             </div>                    
             

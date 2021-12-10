@@ -22,15 +22,11 @@ let store=createStore(ApplicationReducer);
 
 const App=()=>(
   <Provider store={store}>
-    <Navbar/>
+    {/*<Navbar/>*/}
     <BrowserRouter>
-
         <Routes>
         <Route path="/" element={<div>hhhh</div>} />
-
         <Route  path={'materials/*'}  element={<MaterialGate/>} />
-        
-
         </Routes>
         </BrowserRouter>
   </Provider>
