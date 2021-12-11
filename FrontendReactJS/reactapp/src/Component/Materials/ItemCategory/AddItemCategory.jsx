@@ -43,12 +43,12 @@ class AddItemCategory extends Component {
         await this.setState({[e.target.name]:e.target.value});
     }
     addCategory=()=>{
-        this.setState({ShowSpec:true})
-        /*const Category={
+        const Category={
             name:this.state.name,
             parentID: this.state.parentID,
             defaultConsumeUnit:this.state.defaultConsumeUnit
         }
+        console.log(Category)
         axios.post("https://localhost:5001/materials/ItemCategory/add",Category)
         .then(res=>
             {
@@ -61,10 +61,10 @@ class AddItemCategory extends Component {
                     },this.props.refreshCategoryList());
         }
             )
-        .catch(err=>{
+        .catch(err=>{console.log(err.response.data);
             document.getElementById("addcategory_displayerror").innerHTML='Server Replay:'+err.response.data
             $('#addcategory_displayerror').slideDown(500).delay(5000).slideUp('slow');       
-         }); */
+         }); 
       
     }
     render() { 

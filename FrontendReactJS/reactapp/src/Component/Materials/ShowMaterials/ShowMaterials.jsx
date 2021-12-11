@@ -25,33 +25,11 @@ class ShowMaterials  extends Component {
     }
     componentDidMount(){
         this.refreshCategoryList()
-       /* var url=new URL(window.location);
-        var parentID = url.searchParams.get("parentid");
-        if(parentID=='null') parentID=null;
-        this.setState({currentCategoryID:parentID,CategorysList:null,Error:null},()=>this.refreshCategoryList());
-         
-        if(parentID=='null'||!isNaN(parseInt(parentID)) )
-        {
-            if(pid=='null') {
-                parentID=null;
-            }
-            else{
-                axios.get("https://localhost:5001/materials/ItemCategory/info?id="+pid)
-                .then(res=>this.setState({fetchDone:true,parentCategory:res.data}))
-                .catch(err=>this.setState({fetchDone:true,parentCategory:{ id:null, name:'Root'},Error:err.response.data}));
-            }
-        }
-        else{
-            console.log('B')
-
-            this.setState({fetchDone:true,parentCategory:{ id:null, name:'Root'},Error:'Bad Params'})
-        }*/
-
     }
     refreshCategoryList=()=>{
         axios.get("https://localhost:5001/materials/ItemCategory/GetCategories?parentid="
         +(this.state.currentCategoryID==null?"":this.state.currentCategoryID))
-        .then(res=>this.setState({ CategorysList:res.data}))
+        .then(res=>{ this.setState({ CategorysList:res.data})})
         .catch(err=>this.setState({Error:err.message}));
     }
     openCategory= (ID)=>{

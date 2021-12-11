@@ -28,10 +28,20 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
+                var speclist = ItemCategorySpec_Repo.List();
+                if (speclist.Where(x => x.index == CategorySpec.index && x.CategoryID == CategorySpec.CategoryID).Count() > 0 
+                    || speclist.Where(x => x.name == CategorySpec.name && x.CategoryID == CategorySpec.CategoryID).Count() > 0)
+                {
+                     throw new MyException("name and index must be unique in Category  ");
+                }
                 ItemCategorySpec_Repo.Add(CategorySpec);
                 return Ok();
             }
-            catch (Exception)
+            catch(MyException e)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, e.ErrorMessage);
+            }
+            catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
             }
@@ -42,8 +52,18 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
+                var speclist = ItemCategorySpec_Repo.List();
+                if (speclist.Where(x => x.index == CategorySpec.index && x.CategoryID == CategorySpec.CategoryID).Count() > 0
+                    || speclist.Where(x => x.name == CategorySpec.name && x.CategoryID == CategorySpec.CategoryID).Count() > 0)
+                {
+                    throw new MyException("name and index must be unique in Category  ");
+                }
                 ItemCategorySpec_Repo.Update(CategorySpec);
                 return Ok();
+            }
+            catch (MyException e)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, e.ErrorMessage);
             }
             catch (Exception e) 
             {
@@ -66,11 +86,11 @@ namespace ERP_System.Controllers.Materials
             }
         }
         [HttpGet("list")]
-        public ActionResult<IEnumerable<ItemCategorySpec>> list([FromQuery] int CategoryID)
+        public ActionResult<IEnumerable<ItemCategorySpec>> list([FromQuery] int categoryID)
         {
             try
             {
-                return Ok(ItemCategorySpec_Repo.List().Where(x => x.Category.ID == CategoryID).ToList());
+                return Ok(ItemCategorySpec_Repo.List().Where(x => x.CategoryID == categoryID).ToList());
             }
             catch(Exception e)
             {

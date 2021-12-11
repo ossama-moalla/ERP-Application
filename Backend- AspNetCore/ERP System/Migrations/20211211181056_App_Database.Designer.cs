@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP_System.Migrations
 {
     [DbContext(typeof(Application_Identity_DbContext))]
-    [Migration("20211207192657_App-Database")]
-    partial class AppDatabase
+    [Migration("20211211181056_App_Database")]
+    partial class App_Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -167,45 +167,56 @@ namespace ERP_System.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DefaultConsumeUnit")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ParentID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
+                    b.HasIndex("ParentID", "Name")
+                        .IsUnique()
+                        .HasFilter("[ParentID] IS NOT NULL");
+
                     b.ToTable("Materials_ItemCategory");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategorySpec", b =>
                 {
-                    b.Property<int>("SpecID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryID")
+                    b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
-                    b.Property<int>("SpecIndex")
+                    b.Property<int>("index")
                         .HasColumnType("int");
 
-                    b.Property<string>("SpecName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("SpecID");
+                    b.HasKey("id");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("CategoryID", "index")
+                        .IsUnique();
+
+                    b.HasIndex("CategoryID", "name")
+                        .IsUnique();
 
                     b.ToTable("Materials_ItemCategorySpec");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategorySpec_Item_Value", b =>
                 {
-                    b.Property<int?>("ItemSpec_SpecID")
+                    b.Property<int?>("ItemSpec_id")
                         .HasColumnType("int");
 
                     b.Property<int?>("Item_ID")
@@ -214,7 +225,7 @@ namespace ERP_System.Migrations
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ItemSpec_SpecID");
+                    b.HasIndex("ItemSpec_id");
 
                     b.HasIndex("Item_ID");
 
@@ -223,21 +234,22 @@ namespace ERP_System.Migrations
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategorySpec_Restrict", b =>
                 {
-                    b.Property<int>("SpecID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryID")
+                    b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
-                    b.Property<int>("SpecIndex")
+                    b.Property<int>("index")
                         .HasColumnType("int");
 
-                    b.Property<string>("SpecName")
+                    b.Property<string>("name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SpecID");
+                    b.HasKey("id");
 
                     b.HasIndex("CategoryID");
 
@@ -246,7 +258,7 @@ namespace ERP_System.Migrations
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategorySpec_Restrict_Item_Value", b =>
                 {
-                    b.Property<int?>("ItemSpecRestrict_SpecID")
+                    b.Property<int?>("ItemSpecRestrict_id")
                         .HasColumnType("int");
 
                     b.Property<int?>("ItemSpec_Restrict_Options_OptionID")
@@ -255,7 +267,7 @@ namespace ERP_System.Migrations
                     b.Property<int?>("itemID")
                         .HasColumnType("int");
 
-                    b.HasIndex("ItemSpecRestrict_SpecID");
+                    b.HasIndex("ItemSpecRestrict_id");
 
                     b.HasIndex("ItemSpec_Restrict_Options_OptionID");
 
@@ -271,7 +283,7 @@ namespace ERP_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ItemSpecRestrict_SpecID")
+                    b.Property<int?>("ItemSpecRestrict_id")
                         .HasColumnType("int");
 
                     b.Property<string>("OptionName")
@@ -279,7 +291,7 @@ namespace ERP_System.Migrations
 
                     b.HasKey("OptionID");
 
-                    b.HasIndex("ItemSpecRestrict_SpecID");
+                    b.HasIndex("ItemSpecRestrict_id");
 
                     b.ToTable("Materials_ItemCategorySpec_Restrict_Options");
                 });
@@ -559,11 +571,20 @@ namespace ERP_System.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("ERP_System.Models.Materials.ItemCategory", b =>
+                {
+                    b.HasOne("ERP_System.Models.Materials.ItemCategory", null)
+                        .WithMany()
+                        .HasForeignKey("ParentID");
+                });
+
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategorySpec", b =>
                 {
                     b.HasOne("ERP_System.Models.Materials.ItemCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryID");
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
@@ -572,7 +593,7 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Materials.ItemCategorySpec", "ItemSpec_")
                         .WithMany()
-                        .HasForeignKey("ItemSpec_SpecID");
+                        .HasForeignKey("ItemSpec_id");
 
                     b.HasOne("ERP_System.Models.Materials.Item", "Item_")
                         .WithMany()
@@ -587,7 +608,9 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Materials.ItemCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryID");
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
@@ -596,7 +619,7 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Materials.ItemCategorySpec_Restrict", "ItemSpecRestrict_")
                         .WithMany()
-                        .HasForeignKey("ItemSpecRestrict_SpecID");
+                        .HasForeignKey("ItemSpecRestrict_id");
 
                     b.HasOne("ERP_System.Models.Materials.ItemCategorySpec_Restrict_Options", "ItemSpec_Restrict_Options_")
                         .WithMany()
@@ -617,7 +640,7 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Materials.ItemCategorySpec_Restrict", "ItemSpecRestrict_")
                         .WithMany()
-                        .HasForeignKey("ItemSpecRestrict_SpecID");
+                        .HasForeignKey("ItemSpecRestrict_id");
 
                     b.Navigation("ItemSpecRestrict_");
                 });

@@ -1,4 +1,5 @@
 ﻿using ERP_System.Models.Materials;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,11 @@ namespace ERP_System.Repositories.Materials_Repository
     public class ItemCategory_Repo : IApplicationRepositoryEntityAddReturn<ItemCategory>
     {
         Application_Identity_DbContext Db_Context;
-        public ItemCategory_Repo(Application_Identity_DbContext Db_Context_)
+        private readonly ILogger logger;
+        public ItemCategory_Repo(Application_Identity_DbContext Db_Context_, ILogger<ItemCategory_Repo> _logger)
         {
             Db_Context = Db_Context_;
+            logger = _logger;
         }
         public ItemCategory Add(ItemCategory entity)
         {
@@ -35,12 +38,14 @@ namespace ERP_System.Repositories.Materials_Repository
 
         public ItemCategory GetByID(int id)
         {
-            return Db_Context.Materials_ItemCategory.SingleOrDefault(x => x.ID == id);
+            return Db_Context.Materials_ItemCategory.SingleOrDefault(x => x.id == id);
         }
 
         public IList<ItemCategory> List()
         {
-            return Db_Context.Materials_ItemCategory.ToList();
+
+            logger.LogInformation(Db_Context.ChangeTracker.QueryTrackingBehavior.ToString());
+            return Db_Context.Materials_ItemCategory.Select(x=>x).ToList();
         }
         
     }

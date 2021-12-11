@@ -13,6 +13,36 @@ namespace ERP_System
     {
         public Application_Identity_DbContext(DbContextOptions<Application_Identity_DbContext> options) : base(options)
         {
+            this.ChangeTracker.LazyLoadingEnabled = false;
+        }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<ItemCategory>(p =>
+            {
+                p.HasOne<ItemCategory>()
+                .WithMany()
+                .HasForeignKey(p => p.parentID);
+                p.HasIndex(e => new { e.parentID, e.Name }).IsUnique(true);
+            });
+
+            builder.Entity<ItemCategorySpec>(p =>
+            {
+                p.HasIndex(e => new { e.CategoryID, e.name }).IsUnique(true);
+                p.HasIndex(e => new { e.CategoryID, e.index }).IsUnique(true);
+            });
+            //builder.Entity<ItemCategory>()
+            //    .HasOne<ItemCategory>()
+            //    .WithMany()
+            //    .HasForeignKey(p => p.ParentID);
+
+           // builder.Entity<ItemCategory>()
+           //.HasIndex(p => new { p.ParentID, p.Name })
+           //.IsUnique(true);
+
+            //builder.Entity<ItemCategorySpec>()
+            //.HasIndex(p => new { p.CategoryID, p.name })
+            //.IsUnique(true);
 
         }
         public DbSet<ItemCategory> Materials_ItemCategory { get;set;}

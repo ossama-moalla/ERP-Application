@@ -30,9 +30,9 @@ namespace ERP_System.Controllers.Materials
         { 
             try
             {
-                if(parentid!=null)
+                if (parentid != null)
                     if (repo.GetByID((int)parentid) == null) return NotFound();
-                return Ok(repo.List().Where(x => x.ParentID == parentid).ToList());
+                return Ok(repo.List().Where(x => x.parentID == parentid).ToList());
 
             }
             catch (Exception e)
@@ -46,15 +46,14 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-
                 if (repo.GetByID(id) == null) return NotFound("Gategory Not Found");
 
                 List<ItemCategory> list = new List<ItemCategory>();
                 ItemCategory parentcategory = repo.GetByID(id);
                 list.Add(parentcategory);
-                while (parentcategory.ParentID != null)
+                while (parentcategory.parentID != null)
                 {
-                    parentcategory = repo.GetByID(Convert.ToInt32(parentcategory.ParentID));
+                    parentcategory = repo.GetByID(Convert.ToInt32(parentcategory.parentID));
                     list.Add(parentcategory);
                 }
                 return Ok(list);
@@ -85,7 +84,6 @@ namespace ERP_System.Controllers.Materials
         [Consumes(MediaTypeNames.Application.Json)]
         public async Task<ActionResult> add([FromBody] ItemCategory itemCategory)
         {
-            logger.LogInformation("add");
             try
             {
                 var category=repo.Add(itemCategory);
@@ -105,7 +103,7 @@ namespace ERP_System.Controllers.Materials
             try
             {
                 if(repo.GetByID(id)==null) return NotFound();
-                itemCategory.ID = id;
+                itemCategory.id = id;
                 repo.Update(itemCategory);
                 return Ok();
             }
@@ -122,7 +120,7 @@ namespace ERP_System.Controllers.Materials
             try
             {
                 if (repo.GetByID(id) == null) return NotFound();
-                if (repo.List().Where(x => x.ParentID == id).Count()>0) return StatusCode(StatusCodes.Status500InternalServerError, "Category Not Empty,Delete Childs First!");
+                if (repo.List().Where(x => x.parentID == id).Count()>0) return StatusCode(StatusCodes.Status500InternalServerError, "Category Not Empty,Delete Childs First!");
                 repo.Delete(id);
                 return Ok();
             }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ERP_System.Migrations
 {
-    public partial class AppDatabase : Migration
+    public partial class App_Database : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -65,14 +65,20 @@ namespace ERP_System.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ParentID = table.Column<int>(type: "int", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DefaultConsumeUnit = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DefaultConsumeUnit = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Materials_ItemCategory", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Materials_ItemCategory_Materials_ItemCategory_ParentID",
+                        column: x => x.ParentID,
+                        principalTable: "Materials_ItemCategory",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -235,42 +241,42 @@ namespace ERP_System.Migrations
                 name: "Materials_ItemCategorySpec",
                 columns: table => new
                 {
-                    SpecID = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryID = table.Column<int>(type: "int", nullable: true),
-                    SpecName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SpecIndex = table.Column<int>(type: "int", nullable: false)
+                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    index = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials_ItemCategorySpec", x => x.SpecID);
+                    table.PrimaryKey("PK_Materials_ItemCategorySpec", x => x.id);
                     table.ForeignKey(
                         name: "FK_Materials_ItemCategorySpec_Materials_ItemCategory_CategoryID",
                         column: x => x.CategoryID,
                         principalTable: "Materials_ItemCategory",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Materials_ItemCategorySpec_Restrict",
                 columns: table => new
                 {
-                    SpecID = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryID = table.Column<int>(type: "int", nullable: true),
-                    SpecName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SpecIndex = table.Column<int>(type: "int", nullable: false)
+                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    index = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials_ItemCategorySpec_Restrict", x => x.SpecID);
+                    table.PrimaryKey("PK_Materials_ItemCategorySpec_Restrict", x => x.id);
                     table.ForeignKey(
                         name: "FK_Materials_ItemCategorySpec_Restrict_Materials_ItemCategory_CategoryID",
                         column: x => x.CategoryID,
                         principalTable: "Materials_ItemCategory",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -370,7 +376,7 @@ namespace ERP_System.Migrations
                 columns: table => new
                 {
                     Item_ID = table.Column<int>(type: "int", nullable: true),
-                    ItemSpec_SpecID = table.Column<int>(type: "int", nullable: true),
+                    ItemSpec_id = table.Column<int>(type: "int", nullable: true),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -382,10 +388,10 @@ namespace ERP_System.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Materials_ItemCategorySpec_Item_Value_Materials_ItemCategorySpec_ItemSpec_SpecID",
-                        column: x => x.ItemSpec_SpecID,
+                        name: "FK_Materials_ItemCategorySpec_Item_Value_Materials_ItemCategorySpec_ItemSpec_id",
+                        column: x => x.ItemSpec_id,
                         principalTable: "Materials_ItemCategorySpec",
-                        principalColumn: "SpecID",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -395,17 +401,17 @@ namespace ERP_System.Migrations
                 {
                     OptionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ItemSpecRestrict_SpecID = table.Column<int>(type: "int", nullable: true),
+                    ItemSpecRestrict_id = table.Column<int>(type: "int", nullable: true),
                     OptionName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Materials_ItemCategorySpec_Restrict_Options", x => x.OptionID);
                     table.ForeignKey(
-                        name: "FK_Materials_ItemCategorySpec_Restrict_Options_Materials_ItemCategorySpec_Restrict_ItemSpecRestrict_SpecID",
-                        column: x => x.ItemSpecRestrict_SpecID,
+                        name: "FK_Materials_ItemCategorySpec_Restrict_Options_Materials_ItemCategorySpec_Restrict_ItemSpecRestrict_id",
+                        column: x => x.ItemSpecRestrict_id,
                         principalTable: "Materials_ItemCategorySpec_Restrict",
-                        principalColumn: "SpecID",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -452,7 +458,7 @@ namespace ERP_System.Migrations
                 columns: table => new
                 {
                     itemID = table.Column<int>(type: "int", nullable: true),
-                    ItemSpecRestrict_SpecID = table.Column<int>(type: "int", nullable: true),
+                    ItemSpecRestrict_id = table.Column<int>(type: "int", nullable: true),
                     ItemSpec_Restrict_Options_OptionID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -464,10 +470,10 @@ namespace ERP_System.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Materials_ItemCategorySpec_Restrict_Item_Value_Materials_ItemCategorySpec_Restrict_ItemSpecRestrict_SpecID",
-                        column: x => x.ItemSpecRestrict_SpecID,
+                        name: "FK_Materials_ItemCategorySpec_Restrict_Item_Value_Materials_ItemCategorySpec_Restrict_ItemSpecRestrict_id",
+                        column: x => x.ItemSpecRestrict_id,
                         principalTable: "Materials_ItemCategorySpec_Restrict",
-                        principalColumn: "SpecID",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Materials_ItemCategorySpec_Restrict_Item_Value_Materials_ItemCategorySpec_Restrict_Options_ItemSpec_Restrict_Options_OptionID",
@@ -537,9 +543,23 @@ namespace ERP_System.Migrations
                 column: "_ItemID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemCategorySpec_CategoryID",
+                name: "IX_Materials_ItemCategory_ParentID_Name",
+                table: "Materials_ItemCategory",
+                columns: new[] { "ParentID", "Name" },
+                unique: true,
+                filter: "[ParentID] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_CategoryID_index",
                 table: "Materials_ItemCategorySpec",
-                column: "CategoryID");
+                columns: new[] { "CategoryID", "index" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_ItemCategorySpec_CategoryID_name",
+                table: "Materials_ItemCategorySpec",
+                columns: new[] { "CategoryID", "name" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Materials_ItemCategorySpec_Item_Value_Item_ID",
@@ -547,9 +567,9 @@ namespace ERP_System.Migrations
                 column: "Item_ID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemCategorySpec_Item_Value_ItemSpec_SpecID",
+                name: "IX_Materials_ItemCategorySpec_Item_Value_ItemSpec_id",
                 table: "Materials_ItemCategorySpec_Item_Value",
-                column: "ItemSpec_SpecID");
+                column: "ItemSpec_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Materials_ItemCategorySpec_Restrict_CategoryID",
@@ -567,14 +587,14 @@ namespace ERP_System.Migrations
                 column: "ItemSpec_Restrict_Options_OptionID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemCategorySpec_Restrict_Item_Value_ItemSpecRestrict_SpecID",
+                name: "IX_Materials_ItemCategorySpec_Restrict_Item_Value_ItemSpecRestrict_id",
                 table: "Materials_ItemCategorySpec_Restrict_Item_Value",
-                column: "ItemSpecRestrict_SpecID");
+                column: "ItemSpecRestrict_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemCategorySpec_Restrict_Options_ItemSpecRestrict_SpecID",
+                name: "IX_Materials_ItemCategorySpec_Restrict_Options_ItemSpecRestrict_id",
                 table: "Materials_ItemCategorySpec_Restrict_Options",
-                column: "ItemSpecRestrict_SpecID");
+                column: "ItemSpecRestrict_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Materials_ItemCommonSellPrice__TradeStateTradeStateID",
