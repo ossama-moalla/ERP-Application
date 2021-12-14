@@ -2,6 +2,7 @@
 using ERP_System.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -28,22 +29,18 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                var speclist = ItemCategorySpec_Repo.List();
-                if (speclist.Where(x => x.index == CategorySpec.index && x.CategoryID == CategorySpec.CategoryID).Count() > 0 
-                    || speclist.Where(x => x.name == CategorySpec.name && x.CategoryID == CategorySpec.CategoryID).Count() > 0)
+                ContentResult d = VerifyData(CategorySpec);
+                if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                     throw new MyException("name and index must be unique in Category  ");
+                    ItemCategorySpec_Repo.Add(CategorySpec);
+                    return Ok();
                 }
-                ItemCategorySpec_Repo.Add(CategorySpec);
-                return Ok();
-            }
-            catch(MyException e)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, e.ErrorMessage);
+                else
+                    return Conflict(d.Content);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError,e);
             }
         }
         [HttpPut("update")]
@@ -52,18 +49,14 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                var speclist = ItemCategorySpec_Repo.List();
-                if (speclist.Where(x => x.index == CategorySpec.index && x.CategoryID == CategorySpec.CategoryID).Count() > 0
-                    || speclist.Where(x => x.name == CategorySpec.name && x.CategoryID == CategorySpec.CategoryID).Count() > 0)
+                ContentResult d = VerifyData(CategorySpec);
+                if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    throw new MyException("name and index must be unique in Category  ");
+                    ItemCategorySpec_Repo.Update(CategorySpec);
+                    return Ok();
                 }
-                ItemCategorySpec_Repo.Update(CategorySpec);
-                return Ok();
-            }
-            catch (MyException e)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, e.ErrorMessage);
+                else
+                    return Conflict(d.Content);
             }
             catch (Exception e) 
             {
@@ -110,6 +103,19 @@ namespace ERP_System.Controllers.Materials
                 logger.LogError("ItemCategorySpec Info Error:" + e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
             }
+        }
+        [HttpGet("verifydata")]
+        private ContentResult VerifyData(ItemCategorySpec categoryspec)
+        {
+            if (ItemCategorySpec_Repo.List().Where(x => x.name == categoryspec.name
+                 && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                return new ContentResult() { Content = $"SpecName: {categoryspec.name} is already in use.", StatusCode = StatusCodes.Status409Conflict };
+
+            if (ItemCategorySpec_Repo.List().Where(x => x.index == categoryspec.index
+                && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                return new ContentResult() { Content = $"Index: { categoryspec.index} is already in use.", StatusCode = StatusCodes.Status409Conflict };
+
+            return new ContentResult() { Content = "ok", StatusCode = StatusCodes.Status200OK };
         }
     }
 }

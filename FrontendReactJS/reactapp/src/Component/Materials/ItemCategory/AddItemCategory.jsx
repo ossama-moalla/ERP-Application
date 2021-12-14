@@ -38,9 +38,19 @@ class AddItemCategory extends Component {
         }*/
   
     }
+    ValidateState=async()=>{
+        var category={
+            ParentID:this.state.parentID,
+            Name:this.state.name
+        }
+        axios.get("https://localhost:5001/materials/ItemCategory/verifydata",category)
+        .then(res=>console.log("ok"))
+        .catch(err=>console.log('error'));
+    }
     onChangeInput=async(e)=>{
         
-        await this.setState({[e.target.name]:e.target.value});
+        await this.setState({[e.target.name]:e.target.value},this.ValidateState);
+
     }
     addCategory=()=>{
         const Category={

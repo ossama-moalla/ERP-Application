@@ -16,11 +16,11 @@ namespace ERP_System.Controllers.Materials
     [Route("materials/[controller]")]
     public class ItemCategoryController : ControllerBase
     {
-        private readonly IApplicationRepositoryEntityAddReturn<ItemCategory> repo;
+        private readonly IApplicationRepositoryEntityAddReturn<ItemCategory> ItemCategory_repo;
         private readonly ILogger logger;
-        public ItemCategoryController(IApplicationRepositoryEntityAddReturn<ItemCategory> repo,ILogger<ItemCategoryController> _logger)
+        public ItemCategoryController(IApplicationRepositoryEntityAddReturn<ItemCategory> ItemCategory_repo,ILogger<ItemCategoryController> _logger)
         {
-            this.repo = repo;
+            this.ItemCategory_repo = ItemCategory_repo;
             logger = _logger;
         }
 
@@ -31,8 +31,8 @@ namespace ERP_System.Controllers.Materials
             try
             {
                 if (parentid != null)
-                    if (repo.GetByID((int)parentid) == null) return NotFound();
-                return Ok(repo.List().Where(x => x.parentID == parentid).ToList());
+                    if (ItemCategory_repo.GetByID((int)parentid) == null) return NotFound();
+                return Ok(ItemCategory_repo.List().Where(x => x.parentID == parentid).ToList());
 
             }
             catch (Exception e)
@@ -46,14 +46,14 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                if (repo.GetByID(id) == null) return NotFound("Gategory Not Found");
+                if (ItemCategory_repo.GetByID(id) == null) return NotFound("Gategory Not Found");
 
                 List<ItemCategory> list = new List<ItemCategory>();
-                ItemCategory parentcategory = repo.GetByID(id);
+                ItemCategory parentcategory = ItemCategory_repo.GetByID(id);
                 list.Add(parentcategory);
                 while (parentcategory.parentID != null)
                 {
-                    parentcategory = repo.GetByID(Convert.ToInt32(parentcategory.parentID));
+                    parentcategory = ItemCategory_repo.GetByID(Convert.ToInt32(parentcategory.parentID));
                     list.Add(parentcategory);
                 }
                 return Ok(list);
@@ -69,8 +69,8 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                if (repo.GetByID(id) == null) return NotFound("Gategory Not Found");
-                return Ok(repo.GetByID(id));
+                if (ItemCategory_repo.GetByID(id) == null) return NotFound("Gategory Not Found");
+                return Ok(ItemCategory_repo.GetByID(id));
             }
             catch (Exception e)
             {
@@ -86,8 +86,17 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                var category=repo.Add(itemCategory);
-                return Ok(category);
+                ContentResult d = VerifyData(itemCategory);
+                if (d.StatusCode != StatusCodes.Status200OK || d.StatusCode != StatusCodes.Status409Conflict)
+                    throw new Exception("Inetrnal Server Error");
+                if (d.StatusCode == StatusCodes.Status200OK)
+                {
+                    var category = ItemCategory_repo.Add(itemCategory);
+                    return Ok(category);
+                }
+                else
+                    return Conflict(d.Content);
+               
             }
             catch (Exception e)
             {
@@ -98,14 +107,21 @@ namespace ERP_System.Controllers.Materials
 
         [HttpPut("update")]
         [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<ActionResult> update([FromQuery] int id, [FromBody] ItemCategory itemCategory)
+        public async Task<ActionResult> update( [FromBody] ItemCategory itemCategory)
         {
             try
             {
-                if(repo.GetByID(id)==null) return NotFound();
-                itemCategory.id = id;
-                repo.Update(itemCategory);
-                return Ok();
+                ContentResult d = VerifyData(itemCategory);
+                if (d.StatusCode != StatusCodes.Status200OK || d.StatusCode != StatusCodes.Status409Conflict)
+                    throw new Exception("Inetrnal Server Error");
+                if (d.StatusCode == StatusCodes.Status200OK)
+                {
+                    ItemCategory_repo.Update(itemCategory);
+                    return Ok();
+                }
+                else
+                    return Conflict(d.Content);
+               
             }
             catch (Exception e)
             {
@@ -119,15 +135,33 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                if (repo.GetByID(id) == null) return NotFound();
-                if (repo.List().Where(x => x.parentID == id).Count()>0) return StatusCode(StatusCodes.Status500InternalServerError, "Category Not Empty,Delete Childs First!");
-                repo.Delete(id);
+                if (ItemCategory_repo.List().Where(x => x.parentID == id).Count()>0)
+                    return Conflict( "Category Not Empty,Delete Childs First!");
+                ItemCategory_repo.Delete(id);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Item Category delete Error:" + e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+            }
+        }
+        [HttpPost("verifydata")]
+        public ContentResult VerifyData(ItemCategory category)
+        {
+            try
+            {
+                if (ItemCategory_repo.List().Where(x => x.Name == category.Name
+                 && x.parentID == category.parentID).Count() > 0)
+                    return new ContentResult() { Content = $"Category Name: {category.Name} is already in use.", StatusCode = StatusCodes.Status409Conflict };
+
+
+                return new ContentResult() { Content = "ok", StatusCode = StatusCodes.Status200OK };
+
+            }
+            catch 
+            {
+                return new ContentResult() { Content = "Internal Server Error", StatusCode = StatusCodes.Status500InternalServerError };
             }
         }
     }

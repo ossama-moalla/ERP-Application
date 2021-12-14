@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP_System.Migrations
 {
     [DbContext(typeof(Application_Identity_DbContext))]
-    [Migration("20211211181056_App_Database")]
+    [Migration("20211214120923_App_Database")]
     partial class App_Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,7 +131,7 @@ namespace ERP_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryID")
+                    b.Property<int?>("Categoryid")
                         .HasColumnType("int");
 
                     b.Property<string>("Company")
@@ -151,14 +151,14 @@ namespace ERP_System.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("Categoryid");
 
                     b.ToTable("Materials_Item");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategory", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -166,22 +166,21 @@ namespace ERP_System.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DefaultConsumeUnit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("ParentID")
+                    b.Property<string>("defaultConsumeUnit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("parentID")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("id");
 
-                    b.HasIndex("ParentID", "Name")
-                        .IsUnique()
-                        .HasFilter("[ParentID] IS NOT NULL");
+                    b.HasIndex("parentID", "Name")
+                        .IsUnique();
 
                     b.ToTable("Materials_ItemCategory");
                 });
@@ -205,10 +204,10 @@ namespace ERP_System.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("CategoryID", "index")
+                    b.HasIndex(new[] { "CategoryID", "index" }, "Unique Index In Category Spec's")
                         .IsUnique();
 
-                    b.HasIndex("CategoryID", "name")
+                    b.HasIndex(new[] { "CategoryID", "name" }, "Unique name In Category Spec's")
                         .IsUnique();
 
                     b.ToTable("Materials_ItemCategorySpec");
@@ -247,11 +246,17 @@ namespace ERP_System.Migrations
 
                     b.Property<string>("name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("id");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex(new[] { "CategoryID", "index" }, "Unique Index In Category Spec's")
+                        .IsUnique()
+                        .HasDatabaseName("Unique Index In Category Spec's1");
+
+                    b.HasIndex(new[] { "CategoryID", "name" }, "Unique name In Category Spec's")
+                        .IsUnique()
+                        .HasDatabaseName("Unique name In Category Spec's1");
 
                     b.ToTable("Materials_ItemCategorySpec_Restrict");
                 });
@@ -566,7 +571,7 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Materials.ItemCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryID");
+                        .HasForeignKey("Categoryid");
 
                     b.Navigation("Category");
                 });
@@ -575,7 +580,7 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Materials.ItemCategory", null)
                         .WithMany()
-                        .HasForeignKey("ParentID");
+                        .HasForeignKey("parentID");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategorySpec", b =>

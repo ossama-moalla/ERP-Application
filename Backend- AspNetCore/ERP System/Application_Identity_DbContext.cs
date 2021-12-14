@@ -22,27 +22,15 @@ namespace ERP_System
             {
                 p.HasOne<ItemCategory>()
                 .WithMany()
-                .HasForeignKey(p => p.parentID);
-                p.HasIndex(e => new { e.parentID, e.Name }).IsUnique(true);
+                .HasForeignKey(e => e.parentID);
+                p.HasIndex(e => new { e.parentID, e.Name }).IsUnique(true).HasFilter(null);
             });
 
-            builder.Entity<ItemCategorySpec>(p =>
-            {
-                p.HasIndex(e => new { e.CategoryID, e.name }).IsUnique(true);
-                p.HasIndex(e => new { e.CategoryID, e.index }).IsUnique(true);
-            });
-            //builder.Entity<ItemCategory>()
-            //    .HasOne<ItemCategory>()
-            //    .WithMany()
-            //    .HasForeignKey(p => p.ParentID);
-
-           // builder.Entity<ItemCategory>()
-           //.HasIndex(p => new { p.ParentID, p.Name })
-           //.IsUnique(true);
-
-            //builder.Entity<ItemCategorySpec>()
-            //.HasIndex(p => new { p.CategoryID, p.name })
-            //.IsUnique(true);
+            //builder.Entity<ItemCategorySpec>(p =>
+            //{
+            //    p.HasIndex(e => new { e.CategoryID, e.name }).IsUnique(true);
+            //    p.HasIndex(e => new { e.CategoryID, e.index }).IsUnique(true);
+            //});
 
         }
         public DbSet<ItemCategory> Materials_ItemCategory { get;set;}

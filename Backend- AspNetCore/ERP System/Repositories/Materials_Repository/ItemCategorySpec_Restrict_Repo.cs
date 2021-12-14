@@ -40,6 +40,15 @@ namespace ERP_System.Repositories.Materials_Repository
         {
             return Db_Context.Materials_ItemCategorySpec_Restrict.ToList();
         }
-
+        public bool IsVaild_SpecName(int CategoryID, string name)
+        {
+            if (List().Where(x => x.name == name && x.CategoryID == CategoryID).Count() > 0) return false;
+            else return true;
+        }
+        public bool IsVaild_SpecIndex(int CategoryID, int index)
+        {
+            if (List().Where(x => x.index == index && x.CategoryID == CategoryID).Count() > 0) return false;
+            else return true;
+        }
     }
 }

@@ -63,21 +63,21 @@ namespace ERP_System.Migrations
                 name: "Materials_ItemCategory",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ParentID = table.Column<int>(type: "int", nullable: true),
+                    parentID = table.Column<int>(type: "int", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DefaultConsumeUnit = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    defaultConsumeUnit = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials_ItemCategory", x => x.ID);
+                    table.PrimaryKey("PK_Materials_ItemCategory", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Materials_ItemCategory_Materials_ItemCategory_ParentID",
-                        column: x => x.ParentID,
+                        name: "FK_Materials_ItemCategory_Materials_ItemCategory_parentID",
+                        column: x => x.parentID,
                         principalTable: "Materials_ItemCategory",
-                        principalColumn: "ID",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -221,7 +221,7 @@ namespace ERP_System.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Company = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryID = table.Column<int>(type: "int", nullable: true),
+                    Categoryid = table.Column<int>(type: "int", nullable: true),
                     MarketCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DefaultConsumeUnit = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -230,10 +230,10 @@ namespace ERP_System.Migrations
                 {
                     table.PrimaryKey("PK_Materials_Item", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Materials_Item_Materials_ItemCategory_CategoryID",
-                        column: x => x.CategoryID,
+                        name: "FK_Materials_Item_Materials_ItemCategory_Categoryid",
+                        column: x => x.Categoryid,
                         principalTable: "Materials_ItemCategory",
-                        principalColumn: "ID",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -254,7 +254,7 @@ namespace ERP_System.Migrations
                         name: "FK_Materials_ItemCategorySpec_Materials_ItemCategory_CategoryID",
                         column: x => x.CategoryID,
                         principalTable: "Materials_ItemCategory",
-                        principalColumn: "ID",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -265,7 +265,7 @@ namespace ERP_System.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryID = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     index = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -275,7 +275,7 @@ namespace ERP_System.Migrations
                         name: "FK_Materials_ItemCategorySpec_Restrict_Materials_ItemCategory_CategoryID",
                         column: x => x.CategoryID,
                         principalTable: "Materials_ItemCategory",
-                        principalColumn: "ID",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -528,9 +528,9 @@ namespace ERP_System.Migrations
                 column: "Item_ID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_Item_CategoryID",
+                name: "IX_Materials_Item_Categoryid",
                 table: "Materials_Item",
-                column: "CategoryID");
+                column: "Categoryid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Materials_Item_Equivalence_Relation__Equivalence_GroupGroupID",
@@ -543,20 +543,19 @@ namespace ERP_System.Migrations
                 column: "_ItemID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemCategory_ParentID_Name",
+                name: "IX_Materials_ItemCategory_parentID_Name",
                 table: "Materials_ItemCategory",
-                columns: new[] { "ParentID", "Name" },
-                unique: true,
-                filter: "[ParentID] IS NOT NULL");
+                columns: new[] { "parentID", "Name" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemCategorySpec_CategoryID_index",
+                name: "Unique Index In Category Spec's",
                 table: "Materials_ItemCategorySpec",
                 columns: new[] { "CategoryID", "index" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemCategorySpec_CategoryID_name",
+                name: "Unique name In Category Spec's",
                 table: "Materials_ItemCategorySpec",
                 columns: new[] { "CategoryID", "name" },
                 unique: true);
@@ -572,9 +571,16 @@ namespace ERP_System.Migrations
                 column: "ItemSpec_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemCategorySpec_Restrict_CategoryID",
+                name: "Unique Index In Category Spec's1",
                 table: "Materials_ItemCategorySpec_Restrict",
-                column: "CategoryID");
+                columns: new[] { "CategoryID", "index" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "Unique name In Category Spec's1",
+                table: "Materials_ItemCategorySpec_Restrict",
+                columns: new[] { "CategoryID", "name" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Materials_ItemCategorySpec_Restrict_Item_Value_itemID",

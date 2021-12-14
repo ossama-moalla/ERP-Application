@@ -5,9 +5,13 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace ERP_System.Models.Materials
 {
+
+    [Index(nameof(CategoryID), nameof(index), IsUnique = true, Name = "Unique Index In Category Spec's")]
+    [Index(nameof(CategoryID), nameof(name), IsUnique = true, Name = "Unique name In Category Spec's")]
     public class ItemCategorySpec
     {
         [ForeignKey("CategoryID")]

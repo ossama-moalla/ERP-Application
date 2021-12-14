@@ -28,18 +28,14 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                var speclist = ItemCategorySpecRestriced_Repo.List();
-                if (speclist.Where(x => x.index == CategorySpec.index && x.CategoryID == CategorySpec.CategoryID).Count() > 0
-                    || speclist.Where(x => x.name == CategorySpec.name && x.CategoryID == CategorySpec.CategoryID).Count() > 0)
+                ContentResult d = VerifyData(CategorySpec);
+                if (d.StatusCode==StatusCodes.Status200OK)
                 {
-                    throw new MyException("name and index must be unique in Category  ");
+                    ItemCategorySpecRestriced_Repo.Add(CategorySpec);
+                    return Ok();
                 }
-                ItemCategorySpecRestriced_Repo.Add(CategorySpec);
-                return Ok();
-            }
-            catch (MyException e)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, e.ErrorMessage);
+                else 
+                 return Conflict(d.Content);
             }
             catch (Exception)
             {
@@ -52,18 +48,14 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                var speclist = ItemCategorySpecRestriced_Repo.List();
-                if (speclist.Where(x => x.index == CategorySpec.index && x.CategoryID == CategorySpec.CategoryID).Count() > 0
-                    || speclist.Where(x => x.name == CategorySpec.name && x.CategoryID == CategorySpec.CategoryID).Count() > 0)
+                ContentResult d = VerifyData(CategorySpec);
+                if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    throw new MyException("name and index must be unique in Category  ");
+                    ItemCategorySpecRestriced_Repo.Update(CategorySpec);
+                    return Ok();
                 }
-                ItemCategorySpecRestriced_Repo.Update(CategorySpec);
-                return Ok();
-            }
-            catch (MyException e)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, e.ErrorMessage);
+                else
+                    return Conflict(d.Content);
             }
             catch (Exception e) 
             {
@@ -110,6 +102,19 @@ namespace ERP_System.Controllers.Materials
                 logger.LogError("ItemCategorySpecRestriced Info Error:" + e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
             }
+        }
+        [HttpGet("verifydata")]
+        private ContentResult VerifyData(ItemCategorySpec_Restrict categoryspec)
+        {
+            if (ItemCategorySpecRestriced_Repo.List().Where(x => x.name == categoryspec.name
+                 && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                return new ContentResult() { Content = $"SpecName: {categoryspec.name} is already in use.", StatusCode = StatusCodes.Status409Conflict };
+
+            if (ItemCategorySpecRestriced_Repo.List().Where(x => x.index == categoryspec.index
+                && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                return new ContentResult() { Content = $"Index: { categoryspec.index} is already in use.", StatusCode = StatusCodes.Status409Conflict };
+
+            return new ContentResult() { Content = "ok", StatusCode = StatusCodes.Status200OK };
         }
     }
 }

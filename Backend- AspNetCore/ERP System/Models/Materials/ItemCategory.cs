@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace ERP_System.Models.Materials
 {
+    //[Index(nameof(Name), nameof(parentID), IsUnique = true, Name = "Unique name In Parent Category")]
     public class ItemCategory
     {
         [Key]
