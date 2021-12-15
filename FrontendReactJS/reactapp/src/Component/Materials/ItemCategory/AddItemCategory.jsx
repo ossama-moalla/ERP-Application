@@ -15,41 +15,34 @@ class AddItemCategory extends Component {
             name:'',
             defaultConsumeUnit:'',
             ShowSpec:false,
+            VerifyError:{
+                name:null
+            }
         }
     }
  
     componentDidMount(){
         $('#additemcategory').fadeIn(700);
-       /* var url=new URL( window.location);
-        var pid = url.searchParams.get("parentid");
-        if(pid=='null'||!isNaN(parseInt(pid)) )
-        {
-            if(pid=='null') {
-                this.setState({fetchDone:true,parentCategory:{ id:null, name:'Root'}})
-            }
-            else{
-                axios.get("https://localhost:5001/materials/ItemCategory/info?id="+pid)
-                .then(res=>this.setState({fetchDone:true,parentCategory:res.data}))
-                .catch(err=>this.setState({fetchDone:true,parentCategory:{ id:null, name:'Root'},Error:err.response.data}));
-            }
-        }
-        else{
-            this.setState({fetchDone:true,parentCategory:{ id:null, name:'Root'},Error:'Bad Params'})
-        }*/
-  
     }
-    ValidateState=async()=>{
+    ValidateInput=async()=>{
+        if(this.state.name.trim()=="") return;
         var category={
             ParentID:this.state.parentID,
-            Name:this.state.name
+            Name:this.state.name,
+            defaultConsumeUnit:''
         }
-        axios.get("https://localhost:5001/materials/ItemCategory/verifydata",category)
-        .then(res=>console.log("ok"))
-        .catch(err=>console.log('error'));
+        axios.post("https://localhost:5001/materials/ItemCategory/verifydata",category)
+        .then(res=>{this.setState(prevstat=>({
+            ...prevstat,
+            VerifyError:{
+               name: res.data.name
+            }
+        }))})
+        .catch(err=>{});
     }
     onChangeInput=async(e)=>{
         
-        await this.setState({[e.target.name]:e.target.value},this.ValidateState);
+        await this.setState({[e.target.name]:e.target.value},this.ValidateInput);
 
     }
     addCategory=()=>{
@@ -58,7 +51,6 @@ class AddItemCategory extends Component {
             parentID: this.state.parentID,
             defaultConsumeUnit:this.state.defaultConsumeUnit
         }
-        console.log(Category)
         axios.post("https://localhost:5001/materials/ItemCategory/add",Category)
         .then(res=>
             {
@@ -78,7 +70,7 @@ class AddItemCategory extends Component {
       
     }
     render() { 
-        if(this.state.ShowSpec){
+          if(this.state.ShowSpec){
             return (
                 
                 <ItemCategorySpecs Category={{
@@ -108,6 +100,8 @@ class AddItemCategory extends Component {
                         value={this.state.name}
                         onChange={this.onChangeInput}
                         />
+                        <div className='form-input-err'>{this.state.VerifyError.name==null?"":this.state.VerifyError.name}</div>
+                        
                         <label>Default Consume Unit</label>
                         <input type="text" name="defaultConsumeUnit"
                         required className="form-control" 

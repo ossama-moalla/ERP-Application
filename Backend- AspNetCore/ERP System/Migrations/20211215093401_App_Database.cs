@@ -65,7 +65,7 @@ namespace ERP_System.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     parentID = table.Column<int>(type: "int", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     defaultConsumeUnit = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -543,9 +543,9 @@ namespace ERP_System.Migrations
                 column: "_ItemID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_ItemCategory_parentID_Name",
+                name: "IX_Materials_ItemCategory_parentID_name",
                 table: "Materials_ItemCategory",
-                columns: new[] { "parentID", "Name" },
+                columns: new[] { "parentID", "name" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -14,7 +14,7 @@ namespace ERP_System.Models.Materials
         [Key]
         public int id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string name { get; set; }
 
         [ForeignKey("parentID ")]
         public  int? parentID { get; set; }

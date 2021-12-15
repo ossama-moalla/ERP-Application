@@ -616,4 +616,7 @@ D:\ERP Application\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ERP System.dl
 D:\ERP Application\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ref\ERP System.dll
 D:\ERP Application\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ERP System.pdb
 D:\ERP Application\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ERP System.genruntimeconfig.cache
+C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
 C:\Users\o_moalla\Desktop\New folder (2)\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ERP System.csproj.AssemblyReference.cache

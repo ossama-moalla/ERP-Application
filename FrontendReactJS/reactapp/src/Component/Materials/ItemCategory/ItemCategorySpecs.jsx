@@ -6,6 +6,7 @@ import $ from 'jquery'
 class ItemCategorySpecs extends Component {
     constructor(props){
         super(props);
+
         this.state={
             Category:props.Category,
             Addspec:{
@@ -13,7 +14,11 @@ class ItemCategorySpecs extends Component {
                 type:1,
                 index:0    
             },
-            speclist:[]
+            speclist:[],
+            VerifyError:{
+                name:null,
+                index:null
+            }
             
         }
     }
@@ -22,9 +27,24 @@ class ItemCategorySpecs extends Component {
 
     }
     refreshSpec=()=>{
-        console.log("https://localhost:5001/materials/ItemCategorySpec/list?categoryID="+this.state.Category.id)
         axios.get("https://localhost:5001/materials/ItemCategorySpec/list?categoryID="+this.state.Category.id)
-        .then(res=>{console.log(res); this.setState({ speclist:res.data})})
+        .then(res=>{
+            const speclist=res.data;
+
+            var index;
+            if(speclist.length>0)
+            index= speclist.reduce((p, c) => p.index > c.index ? p  : c ).index;
+            else index=0;
+
+
+            this.setState(prevstat=>({
+                ...prevstat,
+                Addspec:{
+                    ...prevstat.Addspec,
+                    index:index +1     
+                },
+                speclist:res.data
+            }))})
         .catch(err=>this.setState({Error:err.message}));
     }
     addSpec=async(e)=>{
@@ -34,12 +54,15 @@ class ItemCategorySpecs extends Component {
             name:this.state.Addspec.name,
             index:this.state.Addspec.index
         }
-        console.log(spec)
-        console.log("https://localhost:5001/materials/"
-        +(this.state.Addspec.type==1?"ItemCategorySpec":"ItemCategorySpecRestricted")+"/add")
+
+        if(this.state.Addspec.name.trim()==""){
+            document.getElementById("spec_displayerror").innerHTML='Spec Name Required'
+            $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow');  
+            return; 
+        }
         await axios.post("https://localhost:5001/materials/"
                 +(this.state.Addspec.type==1?"ItemCategorySpec":"ItemCategorySpecRestricted")+"/add",spec)
-        .then(res=>{console.log(res); this.setState(prevState => ({
+        .then(res=>{ this.setState(prevState => ({
             ...prevState,
             Addspec: {
                      name:'',
@@ -48,8 +71,37 @@ class ItemCategorySpecs extends Component {
                  }
          }),this.refreshSpec)})
         .catch(err=>{
-            document.getElementById("spec_displayerror").innerHTML='Server Replay:'+err.response.data
+            var message='';
+            if(err.response.status==409) {
+                var error=err.response.data;
+                
+                if(error.name) message+=error.name;
+                if(error.index){
+                    if(message.length>0) message+=' And ';
+                    message+=error.index
+                }
+                
+            }
+            else message="Internal Server Error"
+            document.getElementById("spec_displayerror").innerHTML='Server Replay:'+message
             $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow');        });     
+    }
+    ValidateInput=async()=>{
+
+        const spec={
+            categoryID:this.state.Category.id,
+            name:this.state.Addspec.name,
+            index:this.state.Addspec.index
+        }
+        axios.post("https://localhost:5001/materials/"+(this.state.Addspec.type==1?"ItemCategorySpec":"ItemCategorySpecRestricted")+"/verifydata",spec)
+        .then(res=>{this.setState(prevstat=>({
+            ...prevstat,
+            VerifyError:{
+               name: res.data.name,
+               index:res.data.index
+            }
+        }))})
+        .catch(err=>{});
     }
     onChangeInput=async(e)=>{
         this.setState(prevState => ({
@@ -58,7 +110,7 @@ class ItemCategorySpecs extends Component {
                      ...prevState.Addspec,
                      [e.target.name]:e.target.value
                  }
-         }));
+         }),this.ValidateInput);
     }
 
     render() {
@@ -74,32 +126,36 @@ class ItemCategorySpecs extends Component {
                 </div>
                 <div className="borderbuttom" >
                     <div className="div-inlineblock">
-                        <label>Spec Name</label>
+                        <label>Spec Name</label><br/>
                         <input type="text" name="name"
                         required 
                         value={this.state.Addspec.name}
-                        onChange={this.onChangeInput}
-                        />
+                        onChange={this.onChangeInput} /><br/>
+                        <div className='form-input-err'><label>{this.state.VerifyError.name==null?"":this.state.VerifyError.name}</label></div>
                     </div>
                     <div className="div-inlineblock">
-                        <label>Type</label>
+                        <label>Type</label><br/>
                         <select name="type" value={this.state.Addspec.type}
                                                  onChange={this.onChangeInput}>
                             
                             <option value="1">NonRestricted</option>
                             <option value="0">Restricted</option>
                         </select>
+                        <div className='form-input-err'><label></label></div>
+
                     </div>
                     <div className="div-inlineblock">
-                        <label>Index</label>
+                        <label>Index</label><br/>
                         <input type="text" name="index" style={{maxWidth:50}}
                         required 
+                        placeholder="Your Name" required
                         value={this.state.Addspec.index}
-                        onChange={this.onChangeInput}
-                        />
+                        onChange={this.onChangeInput}/><br/>
+                         <div className='form-input-err'><label>{this.state.VerifyError.index==null?"":this.state.VerifyError.index}</label></div>
                     </div>
                     <div className="div-inlineblock">
                         <button className="btn btn-primary" onClick={this.addSpec} >Add Spec</button>
+                        <div className='form-input-err'><label></label></div>
                     </div>
                 </div>  
                 <div style={{clear:"both"}}></div>

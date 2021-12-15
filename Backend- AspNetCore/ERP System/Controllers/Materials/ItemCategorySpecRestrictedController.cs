@@ -28,18 +28,25 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                ContentResult d = VerifyData(CategorySpec);
-                if (d.StatusCode==StatusCodes.Status200OK)
+                ObjectResult d = VerifyData(CategorySpec);
+                if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    ItemCategorySpecRestriced_Repo.Add(CategorySpec);
-                    return Ok();
+                    if (d.Value == null)
+                    {
+                        ItemCategorySpecRestriced_Repo.Add(CategorySpec);
+                        return Ok();
+                    }
+                    else
+                        return Conflict(d.Value);
+
                 }
-                else 
-                 return Conflict(d.Content);
+                else
+                    throw new Exception("VerifyData :Error");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                logger.LogError("ItemCategory Restrict Spec  Update Error:" + e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Errror");
             }
         }
         [HttpPut("update")]
@@ -48,18 +55,24 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                ContentResult d = VerifyData(CategorySpec);
+                ObjectResult d = VerifyData(CategorySpec);
                 if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    ItemCategorySpecRestriced_Repo.Update(CategorySpec);
-                    return Ok();
+                    if (d.Value == null)
+                    {
+                        ItemCategorySpecRestriced_Repo.Update(CategorySpec);
+                        return Ok();
+                    }
+                    else
+                        return Conflict(d.Value);
+
                 }
                 else
-                    return Conflict(d.Content);
+                    throw new Exception("VerifyData :Error");
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
-                logger.LogError("ItemCategory Spec Update Error:" + e.Message);
+                logger.LogError("ItemCategory Restrict Spec Update Error:" + e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Errror");
             }
         }
@@ -103,18 +116,29 @@ namespace ERP_System.Controllers.Materials
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
             }
         }
-        [HttpGet("verifydata")]
-        private ContentResult VerifyData(ItemCategorySpec_Restrict categoryspec)
+        [HttpPost("verifydata")]
+        public ObjectResult VerifyData(ItemCategorySpec_Restrict categoryspec)
         {
-            if (ItemCategorySpecRestriced_Repo.List().Where(x => x.name == categoryspec.name
-                 && x.CategoryID == categoryspec.CategoryID).Count() > 0)
-                return new ContentResult() { Content = $"SpecName: {categoryspec.name} is already in use.", StatusCode = StatusCodes.Status409Conflict };
+            try
+            {
+                string nameError = null, indexError = null;
+                if (ItemCategorySpecRestriced_Repo.List().Where(x => x.name == categoryspec.name
+                    && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                    nameError = $"SpecName '{categoryspec.name}' is already in use.";
+                if (ItemCategorySpecRestriced_Repo.List().Where(x => x.index == categoryspec.index
+                    && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                    indexError = $"Index [{ categoryspec.index}] is already in use.";
 
-            if (ItemCategorySpecRestriced_Repo.List().Where(x => x.index == categoryspec.index
-                && x.CategoryID == categoryspec.CategoryID).Count() > 0)
-                return new ContentResult() { Content = $"Index: { categoryspec.index} is already in use.", StatusCode = StatusCodes.Status409Conflict };
-
-            return new ContentResult() { Content = "ok", StatusCode = StatusCodes.Status200OK };
+                if (nameError == null && indexError == null)
+                    return Ok(null);
+                else
+                    return Ok(new { name = nameError, index = indexError });
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Item Category Spec VerifyData:" + e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+            }
         }
     }
 }

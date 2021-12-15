@@ -86,17 +86,21 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                ContentResult d = VerifyData(itemCategory);
-                if (d.StatusCode != StatusCodes.Status200OK || d.StatusCode != StatusCodes.Status409Conflict)
-                    throw new Exception("Inetrnal Server Error");
+                ObjectResult d = VerifyData(itemCategory);
                 if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    var category = ItemCategory_repo.Add(itemCategory);
-                    return Ok(category);
+                    if (d.Value == null)
+                    {
+                        var category = ItemCategory_repo.Add(itemCategory);
+                        return Ok(category);
+                    }
+                    else
+                        return Conflict(d.Value);
+                    
                 }
                 else
-                    return Conflict(d.Content);
-               
+                    throw new Exception("VerifyData :Error");
+
             }
             catch (Exception e)
             {
@@ -111,17 +115,21 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                ContentResult d = VerifyData(itemCategory);
-                if (d.StatusCode != StatusCodes.Status200OK || d.StatusCode != StatusCodes.Status409Conflict)
-                    throw new Exception("Inetrnal Server Error");
+                ObjectResult d = VerifyData(itemCategory);
                 if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    ItemCategory_repo.Update(itemCategory);
-                    return Ok();
+                    if (d.Value == null)
+                    {
+                         ItemCategory_repo.Update(itemCategory);
+                        return Ok();
+                    }
+                    else
+                        return Conflict(d.Value);
+
                 }
                 else
-                    return Conflict(d.Content);
-               
+                    throw new Exception("VerifyData :Error");
+
             }
             catch (Exception e)
             {
@@ -147,21 +155,23 @@ namespace ERP_System.Controllers.Materials
             }
         }
         [HttpPost("verifydata")]
-        public ContentResult VerifyData(ItemCategory category)
+        public ObjectResult VerifyData(ItemCategory category)
         {
             try
             {
-                if (ItemCategory_repo.List().Where(x => x.Name == category.Name
+                object Error = null;
+                if (ItemCategory_repo.List().Where(x => x.name == category.name
                  && x.parentID == category.parentID).Count() > 0)
-                    return new ContentResult() { Content = $"Category Name: {category.Name} is already in use.", StatusCode = StatusCodes.Status409Conflict };
+                    Error = new { name = $"Category Name '{category.name}' is already in use." };
 
-
-                return new ContentResult() { Content = "ok", StatusCode = StatusCodes.Status200OK };
+                return Ok(Error);
+                //return new ContentResult() { Content = "ok", StatusCode = StatusCodes.Status200OK };
 
             }
-            catch 
+            catch (Exception e)
             {
-                return new ContentResult() { Content = "Internal Server Error", StatusCode = StatusCodes.Status500InternalServerError };
+                logger.LogError("Item Category VerifyData:" + e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
             }
         }
     }

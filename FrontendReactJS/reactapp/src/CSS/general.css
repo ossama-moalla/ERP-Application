@@ -125,3 +125,7 @@ select{
     background:transparent;
     margin-right: 10px;
 }
+.form-input-err{
+    font-size: 12px;
+    color: red;
+}

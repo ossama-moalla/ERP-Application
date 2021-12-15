@@ -23,7 +23,7 @@ namespace ERP_System
                 p.HasOne<ItemCategory>()
                 .WithMany()
                 .HasForeignKey(e => e.parentID);
-                p.HasIndex(e => new { e.parentID, e.Name }).IsUnique(true).HasFilter(null);
+                p.HasIndex(e => new { e.parentID, e.name }).IsUnique(true).HasFilter(null);
             });
 
             //builder.Entity<ItemCategorySpec>(p =>

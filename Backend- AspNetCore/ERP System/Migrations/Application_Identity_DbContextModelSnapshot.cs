@@ -164,20 +164,20 @@ namespace ERP_System.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("defaultConsumeUnit")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("parentID")
                         .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.HasIndex("parentID", "Name")
+                    b.HasIndex("parentID", "name")
                         .IsUnique();
 
                     b.ToTable("Materials_ItemCategory");
