@@ -10,8 +10,8 @@ namespace ERP_System.Models.Materials
     public class ItemCategorySpec_Restrict_Item_Value
     {
         public Item item { get; set; }
-        public ItemCategorySpec_Restrict ItemSpecRestrict_ { get; set; }
-        public ItemCategorySpec_Restrict_Options ItemSpec_Restrict_Options_ { get; set; }
+        public ItemCategorySpec ItemSpec_ { get; set; }
+        public ItemCategorySpec_Options ItemSpec_Options_ { get; set; }
 
     }
 }

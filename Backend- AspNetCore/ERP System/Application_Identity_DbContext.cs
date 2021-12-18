@@ -41,8 +41,7 @@ namespace ERP_System
         public DbSet<ItemFile> Materials_ItemFile { get; set; }
         public DbSet<ItemRelation> Materials_ItemRelation { get; set; }
         public DbSet<ItemCategorySpec> Materials_ItemCategorySpec { get; set; }
-        public DbSet<ItemCategorySpec_Restrict> Materials_ItemCategorySpec_Restrict { get; set; }
-        public DbSet<ItemCategorySpec_Restrict_Options> Materials_ItemCategorySpec_Restrict_Options { get; set; }
+        public DbSet<ItemCategorySpec_Options> Materials_ItemCategorySpec_Restrict_Options { get; set; }
         public DbSet<ItemCategorySpec_Item_Value> Materials_ItemCategorySpec_Item_Value { get; set; }
         public DbSet<ItemCategorySpec_Restrict_Item_Value> Materials_ItemCategorySpec_Restrict_Item_Value { get; set; }
         //public DbSet<Equivalence_Group> Materials_Equivalence_Group { get; set; }

@@ -23,4 +23,9 @@ namespace ERP_System.Models.Materials
         public string defaultConsumeUnit { get; set; }
 
     }
+
+    public class ItemCategory_ValidationError
+    {
+        public string nameError { get; set; }
+    }
 }

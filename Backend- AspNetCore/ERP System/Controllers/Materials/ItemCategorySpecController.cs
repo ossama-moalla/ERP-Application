@@ -32,23 +32,26 @@ namespace ERP_System.Controllers.Materials
                 ObjectResult d = VerifyData(CategorySpec);
                 if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    if (d.Value == null)
+                    ItemCategorySpec_ValidationError error = (ItemCategorySpec_ValidationError)d.Value;
+                    if (error == null)
                     {
                         ItemCategorySpec_Repo.Add(CategorySpec);
                         return Ok();
                     }
                     else
-                        return Conflict(d.Value);
+                    {
+                        return Conflict(new ErrorResponse() { Message = error.ConvertToString() });
+                    }
 
                 }
                 else
-                    throw new Exception("VerifyData :Error");
-
+                    return d;
             }
             catch (Exception e)
             {
-                logger.LogError("Item Category Add:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Errror");
+                logger.LogError("ItemCategory Spec Add Error:" + e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError
+                                    , new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
         [HttpPut("update")]
@@ -60,22 +63,29 @@ namespace ERP_System.Controllers.Materials
                 ObjectResult d = VerifyData(CategorySpec);
                 if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    if (d.Value == null)
+                    ItemCategorySpec_ValidationError error = (ItemCategorySpec_ValidationError)d.Value;
+                    if (error == null)
                     {
-                         ItemCategorySpec_Repo.Update(CategorySpec);
+                        ItemCategorySpec oldspec =ItemCategorySpec_Repo. GetByID(CategorySpec.id);
+                        if (oldspec.isRestricted != CategorySpec.isRestricted)
+                            return BadRequest(new ErrorResponse() { Message = "Change [IsRestricted] Not Allowed" });
+                        ItemCategorySpec_Repo.Update(CategorySpec);
                         return Ok();
                     }
                     else
-                        return Conflict(d.Value);
+                    {
+                        return Conflict(new ErrorResponse() { Message = error.ConvertToString() });
+                    }
 
                 }
                 else
-                    throw new Exception("VerifyData :Error");
+                    return d;
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 logger.LogError("ItemCategory Spec Update Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Errror");
+                return StatusCode(StatusCodes.Status500InternalServerError
+                                    , new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
         [HttpDelete("delete")]
@@ -89,7 +99,8 @@ namespace ERP_System.Controllers.Materials
             catch(Exception e)
             {
                 logger.LogError( "ItemCategorySpec Delete Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError
+                                                    , new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
         [HttpGet("list")]
@@ -102,7 +113,8 @@ namespace ERP_System.Controllers.Materials
             catch(Exception e)
             {
                 logger.LogError("ItemCategorySpec List Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError
+                                                    , new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
         [HttpGet("info")]
@@ -115,7 +127,8 @@ namespace ERP_System.Controllers.Materials
             catch (Exception e)
             {
                 logger.LogError("ItemCategorySpec Info Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError
+                                                    , new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
         [HttpPost("verifydata")]
@@ -134,12 +147,14 @@ namespace ERP_System.Controllers.Materials
                 if (nameError == null && indexError == null)
                     return Ok(null);
                 else
-                    return Ok(new { name = nameError, index = indexError });
+                    return Ok(new ItemCategorySpec_ValidationError()
+                    { nameError = nameError, indexError = indexError });
             }
             catch (Exception e)
             {
-                logger.LogError("Item Category Spec VerifyData:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                logger.LogError("ItemCategorySpec - VerifyData:" + e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError
+                                    , new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
        

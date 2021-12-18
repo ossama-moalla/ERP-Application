@@ -34,7 +34,7 @@ namespace ERP_System.Repositories.Materials_Repository
         }
 
         
-        public List<ItemCategorySpec_Restrict_Item_Value> Get_ItemValuesList_For_SpecRestrict(Item Item_, ItemCategorySpec_Restrict ItemSpec_Restrict_)
+        public List<ItemCategorySpec_Restrict_Item_Value> Get_ItemValuesList_For_SpecRestrict(Item Item_, ItemCategorySpec ItemSpec)
         {
             return new List<ItemCategorySpec_Restrict_Item_Value>();
         }

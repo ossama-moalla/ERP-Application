@@ -22,8 +22,27 @@ namespace ERP_System.Models.Materials
         public int id { get; set; }
         [Required]
         public string name { get; set; }
+
+        [Required]
+        public bool isRestricted { get; set; }
         [Required]
         public int index { get; set; }
 
+    }
+    public class ItemCategorySpec_ValidationError
+    {
+        public string nameError { get; set; }
+        public string indexError { get; set; }
+        public string ConvertToString()
+        {
+            string message = string.Empty;
+            if (this.nameError != null) message = this.nameError;
+            if (this.indexError != null)
+            {
+                if (message.Length > 0) message += " , ";
+                message += this.indexError;
+            }
+            return message;
+        }
     }
 }

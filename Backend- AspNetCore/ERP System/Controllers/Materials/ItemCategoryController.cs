@@ -38,7 +38,7 @@ namespace ERP_System.Controllers.Materials
             catch (Exception e)
             {
                 logger.LogError("Item Category GetCategories Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
         [HttpGet("path")]
@@ -61,7 +61,7 @@ namespace ERP_System.Controllers.Materials
             catch (Exception e)
             {
                 logger.LogError("Item Category Get Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, " Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
         [HttpGet("info")]
@@ -69,13 +69,14 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                if (ItemCategory_repo.GetByID(id) == null) return NotFound("Gategory Not Found");
+                if (ItemCategory_repo.GetByID(id) == null)
+                    return NotFound(new ErrorResponse() {Message= "Gategory Not Found" });
                 return Ok(ItemCategory_repo.GetByID(id));
             }
             catch (Exception e)
             {
                 logger.LogError("Item Category Get Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, " Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
 
@@ -89,23 +90,26 @@ namespace ERP_System.Controllers.Materials
                 ObjectResult d = VerifyData(itemCategory);
                 if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    if (d.Value == null)
+                    ItemCategory_ValidationError error = (ItemCategory_ValidationError)d.Value;
+                    if (error == null)
                     {
                         var category = ItemCategory_repo.Add(itemCategory);
                         return Ok(category);
                     }
                     else
-                        return Conflict(d.Value);
-                    
+                    {
+                        return Conflict(new ErrorResponse() { Message = error.nameError });
+                    }
+
                 }
                 else
-                    throw new Exception("VerifyData :Error");
+                    return d;
 
             }
             catch (Exception e)
             {
                 logger.LogError("Item Category add Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse() { Message = "Internal Server Error" } );
             }
         }
 
@@ -118,23 +122,26 @@ namespace ERP_System.Controllers.Materials
                 ObjectResult d = VerifyData(itemCategory);
                 if (d.StatusCode == StatusCodes.Status200OK)
                 {
-                    if (d.Value == null)
+                    ItemCategory_ValidationError error = (ItemCategory_ValidationError)d.Value;
+                    if (error == null)
                     {
-                         ItemCategory_repo.Update(itemCategory);
+                        ItemCategory_repo.Update(itemCategory);
                         return Ok();
                     }
                     else
-                        return Conflict(d.Value);
+                    {
+                        return Conflict(new ErrorResponse() { Message = error.nameError });
+                    }
 
                 }
                 else
-                    throw new Exception("VerifyData :Error");
+                    return d;
 
             }
             catch (Exception e)
             {
                 logger.LogError("Item Category update Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
 
@@ -151,7 +158,7 @@ namespace ERP_System.Controllers.Materials
             catch (Exception e)
             {
                 logger.LogError("Item Category delete Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
         [HttpPost("verifydata")]
@@ -159,19 +166,23 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                object Error = null;
+                if (category.parentID != null)
+                    if (ItemCategory_repo.GetByID((int)category.parentID) == null)
+                        return StatusCode(StatusCodes.Status400BadRequest,
+                            new ErrorResponse() {Message="Bad Parameters"});
+                ItemCategory_ValidationError Error = null;
                 if (ItemCategory_repo.List().Where(x => x.name == category.name
                  && x.parentID == category.parentID).Count() > 0)
-                    Error = new { name = $"Category Name '{category.name}' is already in use." };
+                    Error = new ItemCategory_ValidationError (){ nameError = $"Category Name '{category.name}' is already in use." };
 
                 return Ok(Error);
-                //return new ContentResult() { Content = "ok", StatusCode = StatusCodes.Status200OK };
 
             }
             catch (Exception e)
             {
                 logger.LogError("Item Category VerifyData:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return StatusCode(StatusCodes.Status500InternalServerError
+                    ,new ErrorResponse() { Message = "Internal Server Error" });
             }
         }
     }
