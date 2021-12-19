@@ -4,14 +4,28 @@ import propTypes from 'prop-types'
 import ItemCategorySpecs from './ItemCategorySpecs.jsx';
 import $ from 'jquery'
 import {ExtractErrorMessage} from '../../../GeneralMethods.js'
-class AddItemCategory extends Component {
+class ItemCategoryWindow extends Component {
     constructor(props){
         
         super(props);
+        const Category=props.Category;
+        let id,name,defaultConsumeUnit
+        //method is Update
+        if(Category!=null){
+            id=Category.id;
+            name=Category.name;
+            defaultConsumeUnit=Category.defaultConsumeUnit;
+        }
+        //method is Add
+        else{
+            id=undefined;
+            name='';
+            defaultConsumeUnit='';
+        }
         this.state={
-            id:undefined,
-            name:'',
-            defaultConsumeUnit:'',
+            id:id,
+            name:name,
+            defaultConsumeUnit:defaultConsumeUnit,
             VerifyError:{
                 name:null
             },
@@ -23,6 +37,14 @@ class AddItemCategory extends Component {
         $('#additemcategory').fadeIn(700);
     }
     ValidateInput=async()=>{
+        if(this.props.Category!=null && this.state.name==this.props.Category.name){
+            this.setState(prevstat=>({
+                ...prevstat,
+                VerifyError:{
+                   name: null
+                }}))
+                return;
+        }
         var nameError='';
         if(this.state.name.trim()!="") {
             var category={
@@ -69,6 +91,30 @@ class AddItemCategory extends Component {
          }); 
       
     }
+    updateCategory=()=>{
+        
+        const Category={
+            id:this.state.id,
+            parentID: this.props.parentID,
+            name:this.state.name,
+            defaultConsumeUnit:this.state.defaultConsumeUnit
+        }
+        axios.put("https://localhost:5001/materials/ItemCategory/update",Category)
+        .then(res=>
+            {
+
+               this.setState({
+                    NextStage_ShowSpec:true
+                    },this.props.refreshCategoryList());
+        }
+            )
+        .catch(err=>{
+            document.getElementById("addcategory_displayerror").innerHTML='Server Replay:'
+            +ExtractErrorMessage(err);
+            $('#addcategory_displayerror').slideDown(500).delay(5000).slideUp('slow');       
+         }); 
+      
+    }
     render() { 
           if(this.state.NextStage_ShowSpec){
             return (
@@ -84,7 +130,7 @@ class AddItemCategory extends Component {
                          NextStage_ShowSpec:false
                          },()=>$('#additemcategory').fadeIn(700))}
                     Close={this.props.Close}     
-                    ExtractErrorMessage={this.props.ExtractErrorMessage}
+
                     />
             )
         }
@@ -111,7 +157,11 @@ class AddItemCategory extends Component {
                         />
                     </div>  
                     <div className="form-group">
-                        <button  className="btn btn-primary" style={{margin:5}} onClick={this.addCategory}>Add </button>
+                        {
+                        this.props.Category==null?
+                        <button  className="btn btn-primary" style={{margin:5}} onClick={this.addCategory}>Add </button>:
+                        <button  className="btn btn-primary" style={{margin:5}} onClick={this.updateCategory}>Update </button>
+                        }
                         <button className="btn btn-primary" 
                         onClick={()=>{$('#additemcategory').fadeOut(700,this.props.Close);
                           } }>Close</button>
@@ -122,4 +172,4 @@ class AddItemCategory extends Component {
         );
     }
 }
-export default AddItemCategory;
+export default ItemCategoryWindow;

@@ -119,6 +119,12 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
+                var category = ItemCategory_repo.GetByID(itemCategory.id);
+                if(category.name== itemCategory.name)
+                {
+                    ItemCategory_repo.Update(itemCategory);
+                    return Ok();
+                }
                 ObjectResult d = VerifyData(itemCategory);
                 if (d.StatusCode == StatusCodes.Status200OK)
                 {
@@ -141,7 +147,7 @@ namespace ERP_System.Controllers.Materials
             catch (Exception e)
             {
                 logger.LogError("Item Category update Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse() { Message = "Internal Server Error" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse() { Message =e.Message });
             }
         }
 

@@ -13,7 +13,7 @@ const ItemCategoryDiv=(props)=>{
                 <button className="btn-text" >
                     <i  className=" bi-info-lg"style={{color:"green"}} ></i>
                 </button>
-                <button className="btn-text" onClick={()=>props.onUpdate(props.category.id)}>
+                <button className="btn-text" onClick={props.onUpdate}>
                     <i  className=" bi-pencil" style={{color:"blue"}}></i>
                 </button>
                 <button className="btn-text" onClick={()=>props.onDelete(props.category.id)}>

@@ -3,7 +3,7 @@ import $ from 'jquery';
 import {toggleDivByCheckbox} from '../../../GeneralMethods.js'
 
 import axios from 'axios'
-import AddItemCategory from '../ItemCategory/AddItemCategory.jsx';
+import ItemCategoryWindow from '../ItemCategory/ItemCategoryWindow.jsx';
 import SearchBar from './SearchBar.jsx';
 import FilterBar from './FilterBar.jsx';
 import ItemCategoryDiv from './ItemCategoryDiv.jsx';
@@ -19,7 +19,7 @@ class ShowMaterials  extends Component {
             PathList:null,
             Error:null,
             ShowSpecFilter:false,
-            ShowAddCategoryDiv:false
+            ItemCategoryWindow:{Show:false,Category:null}
         }
     }
     componentDidMount(){
@@ -84,7 +84,7 @@ class ShowMaterials  extends Component {
                         <label >Path:</label>
                         <div className="div-inlineblock" style={{float:"right"}} >
                             <button className="btn btn-primary btn-sm"
-                             onClick={()=>this.setState({ShowAddCategoryDiv:true})}>
+                             onClick={()=>this.setState({ItemCategoryWindow:{Show:true,Category:null}})}>
                                  Add Category
                             </button>
                         </div>
@@ -97,10 +97,12 @@ class ShowMaterials  extends Component {
                     <div id="displayerror" className="App" 
                         style={{backgroundColor:"red",color:"white",display:"none"}}>
                     </div>
-                    {this.state.ShowAddCategoryDiv &&
-                        <AddItemCategory refreshCategoryList={this.refreshCategoryList} 
+                    {this.state.ItemCategoryWindow.Show &&
+                        <ItemCategoryWindow 
                         parentID={this.state.currentCategoryID}
-                        Close={()=>this.setState({ShowAddCategoryDiv:false})}/>}
+                        Category={this.state.ItemCategoryWindow.Category}
+                        refreshCategoryList={this.refreshCategoryList} 
+                        Close={()=>this.setState({ItemCategoryWindow:{Show:false}})}/>}
                     <div id="main-data" style={{position:"relative",display:"flex"}}>
                         <div className="bordered "  style={{display:(this.state.ShowSpecFilter?"block":"none")
                         , marginRight:"2px",float:"left", height:"100%",padding:"15px"}}>
@@ -114,7 +116,14 @@ class ShowMaterials  extends Component {
                                 <div className="App" style={{color:"red"}}>No Data Entered !</div>:
                                 this.state.CategorysList.map((category,i)=>{
                                    return <ItemCategoryDiv category={category} onDelete={this.deleteCategory} 
-                                onClick={this.openCategory } onUpdate={()=>console.log(category)} key={i}/>}
+                                   onUpdate={()=> this.setState(prevstat=>({
+                                    ...prevstat,
+                                    ItemCategoryWindow:{
+                                        Show:true,
+                                        Category:category     
+                                    }
+                                }))}
+                                onClick={this.openCategory } key={i}/>}
                                 )
                             }
                         </div>

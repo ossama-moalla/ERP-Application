@@ -30,8 +30,7 @@ namespace ERP_System
         {
 
             services.AddControllers()
-                .AddNewtonsoftJson()
-                .ConfigureApiBehaviorOptions(options=> {
+                 .ConfigureApiBehaviorOptions(options=> {
                    // options.SuppressModelStateInvalidFilter = true;//disable automatic 400 response
                    // options.SuppressInferBindingSourcesForParameters=true; //disable inference  rule
                 });

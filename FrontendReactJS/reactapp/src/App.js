@@ -25,7 +25,7 @@ const App=()=>(
     {/*<Navbar/>*/}
     <BrowserRouter>
         <Routes>
-        <Route path="/" element={<div>hhhh</div>} />
+        <Route path="/"  element={<MaterialGate/>}/>
         <Route  path={'materials/*'}  element={<MaterialGate/>} />
         </Routes>
         </BrowserRouter>

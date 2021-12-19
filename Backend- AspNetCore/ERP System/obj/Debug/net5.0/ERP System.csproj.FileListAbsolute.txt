@@ -623,3 +623,4 @@ D:\ERP Application\Backend- AspNetCore\ERP System\bin\Debug\net5.0\Microsoft.Asp
 D:\ERP Application\Backend- AspNetCore\ERP System\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\ERP Application\Backend- AspNetCore\ERP System\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
 D:\ERP Application\Backend- AspNetCore\ERP System\obj\Debug\net5.0\ERP System.csproj.AssemblyReference.cache
+C:\Users\o_moalla\Desktop\New folder\Backend- AspNetCore\ERP System\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

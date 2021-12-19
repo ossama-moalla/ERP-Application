@@ -148,7 +148,7 @@ class ItemCategorySpecs extends Component {
                 </div>
                 <div className="borderbuttom " style={{padding:5,backgroundColor:"#20505e" ,color:"#f8f9fa"}}>
                     <h5 >
-                    Category Shared Item Specefication For Category:<strong>{this.props.Category.name}</strong>
+                     Shared Item Specefication For Category:<strong>{this.props.Category.name}</strong>
                     </h5>
                 </div>
                 <div className="borderbuttom" >
