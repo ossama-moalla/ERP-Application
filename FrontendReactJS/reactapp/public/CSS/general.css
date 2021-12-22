@@ -3,20 +3,6 @@ body{
     font-weight:600;
 
 }
-.error-div{
-    color:white;
-    background-color: red;
-    display: none;
-}
-.form-input-err{
-    font-size: 12px;
-    color: red;
-
-}
-div *{
-    word-break: break-word;
-
-}
 .hover:hover{
     background-color: burlywood;
 }
@@ -29,27 +15,15 @@ div *{
     border-radius:10px ;
     box-shadow: none;
 }
-
-.new-window-parent{
-    position:relative
-}
-.new-window {
+.center-screen {
     position: absolute;
-    background-color:#e9ecef;
     top:10px;
+    bottom: 0;
     left: 0;
+    right: 0;
     margin: auto;
     z-index: 1;
   }
-.title-bar{
-    position: relative;
-    min-height: 38px;
-    background-color:#87a59b;
-    border:1px solid
-}
-.title-bar>*{
-    position: absolute;
-}
 .borderbuttom{
     
     border-bottom-width: 2px;
@@ -87,20 +61,27 @@ div *{
 }
 .div-general{
     margin-top: 10px;
+
     padding: 10px;
+
 }
 .div-form *{
     margin-left:10px ;
     margin-right:10px ;
 }
 table{
+
    width: 80%;
    margin-left: auto;
    margin-right: auto;
 }
-label{ 
+label{
+
+    
     vertical-align: middle;
     margin-right: 10px;
+    
+
 }
 
 select{
@@ -115,12 +96,28 @@ select{
     position: relative;
 
   }
+   
+  #main-header {
+      padding: 5px;
+    height: 40px;
+   border: 1px solid;
+   border-radius: 5px;
+   overflow: auto;
+  }
+   
   #main-data {
     height: 100%;
     flex-grow : 1;
   }
 
-
+  #filterBySpec{
+    display: none;
+    margin-right: 2px;
+    border: solid 1px;
+    border-radius: 10px;
+    float: left;
+    padding: 10px;
+}
 .btn-text{
     margin:0;
     padding: 0;
@@ -128,7 +125,7 @@ select{
     background:transparent;
     margin-right: 10px;
 }
-.btn-text:hover{
-    z-index: 1;
-    background-color: brown;
+.form-input-err{
+    font-size: 12px;
+    color: red;
 }

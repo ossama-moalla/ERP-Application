@@ -7,25 +7,19 @@ class SpecFilter extends Component {
         this.state={
             fetchdone:false,
             SpecList:[],
-            SpecRestrictedList:[]
         }
     }
     getSpecs=async ()=>{
-        console.log('getspec')
         if(this.props.currentCategoryID==null) {
-            this.setState({SpecList:[],SpecRestrictedList:[],fetchdone:true});
+            this.setState({SpecList:[],fetchdone:true});
             return;
         }
-        this.setState({SpecList:[],SpecRestrictedList:[],fetchdone:false});
+        this.setState({SpecList:[],fetchdone:false});
 
         let SpecList=[],SpecRestrictedList=[];
         await axios.get("https://localhost:5001/materials/ItemCategorySpec/list?categoryID="+this.props.currentCategoryID)
-        .then(res=>SpecList=res.data)
+        .then(res=>this.setState({SpecList:res.data,fetchdone:true}))
         .catch(err=>console.log(err));
-        await axios.get("https://localhost:5001/materials/ItemCategorySpecRestricted/list?categoryID="+this.props.currentCategoryID)
-        .then(res=>SpecRestrictedList=res.data)
-        .catch(err=>console.log(err));
-        this.setState({SpecList:SpecList,SpecRestrictedList:SpecRestrictedList,fetchdone:true})
     
     }
     shouldComponentUpdate(nextProps, nextState){
@@ -53,34 +47,26 @@ class SpecFilter extends Component {
                 </Fragment>                  
             )
         }   
-        console.log(this.state.fetchdone)
         if(this.state.fetchdone==false) return(<div>Loading...</div>);
         return(
             <Fragment>
             {
-                    (this.state.SpecList.length==0&&this.state.SpecRestrictedList==0)?"No Spec's Entered":
+                    (this.state.SpecList.length==0)?"No Spec's Entered":
                     (<Fragment>
-                        {this.state.SpecRestrictedList.map((spec)=>{
-                        return(
-                        <Fragment  key={spec.id}>
-                            <label>{spec.name}</label><br/>
-                            <select  style={{width:"100%"}}>
-                            </select>
-                            <br/>
-                        </Fragment>
-                            )
-                        })}
                         {this.state.SpecList.map((spec)=>{
                         return(
                         <Fragment  key={spec.id}>
                             <label >{spec.name}</label><br/>
-                            <input  type="text"/><br/>
+                            {
+                                 spec.isRestricted?<select style={{width:"100%"}}></select>:
+                                 <input  type="text"/>
+                            }
+                            <br/>
                         </Fragment>
                             )
                     })}
                     </Fragment> 
                     )
-                    
                 }
             </Fragment>
         )

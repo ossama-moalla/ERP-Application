@@ -7,7 +7,7 @@ const SearchBar=(props)=>{
             <input type="text" placeholder="search....."></input>
             <div className="div-inlineblock">
                 <input id = "itemcategory-search" type="checkbox" value="value"   name = "itemcategory-search" />
-                <span>Only in this Item Category</span>
+                <span> Only in this Item Category</span>
             </div>
         </Fragment>
 

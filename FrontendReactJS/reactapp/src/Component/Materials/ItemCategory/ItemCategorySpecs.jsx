@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
-import propTypes from 'prop-types'
 import $ from 'jquery'
 import { ExtractErrorMessage } from '../../../GeneralMethods.js';
-import { isInteger } from 'formik';
 
 class ItemCategorySpecs extends Component {
     constructor(props){
+        console.log(props)
         super(props);
         this.state={
             spec:{
@@ -86,7 +85,7 @@ class ItemCategorySpecs extends Component {
     ValidateInput=async()=>{
         const index=this.state.spec.index,name=this.state.spec.name;
         let nameError=null,indexError=null;
-        if(isNaN(index)||index.trim()==""){
+        if(isNaN(index)||index.toString().trim()==""){
                 indexError="Index required and Must be Number";
         }
         if(name.trim()==""){
@@ -141,14 +140,23 @@ class ItemCategorySpecs extends Component {
     }
 
     render() {
+        var displayErrorDivStyle={display:"none"};
+        if(this.state.VerifyError.nameError!=null||this.state.VerifyError.indexError!=null) 
+             displayErrorDivStyle={display:"block"};
         return (
-            <div id="specscontainer" className="bordered" style={{backgroundColor:"#e9ecef",display:"none"}}>
+            <div id="specscontainer" className="new-window bordered" 
+            style={{left:"calc((100% - 500px)/2)", display:"none",maxWidth:600}}>
+                <div className="title-bar ">
+                    <button className="btn btn-sm btn-primary"  style={{top:2,right:5}}
+                       onClick={()=>{$('#specscontainer').fadeOut(700,this.props.closeSeperateComponent);}}>x
+                    </button>
+                </div>
                 <div id="spec_displayerror" className="App" 
                     style={{backgroundColor:"red",color:"white",display:"none"}}>
                 </div>
                 <div className="borderbuttom " style={{padding:5,backgroundColor:"#20505e" ,color:"#f8f9fa"}}>
                     <h5 >
-                     Shared Item Specefication For Category:<strong>{this.props.Category.name}</strong>
+                     Shared Item Specefication For Category : <strong>{this.props.Category.name}</strong>
                     </h5>
                 </div>
                 <div className="borderbuttom" >
@@ -158,7 +166,8 @@ class ItemCategorySpecs extends Component {
                         required 
                         value={this.state.spec.name}
                         onChange={this.onChangeInput} />
-                        <div className='form-input-err'><label>{this.state.VerifyError.nameError==null?"":this.state.VerifyError.nameError}</label></div>
+                        <div className='form-input-err' style={displayErrorDivStyle}>
+                            <label>{this.state.VerifyError.nameError}</label></div>
                     </div>
                     
                     <div className="div-inlineblock">
@@ -167,7 +176,8 @@ class ItemCategorySpecs extends Component {
                         required 
                         value={this.state.spec.index}
                         onChange={this.onChangeInput}/>
-                        <div className='form-input-err'><label>{this.state.VerifyError.indexError==null?"":this.state.VerifyError.indexError}</label></div>
+                        <div className='form-input-err' style={displayErrorDivStyle}>
+                            <label>{this.state.VerifyError.indexError}</label></div>
                     </div>
                     <div className="div-inlineblock">
                         <input type="checkbox" name="isRestricted"
@@ -175,12 +185,12 @@ class ItemCategorySpecs extends Component {
                         checked={this.state.spec.isRestricted}
                         onChange={this.onChangeInput} />
                         <label>IsRestricted</label>
-                        <div className='form-input-err'><label></label></div>
+                        <div className='form-input-err' style={displayErrorDivStyle}><label></label></div>
 
                     </div>
                     <div className="div-inlineblock">
-                        <button className="btn btn-primary" onClick={this.addSpec} >Add Spec</button>
-                        <div className='form-input-err'><label></label></div>
+                        <button className="btn btn-sm btn-primary" onClick={this.addSpec} >Add Spec</button>
+                        <div className='form-input-err' style={displayErrorDivStyle}><label></label></div>
                     </div>
                 </div>  
                 <div style={{clear:"both"}}></div>
@@ -207,16 +217,12 @@ class ItemCategorySpecs extends Component {
                         </tbody>
                     </table>
                 </div>
-                <div >
-                    <button className="btn btn-primary " style={{marginLeft:20,marginRight:20}} 
+                <button className="btn  btn-primary " 
+                    style={{top:2,left:5}} 
                     onClick={()=>{
-                        $('#specscontainer').fadeOut(500,this.props.Return)}}>
+                        $('#specscontainer').fadeOut(500,this.props.Return?this.props.Return: this.props.closeSeperateComponent)}}>
                         Finish
                     </button>
-                    <button className="btn btn-primary" 
-                        onClick={ this.props.Close}>Close
-                    </button>
-                </div>
             </div>                    
             
         );

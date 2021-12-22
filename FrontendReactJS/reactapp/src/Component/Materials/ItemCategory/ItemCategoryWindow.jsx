@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
-import propTypes from 'prop-types'
 import ItemCategorySpecs from './ItemCategorySpecs.jsx';
 import $ from 'jquery'
 import {ExtractErrorMessage} from '../../../GeneralMethods.js'
@@ -34,7 +33,7 @@ class ItemCategoryWindow extends Component {
     }
  
     componentDidMount(){
-        $('#additemcategory').fadeIn(700);
+        $('#itemcategorywindow').fadeIn(700);
     }
     ValidateInput=async()=>{
         if(this.props.Category!=null && this.state.name==this.props.Category.name){
@@ -84,7 +83,7 @@ class ItemCategoryWindow extends Component {
                     },this.props.refreshCategoryList());
         }
             )
-        .catch(err=>{
+        .catch(err=>{console.log(err)
             document.getElementById("addcategory_displayerror").innerHTML='Server Replay:'
             +ExtractErrorMessage(err);
             $('#addcategory_displayerror').slideDown(500).delay(5000).slideUp('slow');       
@@ -106,7 +105,7 @@ class ItemCategoryWindow extends Component {
                this.setState({
                     NextStage_ShowSpec:true
                     },this.props.refreshCategoryList());
-        }
+            }
             )
         .catch(err=>{
             document.getElementById("addcategory_displayerror").innerHTML='Server Replay:'
@@ -123,23 +122,29 @@ class ItemCategoryWindow extends Component {
                     id:this.state.id,
                     name:this.state.name,
                     defaultConsumeUnit:this.state.defaultConsumeUnit}}
-                    Return={()=>this.setState({
+                    Return={this.props.Category==null?()=>this.setState({
                         name:'',
                          id:undefined,
                          defaultConsumeUnit:'',
                          NextStage_ShowSpec:false
-                         },()=>$('#additemcategory').fadeIn(700))}
-                    Close={this.props.Close}     
+                         },()=>$('#itemcategorywindow').fadeIn(700)):null}
+                         closeSeperateComponent={this.props.closeSeperateComponent}     
 
                     />
             )
         }
         return (
-            <div id="additemcategory"  style={{borderRadius:15, backgroundColor:"#e9ecef",display:'none'}}>
-                <div id="addcategory_displayerror" className="App" 
-                    style={{backgroundColor:"red",color:"white",display:"none"}}>
+            <div id="itemcategorywindow"  className="new-window bordered"
+             style={{left:"calc((100% - 400px)/2)"
+            ,minWidth:400,maxWidth:400, backgroundColor:"#e9ecef",display:'none'}}>
+                 <div className="title-bar ">
+                    <button className="btn btn-sm btn-primary"  style={{top:2,right:5}}
+                        onClick={()=>{$('#itemcategorywindow').fadeOut(700,this.props.closeSeperateComponent);}}>x
+                    </button>
                 </div>
-                <div className=" bordered" style={{maxWidth:500}} >
+                <div id="addcategory_displayerror" className="App error-div">
+                </div>
+                <div   >
                     <div className="form-group" >
                         <label>ItemCategory Name:</label>
                         <input type="text" name="name"
@@ -162,9 +167,6 @@ class ItemCategoryWindow extends Component {
                         <button  className="btn btn-primary" style={{margin:5}} onClick={this.addCategory}>Add </button>:
                         <button  className="btn btn-primary" style={{margin:5}} onClick={this.updateCategory}>Update </button>
                         }
-                        <button className="btn btn-primary" 
-                        onClick={()=>{$('#additemcategory').fadeOut(700,this.props.Close);
-                          } }>Close</button>
                     </div>
                 </div> 
             </div>           

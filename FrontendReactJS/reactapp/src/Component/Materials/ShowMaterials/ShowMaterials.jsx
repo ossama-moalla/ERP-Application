@@ -19,7 +19,7 @@ class ShowMaterials  extends Component {
             PathList:null,
             Error:null,
             ShowSpecFilter:false,
-            ItemCategoryWindow:{Show:false,Category:null}
+            ShowSeperateComponent:{Show:false,component:null}
         }
     }
     componentDidMount(){
@@ -35,9 +35,9 @@ class ShowMaterials  extends Component {
         if(ID==this.state.currentCategoryID) return;
          this.setState({currentCategoryID:ID,CategorysList:null,Error:null},()=>this.refreshCategoryList());
     }
-    deleteCategory=(ID)=>{
+    deleteCategory=(ID,name)=>{
         if(ID==null) return ;
-        var d=window.confirm('are u sure you want to delete this category with ID:'+ID+'?');
+        var d=window.confirm('are u sure you want to delete category:'+name+'?');
         if(d===false) return;
         axios.delete("https://localhost:5001/materials/ItemCategory/delete?id="+ID)
         .then(res=>this.refreshCategoryList())
@@ -46,15 +46,22 @@ class ShowMaterials  extends Component {
             $('#displayerror').slideDown(500).delay(5000).slideUp('slow');
         });
     }
-    
+    closeSeperateComponent=()=>  this.setState(prevstat=>({
+        ...prevstat,
+        ShowSeperateComponent:{Show:false,component:null}
+        
+    }));
+    showSeperateComponent=(component)=> this.setState(prevstat=>({
+        ...prevstat,
+        ShowSeperateComponent:{Show:true,component:component}
+        
+    }));
     render(){
-        console.log('showmaterials-render')
 
         if(this.state.Error)
         return(<div className="App" style={{color:"red"}}>{this.state.Error}</div>)
-        
         return (
-            <div style={{position:"relative"}}>
+            <div >
                 <div className="standalone-div borderbuttom" style={{overflow:"auto"}} >
                     <div style={{float:"left"}}>
                         <label>Allowed Access Item Category:</label>
@@ -84,30 +91,37 @@ class ShowMaterials  extends Component {
                         <label >Path:</label>
                         <div className="div-inlineblock" style={{float:"right"}} >
                             <button className="btn btn-primary btn-sm"
-                             onClick={()=>this.setState({ItemCategoryWindow:{Show:true,Category:null}})}>
+                             onClick={()=>
+                             this.showSeperateComponent(
+                             <ItemCategoryWindow Category={null}
+                             refreshCategoryList={this.refreshCategoryList}
+                              closeSeperateComponent={this.closeSeperateComponent}/>)}>
                                  Add Category
                             </button>
                         </div>
                     </div>   
                     
-                    <div id="main-header" style={{marginTop:0}}>
+                    <div className="bordered color-wheat" style={{marginTop:0}}>
                         <CategoryPath currentCategoryID={this.state.currentCategoryID} 
                         onClick={this.openCategory}/>   
                     </div>   
                     <div id="displayerror" className="App" 
                         style={{backgroundColor:"red",color:"white",display:"none"}}>
                     </div>
-                    {this.state.ItemCategoryWindow.Show &&
+                    {/*this.state.ItemCategoryWindow.Show &&
                         <ItemCategoryWindow 
                         parentID={this.state.currentCategoryID}
                         Category={this.state.ItemCategoryWindow.Category}
                         refreshCategoryList={this.refreshCategoryList} 
-                        Close={()=>this.setState({ItemCategoryWindow:{Show:false}})}/>}
-                    <div id="main-data" style={{position:"relative",display:"flex"}}>
-                        <div className="bordered "  style={{display:(this.state.ShowSpecFilter?"block":"none")
+                    Close={()=>this.setState({ItemCategoryWindow:{Show:false}})}/>*/}
+                    <div id="main-data" className="new-window-parent" style={{display:"flex"}}>
+                        <div className="bordered color-wheat "  
+                        style={{display:(this.state.ShowSpecFilter?"block":"none")
                         , marginRight:"2px",float:"left", height:"100%",padding:"15px"}}>
                             <SpecFilter   currentCategoryID={this.state.currentCategoryID}/>  
                         </div>
+                        {this.state.ShowSeperateComponent.Show&&
+                        this.state.ShowSeperateComponent.component}
                         <div  style={{float:"none",height:"100%",width:"100%"}}>
                             {
                                 this.state.CategorysList==null?
@@ -115,15 +129,14 @@ class ShowMaterials  extends Component {
                                 this.state.CategorysList.length===0?
                                 <div className="App" style={{color:"red"}}>No Data Entered !</div>:
                                 this.state.CategorysList.map((category,i)=>{
-                                   return <ItemCategoryDiv category={category} onDelete={this.deleteCategory} 
-                                   onUpdate={()=> this.setState(prevstat=>({
-                                    ...prevstat,
-                                    ItemCategoryWindow:{
-                                        Show:true,
-                                        Category:category     
-                                    }
-                                }))}
-                                onClick={this.openCategory } key={i}/>}
+                                   return  <ItemCategoryDiv 
+                                        category={category}
+                                        refreshCategoryList={this.refreshCategoryList}
+                                        onDelete={this.deleteCategory}   
+                                        closeSeperateComponent={this.closeSeperateComponent}
+                                        showSeperateComponent={this.showSeperateComponent}
+                                        openCategory={this.openCategory } key={i}/>}
+                                        
                                 )
                             }
                         </div>
