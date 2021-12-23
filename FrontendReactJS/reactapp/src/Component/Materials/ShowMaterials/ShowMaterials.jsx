@@ -120,8 +120,21 @@ class ShowMaterials  extends Component {
                         , marginRight:"2px",float:"left", height:"100%",padding:"15px"}}>
                             <SpecFilter   currentCategoryID={this.state.currentCategoryID}/>  
                         </div>
-                        {this.state.ShowSeperateComponent.Show&&
-                        this.state.ShowSeperateComponent.component}
+                        {
+                            this.state.ShowSeperateComponent.Show&&
+                            (
+                                <div id="itemcategorycontainer"  className="new-window bordered"
+                                    style={{left:"calc((100% - 400px)/2)",minWidth:600,maxWidth:600, backgroundColor:"#e9ecef"}}>
+                                    <div className="title-bar ">
+                                        <div id='movehandle'   className='move-handler'></div>
+                                    <button className="btn btn-sm btn-primary"  style={{top:2,right:5}}
+                                        onClick={()=>{$('#itemcategorycontainer').fadeOut(500,this.closeSeperateComponent);}}>x
+                                    </button>
+                                    </div>
+                                    { this.state.ShowSeperateComponent.component}
+                                </div> 
+                            )
+                        }
                         <div  style={{float:"none",height:"100%",width:"100%"}}>
                             {
                                 this.state.CategorysList==null?

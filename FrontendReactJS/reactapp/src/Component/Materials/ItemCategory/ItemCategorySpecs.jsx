@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import $ from 'jquery'
-import { ExtractErrorMessage } from '../../../GeneralMethods.js';
+import { ExtractErrorMessage,makeDragable } from '../../../GeneralMethods.js';
 
 class ItemCategorySpecs extends Component {
     constructor(props){
@@ -23,7 +23,10 @@ class ItemCategorySpecs extends Component {
         }
     }
     componentDidMount(){
-        $('#specscontainer').fadeIn(700,this.refreshSpec);
+
+        $('#specscontainer').fadeIn(500,this.refreshSpec);
+        makeDragable('#movehandle','#specscontainer')
+
 
     }
     refreshSpec=async()=>{
@@ -144,13 +147,7 @@ class ItemCategorySpecs extends Component {
         if(this.state.VerifyError.nameError!=null||this.state.VerifyError.indexError!=null) 
              displayErrorDivStyle={display:"block"};
         return (
-            <div id="specscontainer" className="new-window bordered" 
-            style={{left:"calc((100% - 500px)/2)", display:"none",maxWidth:600}}>
-                <div className="title-bar ">
-                    <button className="btn btn-sm btn-primary"  style={{top:2,right:5}}
-                       onClick={()=>{$('#specscontainer').fadeOut(700,this.props.closeSeperateComponent);}}>x
-                    </button>
-                </div>
+            <div id='specscontainer' style={{display:"none"}}>
                 <div id="spec_displayerror" className="App" 
                     style={{backgroundColor:"red",color:"white",display:"none"}}>
                 </div>
@@ -220,7 +217,7 @@ class ItemCategorySpecs extends Component {
                 <button className="btn  btn-primary " 
                     style={{top:2,left:5}} 
                     onClick={()=>{
-                        $('#specscontainer').fadeOut(500,this.props.Return?this.props.Return: this.props.closeSeperateComponent)}}>
+                        $('#specscontainer').fadeOut(400,this.props.Return?this.props.Return: this.props.closeSeperateComponent)}}>
                         Finish
                     </button>
             </div>                    

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import ItemCategorySpecs from './ItemCategorySpecs.jsx';
 import $ from 'jquery'
-import {ExtractErrorMessage} from '../../../GeneralMethods.js'
+import {ExtractErrorMessage,makeDragable} from '../../../GeneralMethods.js'
 class ItemCategoryWindow extends Component {
     constructor(props){
         
@@ -33,7 +33,9 @@ class ItemCategoryWindow extends Component {
     }
  
     componentDidMount(){
-        $('#itemcategorywindow').fadeIn(700);
+        makeDragable('#movehandle','#itemcategorycontainer')
+        $('#itemcategorywindow').fadeIn(500);
+     
     }
     ValidateInput=async()=>{
         if(this.props.Category!=null && this.state.name==this.props.Category.name){
@@ -117,7 +119,7 @@ class ItemCategoryWindow extends Component {
     render() { 
           if(this.state.NextStage_ShowSpec){
             return (
-                
+ 
                 <ItemCategorySpecs Category={{
                     id:this.state.id,
                     name:this.state.name,
@@ -127,21 +129,14 @@ class ItemCategoryWindow extends Component {
                          id:undefined,
                          defaultConsumeUnit:'',
                          NextStage_ShowSpec:false
-                         },()=>$('#itemcategorywindow').fadeIn(700)):null}
+                         },()=>{$('#itemcategorywindow').fadeIn(500);}):null}
                          closeSeperateComponent={this.props.closeSeperateComponent}     
 
                     />
             )
         }
         return (
-            <div id="itemcategorywindow"  className="new-window bordered"
-             style={{left:"calc((100% - 400px)/2)"
-            ,minWidth:400,maxWidth:400, backgroundColor:"#e9ecef",display:'none'}}>
-                 <div className="title-bar ">
-                    <button className="btn btn-sm btn-primary"  style={{top:2,right:5}}
-                        onClick={()=>{$('#itemcategorywindow').fadeOut(700,this.props.closeSeperateComponent);}}>x
-                    </button>
-                </div>
+            <div id='itemcategorywindow' style={{display:"none"}}>
                 <div id="addcategory_displayerror" className="App error-div">
                 </div>
                 <div   >
@@ -169,6 +164,9 @@ class ItemCategoryWindow extends Component {
                         }
                     </div>
                 </div> 
+                {
+                    this.state.NextStage_ShowSpec
+                }
             </div>           
             
         );
