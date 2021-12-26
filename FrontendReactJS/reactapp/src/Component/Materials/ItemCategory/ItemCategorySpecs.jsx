@@ -5,9 +5,9 @@ import { ExtractErrorMessage,makeDragable } from '../../../GeneralMethods.js';
 
 class ItemCategorySpecs extends Component {
     constructor(props){
-        console.log(props)
         super(props);
         this.state={
+            orginalSpec:null,//for validate input for update
             spec:{
                 id:null,
                 name:'',
@@ -23,11 +23,7 @@ class ItemCategorySpecs extends Component {
         }
     }
     componentDidMount(){
-
         $('#specscontainer').fadeIn(500,this.refreshSpec);
-        makeDragable('#movehandle','#specscontainer')
-
-
     }
     refreshSpec=async()=>{
         let speclist=[],errorMessage='';
@@ -74,6 +70,10 @@ class ItemCategorySpecs extends Component {
         .then(res=>{
              this.setState(prevState => ({
             ...prevState,
+            VerifyError:{
+                nameError:null,
+                indexError:null
+            },
             spec: {
                      name:'',
                      index:'',
@@ -86,6 +86,7 @@ class ItemCategorySpecs extends Component {
             $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow'); });     
     }
     ValidateInput=async()=>{
+        
         const index=this.state.spec.index,name=this.state.spec.name;
         let nameError=null,indexError=null;
         if(isNaN(index)||index.toString().trim()==""){
@@ -110,15 +111,39 @@ class ItemCategorySpecs extends Component {
             isRestricted:this.state.spec.isRestricted,
             index:this.state.spec.index
         }
+        var nameChanged=false,indexChanged=false;
+        if(this.state.orginalSpec.name!=this.state.spec.name) nameChanged=true;
+        if(this.state.orginalSpec.index!=this.state.spec.index) indexChanged=true;
+        if(!nameChanged&&!indexChanged){//updated input not changed so no errors
+            this.setState(prevstat=>({
+                ...prevstat,
+                VerifyError:{
+                   nameError: null,
+                   indexError:null
+                }
+            }))
+        }
         axios.post("https://localhost:5001/materials/ItemCategorySpec/verifydata",spec)
         .then(res=>{
-            this.setState(prevstat=>({
-            ...prevstat,
-            VerifyError:{
-               nameError: res.data.nameError,
-               indexError:res.data.indexError
+            if(this.state.spec.id){
+                this.setState(prevstat=>({
+                    ...prevstat,
+                    VerifyError:{
+                       nameError:nameChanged? res.data.nameError:null,
+                       indexError:indexChanged? res.data.indexError:null
+                    }
+                }))
             }
-        }))})
+            else{
+                this.setState(prevstat=>({
+                    ...prevstat,
+                    VerifyError:{
+                       nameError: res.data.nameError,
+                       indexError:res.data.indexError
+                    }
+                }))
+            }
+            })
         .catch(err=>{});
     }
     onChangeInput=async(e)=>{
@@ -141,7 +166,59 @@ class ItemCategorySpecs extends Component {
             }),this.ValidateInput);
         }
     }
-
+    updateSpec=async()=>{
+        {
+            const spec={
+                categoryID:this.props.Category.id,
+                id:this.state.spec.id,
+                name:this.state.spec.name,
+                isRestricted:this.state.spec.isRestricted,
+                index:this.state.spec.index
+            }
+            if(this.state.spec.name.trim()==""){
+                document.getElementById("spec_displayerror").innerHTML='Spec Name Required'
+                $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow');  
+                return; 
+            }
+            await axios.put("https://localhost:5001/materials/ItemCategorySpec/update",spec)
+            .then(res=>{
+                 this.setState(prevState => ({
+                ...prevState,
+                VerifyError:{
+                    nameError:null,
+                    indexError:null
+                },
+                spec: {
+                        id:null,
+                         name:'',
+                         index:'',
+                         isRestricted:this.state.spec.isRestricted
+                     }
+             }),this.refreshSpec)})
+            .catch(err=>{
+                document.getElementById("spec_displayerror").innerHTML='Server Replay:'
+                +ExtractErrorMessage(err)
+                $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow'); });     
+        } 
+    }
+    deleteSpec=(id,name)=>{
+        if(id==null) return ;
+        var d=window.confirm('are u sure you want to delete Spec:'+name+'?');
+        if(d===false) return;
+        axios.delete("https://localhost:5001/materials/ItemCategorySpec/delete?id="+id)
+        .then(res=>this.setState(prevState=>({
+            ...prevState,
+            spec:{
+                id:null,
+                name:'',
+                isRestricted:false,
+            }
+        }),()=>this.refreshSpec()) )
+        .catch(err=>{
+            document.getElementById("spec_displayerror").innerHTML='Server Replay:'+err.response.data
+            $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow');
+        });
+    }
     render() {
         var displayErrorDivStyle={display:"none"};
         if(this.state.VerifyError.nameError!=null||this.state.VerifyError.indexError!=null) 
@@ -186,7 +263,28 @@ class ItemCategorySpecs extends Component {
 
                     </div>
                     <div className="div-inlineblock">
-                        <button className="btn btn-sm btn-primary" onClick={this.addSpec} >Add Spec</button>
+                        {this.state.spec.id?
+                            <Fragment>
+                            <button className="btn btn-sm btn-primary" style={{marginRight:10}}
+                             onClick={this.updateSpec} >Update </button>
+                            <button className="btn btn-sm btn-primary" onClick={()=>{
+                                this.setState(prevState=>({
+                                    ...prevState,
+                                    spec:{
+                                        id:null,
+                                        name:'',
+                                        isRestricted:false,
+                                        index:0    
+                                    },
+                                    VerifyError:{
+                                        nameError:null,
+                                        indexError:null
+                                    }
+                                }))
+                            }} >Cancel </button>
+                            </Fragment>:
+                            <button className="btn btn-sm btn-primary" onClick={this.addSpec} >Add </button>
+                        }
                         <div className='form-input-err' style={displayErrorDivStyle}><label></label></div>
                     </div>
                 </div>  
@@ -208,6 +306,27 @@ class ItemCategorySpecs extends Component {
                                           <td>{spec.name}</td>
                                           <td>{spec.isRestricted?"True":"False"}</td>
                                           <td>{spec.index}</td>
+                                          <td>
+                                              <button className="btn-text" 
+                                                onClick={()=>this.setState(prevState=>({
+                                                    ...prevState,
+                                                    orginalSpec:spec,
+                                                    spec:{
+                                                    id:spec.id,
+                                                    name:spec.name,
+                                                    isRestricted:spec.isRestricted,
+                                                    index:spec.index
+                                                    }
+                                                }))}>
+                                                <i  className=" bi-pencil" style={{backgroundColor:"blue",
+                                                color:"white"}}></i>
+                                               </button>
+                                               <button className="btn-text" 
+                                                onClick={()=>this.deleteSpec(spec.id,spec.name)}>
+                                                <i  className=" bi bi-x-lg" style={{backgroundColor:"red",
+                                                 color:"white"}}></i>
+                                               </button>
+                                          </td>
                                       </tr>
                                   )      
                             })}
@@ -217,7 +336,7 @@ class ItemCategorySpecs extends Component {
                 <button className="btn  btn-primary " 
                     style={{top:2,left:5}} 
                     onClick={()=>{
-                        $('#specscontainer').fadeOut(400,this.props.Return?this.props.Return: this.props.closeSeperateComponent)}}>
+                        $('#specscontainer').fadeOut(400,this.props.Return)}}>
                         Finish
                     </button>
             </div>                    

@@ -26,14 +26,9 @@ class ItemCategoryInfo extends Component {
    
     render() {
         return (
-            <div id="itemcategoryinfo"  className="new-window bordered"
-            style={{left:"calc((100% - 600px)/2)"
-           ,minWidth:600,maxWidth:600, backgroundColor:"#20c997",display:'none'}}>
-                <div className="title-bar ">
-                        <button className="btn btn-sm btn-primary"  style={{top:2,right:5}}
-                            onClick={()=>{$('#itemcategoryinfo').fadeOut(700,this.props.closeSeperateComponent);}}>x
-                        </button>
-                </div>
+            <div id="itemcategoryinfo"  
+            style={{display:'none'}}>
+                
                 <div className="standalone-div borderbuttom">
                         <label >Category Name:</label>
                         <label>{this.props.Category.name}</label>

@@ -30,11 +30,9 @@ div *{
     box-shadow: none;
 }
 
-.new-window-parent{
-    position:relative
-}
+
 .new-window {
-    position: absolute;
+    position: fixed;
     background-color:#e9ecef;
     top:10px;
     left: 0;

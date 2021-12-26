@@ -3,12 +3,13 @@ import $ from 'jquery';
 import {toggleDivByCheckbox} from '../../../GeneralMethods.js'
 
 import axios from 'axios'
-import ItemCategoryWindow from '../ItemCategory/ItemCategoryWindow.jsx';
 import SearchBar from './SearchBar.jsx';
 import FilterBar from './FilterBar.jsx';
 import ItemCategoryDiv from './ItemCategoryDiv.jsx';
 import CategoryPath from './CategoryPath.jsx';
 import SpecFilter from './SpecFilter.jsx';
+import PopUPComponent from '../../PopUPComponent.jsx';
+import ItemCategoryAdd from '../ItemCategory/ItemCategoryAdd.jsx';
 
 class ShowMaterials  extends Component {
     constructor(){
@@ -19,7 +20,7 @@ class ShowMaterials  extends Component {
             PathList:null,
             Error:null,
             ShowSpecFilter:false,
-            ShowSeperateComponent:{Show:false,component:null}
+            popUpComponent:{Show:false,component:null,title:''}
         }
     }
     componentDidMount(){
@@ -46,22 +47,32 @@ class ShowMaterials  extends Component {
             $('#displayerror').slideDown(500).delay(5000).slideUp('slow');
         });
     }
-    closeSeperateComponent=()=>  this.setState(prevstat=>({
+    closePopUpComponent=()=>  this.setState(prevstat=>({
         ...prevstat,
-        ShowSeperateComponent:{Show:false,component:null}
+        popUpComponent:{Show:false,component:null,title:''}
         
     }));
-    showSeperateComponent=(component)=> this.setState(prevstat=>({
-        ...prevstat,
-        ShowSeperateComponent:{Show:true,component:component}
-        
-    }));
+    showPopUpComponent=(component,title)=> {
+        this.setState(prevstat=>({
+            ...prevstat,
+            popUpComponent:{Show:false,component:null,title:''}
+            
+        }),()=>this.setState(prevstat=>({
+            ...prevstat,
+            popUpComponent:{Show:true,component:component,title:title}
+            
+        })));
+    }
     render(){
 
         if(this.state.Error)
         return(<div className="App" style={{color:"red"}}>{this.state.Error}</div>)
         return (
             <div >
+                {
+                    this.state.popUpComponent.Show&&
+                    <PopUPComponent popUpComponent={this.state.popUpComponent} />
+                }
                 <div className="standalone-div borderbuttom" style={{overflow:"auto"}} >
                     <div style={{float:"left"}}>
                         <label>Allowed Access Item Category:</label>
@@ -92,10 +103,10 @@ class ShowMaterials  extends Component {
                         <div className="div-inlineblock" style={{float:"right"}} >
                             <button className="btn btn-primary btn-sm"
                              onClick={()=>
-                             this.showSeperateComponent(
-                             <ItemCategoryWindow Category={null}
+                             this.showPopUpComponent(
+                             <ItemCategoryAdd
                              refreshCategoryList={this.refreshCategoryList}
-                              closeSeperateComponent={this.closeSeperateComponent}/>)}>
+                             />,'New Category')}>
                                  Add Category
                             </button>
                         </div>
@@ -108,33 +119,13 @@ class ShowMaterials  extends Component {
                     <div id="displayerror" className="App" 
                         style={{backgroundColor:"red",color:"white",display:"none"}}>
                     </div>
-                    {/*this.state.ItemCategoryWindow.Show &&
-                        <ItemCategoryWindow 
-                        parentID={this.state.currentCategoryID}
-                        Category={this.state.ItemCategoryWindow.Category}
-                        refreshCategoryList={this.refreshCategoryList} 
-                    Close={()=>this.setState({ItemCategoryWindow:{Show:false}})}/>*/}
                     <div id="main-data" className="new-window-parent" style={{display:"flex"}}>
                         <div className="bordered color-wheat "  
                         style={{display:(this.state.ShowSpecFilter?"block":"none")
                         , marginRight:"2px",float:"left", height:"100%",padding:"15px"}}>
                             <SpecFilter   currentCategoryID={this.state.currentCategoryID}/>  
                         </div>
-                        {
-                            this.state.ShowSeperateComponent.Show&&
-                            (
-                                <div id="itemcategorycontainer"  className="new-window bordered"
-                                    style={{left:"calc((100% - 400px)/2)",minWidth:600,maxWidth:600, backgroundColor:"#e9ecef"}}>
-                                    <div className="title-bar ">
-                                        <div id='movehandle'   className='move-handler'></div>
-                                    <button className="btn btn-sm btn-primary"  style={{top:2,right:5}}
-                                        onClick={()=>{$('#itemcategorycontainer').fadeOut(500,this.closeSeperateComponent);}}>x
-                                    </button>
-                                    </div>
-                                    { this.state.ShowSeperateComponent.component}
-                                </div> 
-                            )
-                        }
+                        
                         <div  style={{float:"none",height:"100%",width:"100%"}}>
                             {
                                 this.state.CategorysList==null?
@@ -146,8 +137,8 @@ class ShowMaterials  extends Component {
                                         category={category}
                                         refreshCategoryList={this.refreshCategoryList}
                                         onDelete={this.deleteCategory}   
-                                        closeSeperateComponent={this.closeSeperateComponent}
-                                        showSeperateComponent={this.showSeperateComponent}
+                                        closePopUpComponent={this.closePopUpComponent}
+                                        showPopUpComponent={this.showPopUpComponent}
                                         openCategory={this.openCategory } key={i}/>}
                                         
                                 )

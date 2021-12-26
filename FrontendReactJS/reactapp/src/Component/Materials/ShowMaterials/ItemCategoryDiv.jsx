@@ -1,5 +1,5 @@
 import ItemCategoryInfo from '../ItemCategory/ItemCategoryInfo.jsx';
-import ItemCategoryWindow from '../ItemCategory/ItemCategoryWindow.jsx';
+import ItemCategoryUpdate from '../ItemCategory/ItemCategoryUpdate.jsx';
 const ItemCategoryDiv=(props)=>{
     return(
         <div className="hover" style={{float:"left" }} >
@@ -15,18 +15,18 @@ const ItemCategoryDiv=(props)=>{
                 <button className="btn-text" >
                     <i  className=" bi-info-lg"style={{color:"green"}}
                      onClick={()=>
-                     props.showSeperateComponent(
+                     props.showPopUpComponent(
                      <ItemCategoryInfo 
-                     closeSeperateComponent={props.closeSeperateComponent}
-                      Category={props.category}/>)} ></i>
+                     closePopUpComponent={props.closePopUpComponent}
+                      Category={props.category}/>,'Category Info')} ></i>
                 </button>
                 <button className="btn-text" 
                     onClick={()=>
-                        props.showSeperateComponent(
-                        <ItemCategoryWindow
-                        closeSeperateComponent={props.closeSeperateComponent}
+                        props.showPopUpComponent(
+                        <ItemCategoryUpdate
+                        closePopUpComponent={props.closePopUpComponent}
                         refreshCategoryList={props.refreshCategoryList}
-                        Category={props.category}/>)}>
+                        Category={props.category}/>,'Update Category:'+props.category.name)}>
                     <i  className=" bi-pencil" style={{color:"blue"}}></i>
                 </button>
                 <button className="btn-text" onClick={()=>props.onDelete(props.category.id,props.category.name)}>
