@@ -32,21 +32,17 @@ namespace ERP_System.Repositories.Materials_Repository
 
         public void Update(ItemCategory entity)
         {
-            var category = GetByID(entity.id);
-            category.name = entity.name;
-            category.defaultConsumeUnit = entity.defaultConsumeUnit;
+            Db_Context.Materials_ItemCategory.Update(entity);
             Db_Context.SaveChanges();
         }
 
         public ItemCategory GetByID(int id)
         {
-            return Db_Context.Materials_ItemCategory.SingleOrDefault(x => x.id == id);
+            return Db_Context.Materials_ItemCategory.SingleOrDefault(x => x.Id == id);
         }
 
         public IList<ItemCategory> List()
         {
-
-            logger.LogInformation(Db_Context.ChangeTracker.QueryTrackingBehavior.ToString());
             return Db_Context.Materials_ItemCategory.Select(x=>x).ToList();
         }
         

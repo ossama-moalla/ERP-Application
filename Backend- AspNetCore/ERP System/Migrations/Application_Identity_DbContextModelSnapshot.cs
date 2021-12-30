@@ -94,7 +94,7 @@ namespace ERP_System.Migrations
                     b.Property<double>("Factor")
                         .HasColumnType("float");
 
-                    b.Property<int?>("Item_ID")
+                    b.Property<int?>("Item_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -102,7 +102,7 @@ namespace ERP_System.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Item_ID");
+                    b.HasIndex("Item_Id");
 
                     b.ToTable("Materials_ConsumeUnit");
                 });
@@ -124,16 +124,15 @@ namespace ERP_System.Migrations
 
             modelBuilder.Entity("ERP_System.Models.Materials.Item", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("Categoryid")
-                        .HasColumnType("int");
-
                     b.Property<string>("Company")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -141,22 +140,28 @@ namespace ERP_System.Migrations
                     b.Property<string>("DefaultConsumeUnit")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ItemCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.HasIndex("Categoryid");
+                    b.HasIndex(new[] { "ItemCategoryId", "Name", "Company" }, "Item Name And Company must be unique in category")
+                        .IsUnique();
 
                     b.ToTable("Materials_Item");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategory", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -175,7 +180,7 @@ namespace ERP_System.Migrations
                     b.Property<int?>("parentID")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("parentID", "name")
                         .IsUnique();
@@ -219,7 +224,7 @@ namespace ERP_System.Migrations
                     b.Property<int?>("ItemSpec_id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Item_ID")
+                    b.Property<int?>("Item_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
@@ -227,7 +232,7 @@ namespace ERP_System.Migrations
 
                     b.HasIndex("ItemSpec_id");
 
-                    b.HasIndex("Item_ID");
+                    b.HasIndex("Item_Id");
 
                     b.ToTable("Materials_ItemCategorySpec_Item_Value");
                 });
@@ -260,14 +265,14 @@ namespace ERP_System.Migrations
                     b.Property<int?>("ItemSpec_id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("itemID")
+                    b.Property<int?>("itemId")
                         .HasColumnType("int");
 
                     b.HasIndex("ItemSpec_Options_OptionID");
 
                     b.HasIndex("ItemSpec_id");
 
-                    b.HasIndex("itemID");
+                    b.HasIndex("itemId");
 
                     b.ToTable("Materials_ItemCategorySpec_Restrict_Item_Value");
                 });
@@ -277,7 +282,7 @@ namespace ERP_System.Migrations
                     b.Property<int?>("ConsumeUnit_ID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Item_ID")
+                    b.Property<int?>("Item_Id")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
@@ -291,7 +296,7 @@ namespace ERP_System.Migrations
 
                     b.HasIndex("ConsumeUnit_ID");
 
-                    b.HasIndex("Item_ID");
+                    b.HasIndex("Item_Id");
 
                     b.HasIndex("SellType_SellTypeID");
 
@@ -319,25 +324,25 @@ namespace ERP_System.Migrations
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("Item_ID")
+                    b.Property<int?>("Item_Id")
                         .HasColumnType("int");
 
                     b.HasKey("FileID");
 
-                    b.HasIndex("Item_ID");
+                    b.HasIndex("Item_Id");
 
                     b.ToTable("Materials_ItemFile");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemRelation", b =>
                 {
-                    b.Property<int?>("AnotherItemID")
+                    b.Property<int?>("AnotherItemId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Inherit")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("Item_ID")
+                    b.Property<int?>("Item_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Notes")
@@ -346,9 +351,9 @@ namespace ERP_System.Migrations
                     b.Property<int>("Relation_")
                         .HasColumnType("int");
 
-                    b.HasIndex("AnotherItemID");
+                    b.HasIndex("AnotherItemId");
 
-                    b.HasIndex("Item_ID");
+                    b.HasIndex("Item_Id");
 
                     b.ToTable("Materials_ItemRelation");
                 });
@@ -358,12 +363,12 @@ namespace ERP_System.Migrations
                     b.Property<int?>("_Equivalence_GroupGroupID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("_ItemID")
+                    b.Property<int?>("_ItemId")
                         .HasColumnType("int");
 
                     b.HasIndex("_Equivalence_GroupGroupID");
 
-                    b.HasIndex("_ItemID");
+                    b.HasIndex("_ItemId");
 
                     b.ToTable("Materials_Item_Equivalence_Relation");
                 });
@@ -533,18 +538,20 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Materials.Item", "Item_")
                         .WithMany()
-                        .HasForeignKey("Item_ID");
+                        .HasForeignKey("Item_Id");
 
                     b.Navigation("Item_");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.Item", b =>
                 {
-                    b.HasOne("ERP_System.Models.Materials.ItemCategory", "Category")
+                    b.HasOne("ERP_System.Models.Materials.ItemCategory", "ItemCategory")
                         .WithMany()
-                        .HasForeignKey("Categoryid");
+                        .HasForeignKey("ItemCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("ItemCategory");
                 });
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategory", b =>
@@ -573,7 +580,7 @@ namespace ERP_System.Migrations
 
                     b.HasOne("ERP_System.Models.Materials.Item", "Item_")
                         .WithMany()
-                        .HasForeignKey("Item_ID");
+                        .HasForeignKey("Item_Id");
 
                     b.Navigation("Item_");
 
@@ -601,7 +608,7 @@ namespace ERP_System.Migrations
 
                     b.HasOne("ERP_System.Models.Materials.Item", "item")
                         .WithMany()
-                        .HasForeignKey("itemID");
+                        .HasForeignKey("itemId");
 
                     b.Navigation("item");
 
@@ -618,7 +625,7 @@ namespace ERP_System.Migrations
 
                     b.HasOne("ERP_System.Models.Materials.Item", "Item_")
                         .WithMany()
-                        .HasForeignKey("Item_ID");
+                        .HasForeignKey("Item_Id");
 
                     b.HasOne("ERP_System.Models.Trade.SellType", "SellType_")
                         .WithMany()
@@ -641,7 +648,7 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Materials.Item", "Item_")
                         .WithMany()
-                        .HasForeignKey("Item_ID");
+                        .HasForeignKey("Item_Id");
 
                     b.Navigation("Item_");
                 });
@@ -650,11 +657,11 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Materials.Item", "AnotherItem")
                         .WithMany()
-                        .HasForeignKey("AnotherItemID");
+                        .HasForeignKey("AnotherItemId");
 
                     b.HasOne("ERP_System.Models.Materials.Item", "Item_")
                         .WithMany()
-                        .HasForeignKey("Item_ID");
+                        .HasForeignKey("Item_Id");
 
                     b.Navigation("AnotherItem");
 
@@ -669,7 +676,7 @@ namespace ERP_System.Migrations
 
                     b.HasOne("ERP_System.Models.Materials.Item", "_Item")
                         .WithMany()
-                        .HasForeignKey("_ItemID");
+                        .HasForeignKey("_ItemId");
 
                     b.Navigation("_Equivalence_Group");
 

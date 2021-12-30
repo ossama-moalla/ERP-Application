@@ -119,7 +119,7 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                var category = ItemCategory_repo.GetByID(itemCategory.id);
+                var category = ItemCategory_repo.GetByID(itemCategory.Id);
                 if(category.name== itemCategory.name)
                 {
                     ItemCategory_repo.Update(itemCategory);

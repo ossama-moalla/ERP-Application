@@ -25,7 +25,10 @@ namespace ERP_System
                 .HasForeignKey(e => e.parentID);
                 p.HasIndex(e => new { e.parentID, e.name }).IsUnique(true).HasFilter(null);
             });
-
+            //builder.Entity<Item>()
+            //    .HasIndex(p => new { p.Name, p.Company })
+            //    .IsUnique(true);
+            
             //builder.Entity<ItemCategorySpec>(p =>
             //{
             //    p.HasIndex(e => new { e.CategoryID, e.name }).IsUnique(true);
