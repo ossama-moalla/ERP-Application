@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP_System.Migrations
 {
     [DbContext(typeof(Application_Identity_DbContext))]
-    [Migration("20211229150246_App_Database")]
+    [Migration("20220105223714_App_Database")]
     partial class App_Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -136,11 +136,11 @@ namespace ERP_System.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("ConsumeUnit")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DefaultConsumeUnit")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ItemCategoryId")
                         .HasColumnType("int");

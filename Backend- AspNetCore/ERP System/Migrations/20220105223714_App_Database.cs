@@ -223,7 +223,7 @@ namespace ERP_System.Migrations
                     Company = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     MarketCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DefaultConsumeUnit = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConsumeUnit = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ItemCategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

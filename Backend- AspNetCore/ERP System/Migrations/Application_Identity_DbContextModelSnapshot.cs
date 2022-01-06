@@ -134,11 +134,11 @@ namespace ERP_System.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("ConsumeUnit")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DefaultConsumeUnit")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ItemCategoryId")
                         .HasColumnType("int");

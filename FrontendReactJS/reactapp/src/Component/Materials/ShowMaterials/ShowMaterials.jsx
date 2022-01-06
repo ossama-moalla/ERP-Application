@@ -10,6 +10,7 @@ import CategoryPath from './CategoryPath.jsx';
 import SpecFilter from './SpecFilter.jsx';
 import PopUPComponent from '../../PopUPComponent.jsx';
 import ItemCategoryAdd from '../ItemCategory/ItemCategoryAdd.jsx';
+import ItemAdd from '../Item/ItemAdd.jsx';
 
 class ShowMaterials  extends Component {
     constructor(){
@@ -101,6 +102,18 @@ class ShowMaterials  extends Component {
                     <div style={{margin:0}}>
                         <label >Path:</label>
                         <div className="div-inlineblock" style={{float:"right"}} >
+                            {
+                            this.state.currentCategoryID&&
+                                <button className="btn btn-primary btn-sm" style={{marginRight:10}}
+                                onClick={()=>
+                                this.showPopUpComponent(
+                                <ItemAdd
+                                currentCategoryID={this.state.currentCategoryID}
+                                refreshCategoryList={this.refreshCategoryList}
+                                />,'New Item')}>
+                                    Add Item
+                            </button>
+                            }
                             <button className="btn btn-primary btn-sm"
                              onClick={()=>
                              this.showPopUpComponent(
@@ -122,7 +135,7 @@ class ShowMaterials  extends Component {
                     <div id="main-data" className="new-window-parent" style={{display:"flex"}}>
                         <div className="bordered color-wheat "  
                         style={{display:(this.state.ShowSpecFilter?"block":"none")
-                        , marginRight:"2px",float:"left", height:"100%",padding:"15px"}}>
+                        , marginRight:"2px",float:"left", height:"100%",minWidth:200,padding:"15px"}}>
                             <SpecFilter   currentCategoryID={this.state.currentCategoryID}/>  
                         </div>
                         

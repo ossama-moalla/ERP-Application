@@ -22,7 +22,7 @@ namespace ERP_System.Models.Materials
         public string Company { get; set; }
         public string MarketCode { get; set; }
         public DateTime CreateDate { get; set; }
-        public string DefaultConsumeUnit { get; set; }
+        public string ConsumeUnit { get; set; }
         public int ItemCategoryId { get;set; }
         [JsonIgnore(Condition =JsonIgnoreCondition.WhenWritingNull)]
         public ItemCategory ItemCategory { get; set; }
