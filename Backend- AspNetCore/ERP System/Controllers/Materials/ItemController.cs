@@ -98,7 +98,7 @@ namespace ERP_System.Controllers.Materials
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
             }
         }
-        [HttpPost("List")]
+        [HttpGet("List")]
         public async Task<ActionResult<IEnumerable<Item>>> List([FromQuery] int CategoryID)
         {
             try

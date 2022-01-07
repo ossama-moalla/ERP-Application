@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import {toggleDivByCheckbox} from '../../../GeneralMethods.js'
+import {ExtractErrorMessage, toggleDivByCheckbox} from '../../../GeneralMethods.js'
 
 import axios from 'axios'
 import SearchBar from './SearchBar.jsx';
@@ -18,6 +18,7 @@ class ShowMaterials  extends Component {
         this.state={
             currentCategoryID:null,
             CategorysList:null,
+            ItemList:[],
             PathList:null,
             Error:null,
             ShowSpecFilter:false,
@@ -31,11 +32,28 @@ class ShowMaterials  extends Component {
         axios.get("https://localhost:5001/materials/ItemCategory/GetCategories?parentid="
         +(this.state.currentCategoryID==null?"":this.state.currentCategoryID))
         .then(res=>{ this.setState({ CategorysList:res.data})})
-        .catch(err=>this.setState({Error:err.message}));
+        .catch(err=>this.setState({Error:'get Category List Error:'+ExtractErrorMessage(err)}));
+    }
+    refreshItemList=()=>{
+        if(this.state.currentCategoryID==null) this.setState({ItemList:[]});
+        else{
+            axios.get("https://localhost:5001/materials/Item/List?CategoryID="
+        +(this.state.currentCategoryID==null?"":this.state.currentCategoryID))
+        .then(res=>{console.log(res.data)})
+        .catch(err=>{console.log(err)});
+        }
+        
     }
     openCategory= (ID)=>{
         if(ID==this.state.currentCategoryID) return;
-         this.setState({currentCategoryID:ID,CategorysList:null,Error:null},()=>this.refreshCategoryList());
+         this.setState({currentCategoryID:ID,CategorysList:null,Error:null}
+            ,()=>
+                {
+                    this.refreshCategoryList();
+                    this.refreshItemList();
+
+                }
+         );
     }
     deleteCategory=(ID,name)=>{
         if(ID==null) return ;
@@ -44,8 +62,7 @@ class ShowMaterials  extends Component {
         axios.delete("https://localhost:5001/materials/ItemCategory/delete?id="+ID)
         .then(res=>this.refreshCategoryList())
         .catch(err=>{
-            document.getElementById("displayerror").innerHTML='Server Replay:'+err.response.data
-            $('#displayerror').slideDown(500).delay(5000).slideUp('slow');
+            document.getElementById("displayerror").innerHTML='Server Replay:'+ExtractErrorMessage(err) ;         $('#displayerror').slideDown(500).delay(5000).slideUp('slow');
         });
     }
     closePopUpComponent=()=>  this.setState(prevstat=>({
