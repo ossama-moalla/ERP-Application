@@ -1,68 +1,108 @@
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import $ from 'jquery';
 import {ExtractErrorMessage, toggleDivByCheckbox} from '../../../GeneralMethods.js'
 
 import axios from 'axios'
 import SearchBar from './SearchBar.jsx';
 import FilterBar from './FilterBar.jsx';
-import ItemCategoryDiv from './ItemCategoryDiv.jsx';
+import ItemCategoryDiv from '../ItemCategory/ItemCategoryDiv.jsx';
 import CategoryPath from './CategoryPath.jsx';
 import SpecFilter from './SpecFilter.jsx';
 import PopUPComponent from '../../PopUPComponent.jsx';
 import ItemCategoryAdd from '../ItemCategory/ItemCategoryAdd.jsx';
 import ItemAdd from '../Item/ItemAdd.jsx';
+import Item_Div from '../Item/Item_Div.jsx';
 
 class ShowMaterials  extends Component {
     constructor(){
         super();
         this.state={
             currentCategoryID:null,
-            CategorysList:null,
+            CategoryList:[],
             ItemList:[],
-            PathList:null,
+            fetchDone:false,
             Error:null,
             ShowSpecFilter:false,
             popUpComponent:{Show:false,component:null,title:''}
         }
     }
     componentDidMount(){
-        this.refreshCategoryList()
+        this.openCategory(this.state.currentCategoryID,true,true)
     }
-    refreshCategoryList=()=>{
-        axios.get("https://localhost:5001/materials/ItemCategory/GetCategories?parentid="
-        +(this.state.currentCategoryID==null?"":this.state.currentCategoryID))
-        .then(res=>{ this.setState({ CategorysList:res.data})})
-        .catch(err=>this.setState({Error:'get Category List Error:'+ExtractErrorMessage(err)}));
-    }
-    refreshItemList=()=>{
-        if(this.state.currentCategoryID==null) this.setState({ItemList:[]});
-        else{
-            axios.get("https://localhost:5001/materials/Item/List?CategoryID="
-        +(this.state.currentCategoryID==null?"":this.state.currentCategoryID))
-        .then(res=>{console.log(res.data)})
-        .catch(err=>{console.log(err)});
+    fetchCategoryList=async()=>{
+        try{
+            var res= await  axios.get("https://localhost:5001/materials/ItemCategory/GetCategories?parentid="
+            +(this.state.currentCategoryID==null?"":this.state.currentCategoryID))
+            return res.data
+        }catch(err){
+            this.setState(prevState=>
+                ({
+                    ...prevState,
+                    Error:'get Category List Error:'+ExtractErrorMessage(err)
+                })
+                )
+            return [];
         }
-        
     }
-    openCategory= (ID)=>{
-        if(ID==this.state.currentCategoryID) return;
-         this.setState({currentCategoryID:ID,CategorysList:null,Error:null}
-            ,()=>
-                {
-                    this.refreshCategoryList();
-                    this.refreshItemList();
+    fetchItemList=async()=>{
+        if(this.state.currentCategoryID==null) return [];
+        else{
+            try{
+                const res=await axios.get("https://localhost:5001/materials/Item/List?CategoryID="
+                +(this.state.currentCategoryID==null?"":this.state.currentCategoryID))
+                return res.data;
+            }catch(err){
+                this.setState(prevState=>
+                    ({
+                        ...prevState,
+                        Error:'get Item List Error:'+ExtractErrorMessage(err)
+                    })
+                    )
+                return [];
+            }         
+        }     
+    }
+    openCategory= (ID,fetchCategories,fetchItems)=>{
+       // if(ID==this.state.currentCategoryID) return;
+         this.setState(prevState=>({
+             ...prevState,
+             currentCategoryID:ID,fetchDone:false,Error:null
+         })
+        ,async ()=>
+            {
+                let itemList=[],categoryList=[];
+                if(fetchCategories) categoryList=await this.fetchCategoryList();
+                else categoryList=[...this.state.CategoryList];
+                if(fetchItems) itemList= await this.fetchItemList();
+                else itemList=[...this.state.ItemList]
+                this.setState(prevState=>({
+                    ...prevState,
+                    currentCategoryID:ID,CategoryList:categoryList,ItemList:itemList,fetchDone:true
+                }))
 
-                }
+            }
          );
     }
-    deleteCategory=(ID,name)=>{
+    deleteCategory=async (ID,name)=>{
         if(ID==null) return ;
         var d=window.confirm('are u sure you want to delete category:'+name+'?');
         if(d===false) return;
-        axios.delete("https://localhost:5001/materials/ItemCategory/delete?id="+ID)
-        .then(res=>this.refreshCategoryList())
+        await this.setState(prevState=>({...prevState,fetchDone:false}))
+        await axios.delete("https://localhost:5001/materials/ItemCategory/delete?id="+ID)
+        .then(res=>this.openCategory(this.state.currentCategoryID,true,false))
         .catch(err=>{
             document.getElementById("displayerror").innerHTML='Server Replay:'+ExtractErrorMessage(err) ;         $('#displayerror').slideDown(500).delay(5000).slideUp('slow');
+        });
+    }
+    deleteItem=async (id,name)=>{
+        var d=window.confirm('are u sure you want to delete Item:'+name+'?');
+        if(d===false) return;
+        await this.setState(prevState=>({...prevState,fetchDone:false}))
+        await axios.delete("https://localhost:5001/materials/Item/delete?id="+id)
+        .then(res=>this.openCategory(this.state.currentCategoryID,false,true))
+        .catch(err=>{
+            document.getElementById("displayerror").innerHTML='Server Replay:'+ExtractErrorMessage(err) ; 
+                    $('#displayerror').slideDown(500).delay(5000).slideUp('slow');
         });
     }
     closePopUpComponent=()=>  this.setState(prevstat=>({
@@ -82,7 +122,6 @@ class ShowMaterials  extends Component {
         })));
     }
     render(){
-
         if(this.state.Error)
         return(<div className="App" style={{color:"red"}}>{this.state.Error}</div>)
         return (
@@ -126,7 +165,7 @@ class ShowMaterials  extends Component {
                                 this.showPopUpComponent(
                                 <ItemAdd
                                 currentCategoryID={this.state.currentCategoryID}
-                                refreshCategoryList={this.refreshCategoryList}
+                                openCategory={()=>this.openCategory(this.state.currentCategoryID,false,true)}
                                 />,'New Item')}>
                                     Add Item
                             </button>
@@ -135,7 +174,8 @@ class ShowMaterials  extends Component {
                              onClick={()=>
                              this.showPopUpComponent(
                              <ItemCategoryAdd
-                             refreshCategoryList={this.refreshCategoryList}
+                             parentID={this.state.currentCategoryID}
+                             openCategory={()=>this.openCategory(this.state.currentCategoryID,true,false)}
                              />,'New Category')}>
                                  Add Category
                             </button>
@@ -144,7 +184,8 @@ class ShowMaterials  extends Component {
                     
                     <div className="bordered color-wheat" style={{marginTop:0}}>
                         <CategoryPath currentCategoryID={this.state.currentCategoryID} 
-                        onClick={this.openCategory}/>   
+                             openCategory={this.openCategory}
+                             />   
                     </div>   
                     <div id="displayerror" className="App" 
                         style={{backgroundColor:"red",color:"white",display:"none"}}>
@@ -158,20 +199,42 @@ class ShowMaterials  extends Component {
                         
                         <div  style={{float:"none",height:"100%",width:"100%"}}>
                             {
-                                this.state.CategorysList==null?
+                                this.state.fetchDone==false?
                                 <div className="App" >Loading......</div>:                        
-                                this.state.CategorysList.length===0?
+                                this.state.CategoryList.length==0&&this.state.ItemList.length==0?
                                 <div className="App" style={{color:"red"}}>No Data Entered !</div>:
-                                this.state.CategorysList.map((category,i)=>{
-                                   return  <ItemCategoryDiv 
-                                        category={category}
-                                        refreshCategoryList={this.refreshCategoryList}
-                                        onDelete={this.deleteCategory}   
-                                        closePopUpComponent={this.closePopUpComponent}
-                                        showPopUpComponent={this.showPopUpComponent}
-                                        openCategory={this.openCategory } key={i}/>}
-                                        
-                                )
+                                <Fragment>
+                                    <Fragment>
+                                    {
+                                        this.state.CategoryList.map((category,i)=>{
+                                        return  <ItemCategoryDiv 
+                                                category={category}
+                                                openCategory={this.openCategory}
+                                                onDelete={this.deleteCategory}   
+                                                closePopUpComponent={this.closePopUpComponent}
+                                                showPopUpComponent={this.showPopUpComponent}
+                                                key={i}/>
+                                            }       
+                                        )
+                                    }
+                                    </Fragment>
+                                    <Fragment>
+                                    {
+                                       this.state.ItemList.map((item,i)=>{
+                                        return  <Item_Div 
+                                            item={item}
+                                            openCategory=
+                                            {()=>this.openCategory(this.state.currentCategoryID,false,true)}
+                                            onDelete={this.deleteItem}   
+                                            closePopUpComponent={this.closePopUpComponent}
+                                            showPopUpComponent={this.showPopUpComponent}
+                                            key={i}/>
+                                            }    
+                                        )
+                                    }
+                                    </Fragment>
+                                </Fragment>
+                                
                             }
                         </div>
                     </div>                

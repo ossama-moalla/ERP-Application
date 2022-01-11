@@ -30,7 +30,16 @@ namespace ERP_System.Repositories.Materials_Repository
 
         public void Update(Item entity)
         {
-            Db_Context.Materials_Item.Update(entity);
+            var item = GetByID(entity.Id);
+            if(item!=null)
+            {
+                item.Name = entity.Name;
+                item.ItemCategoryId = entity.ItemCategoryId;
+                item.Company = entity.Company;
+                item.ConsumeUnit = entity.ConsumeUnit;
+                item.MarketCode = entity.MarketCode;
+                Db_Context.SaveChanges();
+            }
         }
 
         public Item GetByID(int id)

@@ -117,14 +117,34 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                if (Item_repo.List().Where(x => 
-                       x.Name == item.Name
-                    && x.Company == item.Company
-                    && x.ItemCategoryId == item.ItemCategoryId).Count() > 0)
-                    return Ok(new ErrorResponse()
-                    { Message = $"Item name:{item.Name} and Company:{item.Company} already in use !" });
-                    
-                 return Ok(null);
+                var olditem = Item_repo.GetByID(item.Id);
+                if (olditem != null)
+                {
+                    if (olditem.Name != item.Name || olditem.Company != item.Company || olditem.ItemCategoryId != item.ItemCategoryId)
+                    {
+                        if (Item_repo.List().Where(x =>
+                            x.Name == item.Name
+                            && x.Company == item.Company
+                            && x.ItemCategoryId == item.ItemCategoryId).Count() > 0)
+                            return Ok(new ErrorResponse()
+                            { Message = $"Item name:{item.Name} and Company:{item.Company} already in use !" });
+                        else return Ok(null);
+
+                    }
+                    else return Ok(null);
+                }
+                else
+                {
+                    if (Item_repo.List().Where(x =>
+                            x.Name == item.Name
+                            && x.Company == item.Company
+                            && x.ItemCategoryId == item.ItemCategoryId).Count() > 0)
+                        return Ok(new ErrorResponse()
+                        { Message = $"Item name:{item.Name} and Company:{item.Company} already in use !" });
+
+                   else  return Ok(null);
+                }
+               
             }
             catch (Exception e)
             {

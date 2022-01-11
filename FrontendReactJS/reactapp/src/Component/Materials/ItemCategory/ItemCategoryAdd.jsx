@@ -12,9 +12,6 @@ class ItemCategoryAdd extends Component {
             id:undefined,
             name:'',
             defaultConsumeUnit:'',
-            VerifyError:{
-                name:null
-            }
         }
     }
  
@@ -23,7 +20,7 @@ class ItemCategoryAdd extends Component {
     }
     
     ValidateInput=async()=>{
-        var nameError='';
+        const div=document.getElementById("addcategory_displaymessage");
         if(this.state.name.trim()!="") {
             var category={
                 ParentID:this.props.parentID,
@@ -31,20 +28,26 @@ class ItemCategoryAdd extends Component {
                 defaultConsumeUnit:''
             }
             await axios.post("https://localhost:5001/materials/ItemCategory/verifydata",category)
-            .then(res=> nameError=res.data.nameError)
+            .then(res=>{
+                if(res.data.nameError)
+                    $(div).css( "background-color", "red" ).slideDown(500).text(res.data.nameError)   ;
+                else
+                     $(div).css( "background-color", "red" ).slideUp(500).text('')   ;
+                })
             .catch(err=>{});
         }
-        this.setState(prevstat=>({
-            ...prevstat,
-            VerifyError:{
-               name: nameError
-            }}))
+        else           
+            $(div).css( "background-color", "red" ).slideDown(500).text('name required')   ;
+
         
     }
     onChangeInput=async(e)=>{
         await this.setState({[e.target.name]:e.target.value},this.ValidateInput);
     }
     addCategory=()=>{
+        document.getElementById("buttonAdd").disabled =true;
+        const div=document.getElementById("addcategory_displaymessage");
+        $(div).css( "background-color", "coral" ).slideDown(500).text('Proccessing.....')
         const Category={
             name:this.state.name,
             parentID: this.props.parentID,
@@ -53,21 +56,27 @@ class ItemCategoryAdd extends Component {
         axios.post("https://localhost:5001/materials/ItemCategory/add",Category)
         .then(res=>
             {
-                var category_=res.data;
-                this.setState({
-                    AddDone:true,
-                    id:category_.id,
-                    name:category_.name,
-                    defaultConsumeUnit:category_.defaultConsumeUnit
-                   },this.props.refreshCategoryList())
+                
+                $(div).css( "background-color", "green" ).text('Category Added').delay(1500)
+                .slideUp(500,()=>
+                {
+                    document.getElementById("buttonAdd").disabled =false ;
+                    var category_=res.data;
+                    this.setState({
+                        AddDone:true,
+                        id:category_.id,
+                        name:category_.name,
+                        defaultConsumeUnit:category_.defaultConsumeUnit
+                    },this.props.openCategory)
                
+                });
+                
             }
             )
         .catch(err=>{
-            document.getElementById("addcategory_displayerror").innerHTML='Server Replay:'
-            +ExtractErrorMessage(err);
-            $('#addcategory_displayerror').slideDown(500).delay(5000).slideUp('slow');       
-         }); 
+            $(div).css( "background-color", "red" ).text(ExtractErrorMessage(err))
+            document.getElementById("buttonAdd").disabled =false
+        }); 
       
     }
     render() { 
@@ -75,8 +84,9 @@ class ItemCategoryAdd extends Component {
             <ItemCategorySpecs Category={{
                         id:this.state.id,
                         name:this.state.name,
-                        defaultConsumeUnit:this.state.defaultConsumeUnit}}
-                        Return={()=>this.setState({
+                        defaultConsumeUnit:this.state.defaultConsumeUnit
+                    }}
+                    Return={()=>this.setState({
                             AddDone:false,
                             name:'',
                             id:undefined,
@@ -86,7 +96,7 @@ class ItemCategoryAdd extends Component {
         )
         return (
             <div id='ItemCategoryAdd' style={{display:"none"}}>
-                <div id="addcategory_displayerror" className="App error-div">
+                <div id="addcategory_displaymessage" className="App error-div">
                 </div>
                 <div   >
                     <div className="form-group" >
@@ -96,7 +106,6 @@ class ItemCategoryAdd extends Component {
                         value={this.state.name}
                         onChange={this.onChangeInput}
                         />
-                        <div className='form-input-err'>{this.state.VerifyError.name==null?"":this.state.VerifyError.name}</div>
                         
                         <label>Default Consume Unit</label>
                         <input type="text" name="defaultConsumeUnit"
@@ -106,7 +115,7 @@ class ItemCategoryAdd extends Component {
                         />
                     </div>  
                     <div className="form-group">
-                        <button  className="btn btn-primary" style={{margin:5}} onClick={this.addCategory}>
+                        <button id="buttonAdd" className="btn btn-primary" style={{margin:5}} onClick={this.addCategory}>
                             Add </button>   
                     </div>
                 </div> 

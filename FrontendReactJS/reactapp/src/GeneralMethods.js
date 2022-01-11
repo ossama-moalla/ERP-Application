@@ -1,6 +1,14 @@
 const ExtractErrorMessage=(err)=>{
     try{
+      if(err.response.data.message)
         return err.response.data.message
+      else{
+        if(err.response.statusText)
+          return err.response.status+' '+ err.response.statusText
+        else
+          return 'Unknown Error'
+
+      }
     }catch{
         return 'Unknown Error'
     }

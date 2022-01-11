@@ -7,7 +7,6 @@ class ItemCategorySpecs extends Component {
     constructor(props){
         super(props);
         this.state={
-            orginalSpec:null,//for validate input for update
             spec:{
                 id:null,
                 name:'',
@@ -53,6 +52,67 @@ class ItemCategorySpecs extends Component {
         }
         
     }
+    
+    ValidateInput=async()=>{
+        
+        const index=this.state.spec.index,name=this.state.spec.name;
+        let nameError=null,indexError=null;
+        if(isNaN(index)||index.toString().trim()==""){
+                indexError="Index required and Must be Number";
+        }
+        if(name.trim()==""){
+            nameError="name required and Must be not empty";
+        }
+        if(nameError!=null||indexError!=null){
+            this.setState(prevstat=>({
+                ...prevstat,
+                VerifyError:{
+                   nameError: nameError,
+                   indexError:indexError
+                }
+                }));
+                return;
+        }
+        const spec={
+            id:this.state.spec.id,
+            categoryID:this.props.Category.id,
+            name:this.state.spec.name,
+            isRestricted:this.state.spec.isRestricted,
+            index:this.state.spec.index
+        }
+
+        axios.post("https://localhost:5001/materials/ItemCategorySpec/verifydata",spec)
+        .then(res=>{
+            this.setState(prevstat=>({
+                ...prevstat,
+                VerifyError:{
+                   nameError: res.data.nameError,
+                   indexError:res.data.indexError
+                }
+            }))
+            })
+        .catch(err=>{});
+    }
+    onChangeInput=async(e)=>{
+        if(e.target.name=="isRestricted"){
+            this.setState(prevState => ({
+                ...prevState,
+                spec: {
+                         ...prevState.spec,
+                         isRestricted:e.target.checked
+                     }
+             }));
+        }
+        else{   
+            this.setState(prevState => ({
+                ...prevState,
+                spec: {
+                        ...prevState.spec,
+                        [e.target.name]:e.target.value
+                    }
+            }),this.ValidateInput);
+        }
+    }
     addSpec=async(e)=>{
         e.preventDefault();
         const spec={
@@ -61,6 +121,7 @@ class ItemCategorySpecs extends Component {
             isRestricted:this.state.spec.isRestricted,
             index:this.state.spec.index
         }
+        console.log(spec)
         if(this.state.spec.name.trim()==""){
             document.getElementById("spec_displayerror").innerHTML='Spec Name Required'
             $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow');  
@@ -84,87 +145,6 @@ class ItemCategorySpecs extends Component {
             document.getElementById("spec_displayerror").innerHTML='Server Replay:'
             +ExtractErrorMessage(err)
             $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow'); });     
-    }
-    ValidateInput=async()=>{
-        
-        const index=this.state.spec.index,name=this.state.spec.name;
-        let nameError=null,indexError=null;
-        if(isNaN(index)||index.toString().trim()==""){
-                indexError="Index required and Must be Number";
-        }
-        if(name.trim()==""){
-            nameError="name required and Must be not empty";
-        }
-        if(nameError!=null||indexError!=null){
-            this.setState(prevstat=>({
-                ...prevstat,
-                VerifyError:{
-                   nameError: nameError,
-                   indexError:indexError
-                }
-                }));
-                return;
-        }
-        const spec={
-            categoryID:this.props.Category.id,
-            name:this.state.spec.name,
-            isRestricted:this.state.spec.isRestricted,
-            index:this.state.spec.index
-        }
-        var nameChanged=false,indexChanged=false;
-        if(this.state.orginalSpec.name!=this.state.spec.name) nameChanged=true;
-        if(this.state.orginalSpec.index!=this.state.spec.index) indexChanged=true;
-        if(!nameChanged&&!indexChanged){//updated input not changed so no errors
-            this.setState(prevstat=>({
-                ...prevstat,
-                VerifyError:{
-                   nameError: null,
-                   indexError:null
-                }
-            }))
-        }
-        axios.post("https://localhost:5001/materials/ItemCategorySpec/verifydata",spec)
-        .then(res=>{
-            if(this.state.spec.id){
-                this.setState(prevstat=>({
-                    ...prevstat,
-                    VerifyError:{
-                       nameError:nameChanged? res.data.nameError:null,
-                       indexError:indexChanged? res.data.indexError:null
-                    }
-                }))
-            }
-            else{
-                this.setState(prevstat=>({
-                    ...prevstat,
-                    VerifyError:{
-                       nameError: res.data.nameError,
-                       indexError:res.data.indexError
-                    }
-                }))
-            }
-            })
-        .catch(err=>{});
-    }
-    onChangeInput=async(e)=>{
-        if(e.target.name=="isRestricted"){
-            this.setState(prevState => ({
-                ...prevState,
-                spec: {
-                         ...prevState.spec,
-                         isRestricted:e.target.checked
-                     }
-             }));
-        }
-        else{   
-            this.setState(prevState => ({
-                ...prevState,
-                spec: {
-                        ...prevState.spec,
-                        [e.target.name]:e.target.value
-                    }
-            }),this.ValidateInput);
-        }
     }
     updateSpec=async()=>{
         {
@@ -310,7 +290,6 @@ class ItemCategorySpecs extends Component {
                                               <button className="btn-text" 
                                                 onClick={()=>this.setState(prevState=>({
                                                     ...prevState,
-                                                    orginalSpec:spec,
                                                     spec:{
                                                     id:spec.id,
                                                     name:spec.name,

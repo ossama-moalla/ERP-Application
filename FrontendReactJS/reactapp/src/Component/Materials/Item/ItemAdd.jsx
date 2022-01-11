@@ -106,7 +106,7 @@ class ItemAdd extends Component {
                     company:'',
                     marketCode:'',
                     consumeUnit :'',
-                },this.props.refreshCategoryList())
+                },this.props.openCategory)
                
             }
             )

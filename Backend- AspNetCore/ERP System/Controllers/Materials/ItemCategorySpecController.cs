@@ -137,13 +137,33 @@ namespace ERP_System.Controllers.Materials
             try
             {
                 string nameError = null, indexError = null;
-                if (ItemCategorySpec_Repo.List().Where(x => x.name == categoryspec.name
-                    && x.CategoryID == categoryspec.CategoryID).Count() > 0)
-                    nameError = $"SpecName '{categoryspec.name}' is already in use.";
-                if (ItemCategorySpec_Repo.List().Where(x => x.index == categoryspec.index
-                    && x.CategoryID == categoryspec.CategoryID).Count() > 0)
-                    indexError = $"Index [{ categoryspec.index}] is already in use.";
+                var oldspec = ItemCategorySpec_Repo.GetByID(categoryspec.id);
+                if (oldspec != null)
+                {
+                    if (oldspec.name != categoryspec.name)
+                    {
+                        if (ItemCategorySpec_Repo.List().Where(x => x.name == categoryspec.name
+                            && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                            nameError = $"SpecName '{categoryspec.name}' is already in use.";
+                    }
+                    if (oldspec.index != categoryspec.index)
+                    {
+                        if (ItemCategorySpec_Repo.List().Where(x => x.index == categoryspec.index
+                            && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                            indexError = $"Index [{ categoryspec.index}] is already in use.";
 
+                    }
+                }
+                else
+                {
+                    if (ItemCategorySpec_Repo.List().Where(x => x.name == categoryspec.name
+                                        && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                        nameError = $"SpecName '{categoryspec.name}' is already in use.";
+                    if (ItemCategorySpec_Repo.List().Where(x => x.index == categoryspec.index
+                        && x.CategoryID == categoryspec.CategoryID).Count() > 0)
+                        indexError = $"Index [{ categoryspec.index}] is already in use.";
+
+                }
                 if (nameError == null && indexError == null)
                     return Ok(null);
                 else

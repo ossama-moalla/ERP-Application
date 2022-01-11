@@ -120,7 +120,7 @@ namespace ERP_System.Controllers.Materials
             try
             {
                 var category = ItemCategory_repo.GetByID(itemCategory.Id);
-                if(category.name== itemCategory.name)
+                if(category.name== itemCategory.name)//if same there is no need to call verify data cuz name is unique in parent category
                 {
                     ItemCategory_repo.Update(itemCategory);
                     return Ok();
@@ -172,15 +172,30 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
+                ItemCategory_ValidationError Error = null;
                 if (category.parentID != null)
                     if (ItemCategory_repo.GetByID((int)category.parentID) == null)
                         return StatusCode(StatusCodes.Status400BadRequest,
-                            new ErrorResponse() {Message="Bad Parameters"});
-                ItemCategory_ValidationError Error = null;
-                if (ItemCategory_repo.List().Where(x => x.name == category.name
-                 && x.parentID == category.parentID).Count() > 0)
-                    Error = new ItemCategory_ValidationError (){ nameError = $"Category Name '{category.name}' is already in use." };
+                            new ErrorResponse() { Message = "Bad Parameters" });
 
+                var oldcategory = ItemCategory_repo.GetByID(category.Id);
+                if (oldcategory != null)
+                {
+                    if (oldcategory.name != category.name)
+                    {
+                        if (ItemCategory_repo.List().Where(x => x.name == category.name
+                            && x.parentID == category.parentID).Count() > 0)
+                            Error = new ItemCategory_ValidationError() { nameError = $"Category Name '{category.name}' is already in use." };
+
+                    }
+                }
+                else
+                {
+                    if (ItemCategory_repo.List().Where(x => x.name == category.name
+                                     && x.parentID == category.parentID).Count() > 0)
+                        Error = new ItemCategory_ValidationError() { nameError = $"Category Name '{category.name}' is already in use." };
+
+                }
                 return Ok(Error);
 
             }

@@ -28,9 +28,13 @@ namespace ERP_System.Repositories.Materials_Repository
         public void Update(ItemCategorySpec entity)
         {
             var spec = GetByID(entity.id);
-            spec.name = entity.name;
-            spec.index = entity.index;
-            Db_Context.SaveChanges();
+            if(spec!=null)
+            {
+
+                spec.name = entity.name;
+                spec.index = entity.index;
+                Db_Context.SaveChanges();
+            }
         }
 
         public ItemCategorySpec GetByID(int id)

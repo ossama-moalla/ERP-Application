@@ -9,7 +9,6 @@ class ItemCategoryUpdate extends Component {
         super(props);
         this.state={
             UpdateDone:false,
-            id:props.Category.id,
             name:props.Category.name,
             defaultConsumeUnit:props.Category.defaultConsumeUnit,
             VerifyError:{
@@ -24,18 +23,11 @@ class ItemCategoryUpdate extends Component {
     }
     
     ValidateInput=async()=>{
-        if(this.state.name==this.props.Category.name){
-            this.setState(prevstat=>({
-                ...prevstat,
-                VerifyError:{
-                   name: null
-                }}))
-                return;
-        }
         var nameError='';
         if(this.state.name.trim()!="") {
             var category={
-                ParentID:this.props.parentID,
+                id:this.props.Category.id,
+                ParentID:this.props.Category.parentID,
                 Name:this.state.name,
                 defaultConsumeUnit:''
             }
@@ -56,8 +48,8 @@ class ItemCategoryUpdate extends Component {
     updateCategory=()=>{
         
         const Category={
-            id:this.state.id,
-            parentID: this.props.parentID,
+            id:this.props.Category.id,
+            parentID:this. props.Category.parentID,
             name:this.state.name,
             defaultConsumeUnit:this.state.defaultConsumeUnit
         }
@@ -67,7 +59,7 @@ class ItemCategoryUpdate extends Component {
 
                this.setState({
                     UpdateDone:true
-                    },this.props.refreshCategoryList());
+                    },this.props.openCategory);
             }
             )
         .catch(err=>{
@@ -79,10 +71,13 @@ class ItemCategoryUpdate extends Component {
     }
     render() { 
         if(this.state.UpdateDone) return (
-            <ItemCategorySpecs Category={{
-                        id:this.state.id,
-                        name:this.state.name,
-                        defaultConsumeUnit:this.state.defaultConsumeUnit}}
+            <ItemCategorySpecs 
+                        Category={{
+                            id:this.props.Category.id,
+                            parentID:this.props.Category.parentID,
+                            name:this.state.name,
+                            defaultConsumeUnit:this.state.defaultConsumeUnit
+                        }}
                         Return={this.props.closePopUpComponent}     
                         />
         )
@@ -108,13 +103,8 @@ class ItemCategoryUpdate extends Component {
                         />
                     </div>  
                     <div className="form-group">
-                        {
-                        this.state.id?
                         <button  className="btn btn-primary" style={{margin:5}} onClick={this.updateCategory}>
-                            Update </button>:
-                        <button  className="btn btn-primary" style={{margin:5}} onClick={this.addCategory}>
-                            Add </button>
-                        }
+                            Update </button>
                     </div>
                 </div> 
             </div>           

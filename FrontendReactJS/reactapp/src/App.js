@@ -4,8 +4,7 @@ import "bootstrap/js/src/collapse.js";
 import './App.css';
 import './CSS/color.css';
 import './CSS/general.css';
-import { createStore} from 'redux';
-import {Provider } from 'react-redux';
+import React from 'react'
 import {
   BrowserRouter,
   Routes,
@@ -13,23 +12,18 @@ import {
 } from "react-router-dom";
 //import Footer from './Component/Footer'
 import Navbar from './Component/Navbar.jsx';
-import MaterialGate from './Component/Materials/MaterialsGate';
-const ApplicationReducer=(state,action)=>{
-  
-}
-
-let store=createStore(ApplicationReducer);
-
+import ShowMaterials from './Component/Materials/ShowMaterials/ShowMaterials.jsx';
+import MoneyAccountWindow from './Component/Accounting/ShowAccountInfo/MoneyAccountWindow.jsx'
 const App=()=>(
-  <Provider store={store}>
+  <React.Fragment>
     {/*<Navbar/>*/}
     <BrowserRouter>
         <Routes>
-        <Route path="/"  element={<MaterialGate/>}/>
-        <Route  path={'materials/*'}  element={<MaterialGate/>} />
+        <Route path="/"  element={<MoneyAccountWindow/>}/>
+        <Route  path={'materials/*'}  element={<ShowMaterials/>} />
         </Routes>
         </BrowserRouter>
-  </Provider>
+  </React.Fragment>
 );
 
 export default App;
