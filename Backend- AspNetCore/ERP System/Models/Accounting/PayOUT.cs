@@ -2,48 +2,36 @@
 using ERP_System.Models.Trade;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ERP_System.Models.Accounting
 {
     public class PayOUT
     {
-        public MoneyAccount _Money_Account;
-        public int PayOprID;
-        public DateTime PayOprDate;
-        public IBill _Bill;
-        public EmployeePayOrder _EmployeePayOrder;
+        public int MoneyAccountId { get; set; }
+        [JsonIgnore]
+        public MoneyAccount MoneyAccount { get; set; }
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
+        public int? OperationId { get; set; }
+        public int? OperationType { get; set; }
+        [JsonIgnore]
+        public IBill Bill { set { Bill = value; } }//bill buy
+        [JsonIgnore]
+        public EmployeePayOrder PayOrder { set { PayOrder = value; } } //payorder
 
-        public string PayDescription;
-        public double Value;
-        public Currency _Currency;
-        public double ExchangeRate;
-        public string Notes;
-
-        public PayOUT(MoneyAccount Money_Account_, int PayOprID_, DateTime PayOprDate_, IBill Bill_, string PayDescription_, double Value_, double ExchangeRate_, Currency Currency_, string Notes_)
-        {
-            _Money_Account = Money_Account_;
-            PayOprID = PayOprID_;
-            PayOprDate = PayOprDate_;
-            _Bill = Bill_;
-            PayDescription = PayDescription_;
-            Value = Value_;
-            _Currency = Currency_;
-            ExchangeRate = ExchangeRate_;
-            Notes = Notes_;
-        }
-        public PayOUT(MoneyAccount Money_Account_, int PayOprID_, DateTime PayOprDate_, EmployeePayOrder EmployeePayOrder_, string PayDescription_, double Value_, double ExchangeRate_, Currency Currency_, string Notes_)
-        {
-            _Money_Account = Money_Account_;
-            PayOprID = PayOprID_;
-            PayOprDate = PayOprDate_;
-            _EmployeePayOrder = EmployeePayOrder_;
-            PayDescription = PayDescription_;
-            Value = Value_;
-            _Currency = Currency_;
-            ExchangeRate = ExchangeRate_;
-            Notes = Notes_;
-        }
+        public string Description { get; set; }
+        [Required]
+        public double Value { get; set; }
+        public int? CurrencyId { get; set; }
+        [JsonIgnore]
+        public Currency Currency { get; set; }
+        [Required]
+        public double ExchangeRate { get; set; }
+        public string Notes { get; set; }
     }
 }

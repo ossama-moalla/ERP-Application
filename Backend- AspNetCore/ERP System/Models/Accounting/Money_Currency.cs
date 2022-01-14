@@ -27,12 +27,12 @@ namespace ERP_System.Models.Accounting
             try
             {
                 List<Currency> currencyList = Money_CurrencyList.Select(x => x._Currency).ToList();
-                List<int> currencylist = Money_CurrencyList.Select(x => x._Currency.CurrencyID).Distinct().ToList();
+                List<int> currencylist = Money_CurrencyList.Select(x => x._Currency.Id).Distinct().ToList();
                 for (int i = 0; i < currencylist.Count; i++)
                 {
-                    Currency currency = currencyList.Where(y => y.CurrencyID == currencylist[i]).ToList()[0];
-                    returnstring += Math.Round(Money_CurrencyList.Where(x => x._Currency.CurrencyID == currencylist[i]).Sum(y => y.Value), 3)
-                        + currency.CurrencySymbol;
+                    Currency currency = currencyList.Where(y => y.Id == currencylist[i]).ToList()[0];
+                    returnstring += Math.Round(Money_CurrencyList.Where(x => x._Currency.Id == currencylist[i]).Sum(y => y.Value), 3)
+                        + currency.Symbol;
                     if (i < currencyList.Count - 1) returnstring += " , ";
                 }
             }
@@ -52,7 +52,7 @@ namespace ERP_System.Models.Accounting
 
                 for (int i = 0; i < MoneyTransFormOPRList.Count; i++)
                 {
-                    Money_CurrencyList.Add(new Money_Currency(MoneyTransFormOPRList[i]._Currency, MoneyTransFormOPRList[i].Value, MoneyTransFormOPRList[i].ExchangeRate));
+                    Money_CurrencyList.Add(new Money_Currency(MoneyTransFormOPRList[i].Currency, MoneyTransFormOPRList[i].Value, MoneyTransFormOPRList[i].ExchangeRate));
                 }
             }
             catch
@@ -70,7 +70,7 @@ namespace ERP_System.Models.Accounting
 
                 for (int i = 0; i < PayINList.Count; i++)
                 {
-                    Money_CurrencyList.Add(new Money_Currency(PayINList[i]._Currency, PayINList[i].Value, PayINList[i].ExchangeRate));
+                    Money_CurrencyList.Add(new Money_Currency(PayINList[i].Currency, PayINList[i].Value, PayINList[i].ExchangeRate));
                 }
             }
             catch
@@ -88,7 +88,7 @@ namespace ERP_System.Models.Accounting
 
                 for (int i = 0; i < PayOUTList.Count; i++)
                 {
-                    Money_CurrencyList.Add(new Money_Currency(PayOUTList[i]._Currency, PayOUTList[i].Value, PayOUTList[i].ExchangeRate));
+                    Money_CurrencyList.Add(new Money_Currency(PayOUTList[i].Currency, PayOUTList[i].Value, PayOUTList[i].ExchangeRate));
                 }
             }
             catch

@@ -1,33 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ERP_System.Models.Accounting
 {
     public class ExchangeOPR
     {
-        public MoneyAccount _Money_Account;
-        public int ExchangeOprID;
-        public DateTime ExchangeOprDate;
-        public Currency SourceCurrency;
-        public double SourceExchangeRate;
-        public double OutMoneyValue;
-        public Currency TargetCurrency;
-        public double TargetExchangeRate;
-        public string Notes;
-        public ExchangeOPR(MoneyAccount Money_Account_, int ExchangeOprID_, DateTime ExchangeOprDate_,
-            Currency SourceCurrency_, double SourceExchangeRate_, double OutMoneyValue_, Currency TargetCurrency_, double TargetExchangeRate_, string Notes_)
-        {
-            _Money_Account = Money_Account_;
-            ExchangeOprID = ExchangeOprID_;
-            ExchangeOprDate = ExchangeOprDate_;
-            SourceCurrency = SourceCurrency_;
-            SourceExchangeRate = SourceExchangeRate_;
-            OutMoneyValue = OutMoneyValue_;
-            TargetCurrency = TargetCurrency_;
-            TargetExchangeRate = TargetExchangeRate_;
-            Notes = Notes_;
-        }
+        public int MoneyAccountID { get; set; }
+        [JsonIgnore]
+        public MoneyAccount MoneyAccount;
+        [Key]
+        public int Id { get; set; }
+        public DateTime date { get; set; }
+        [Required]
+        public int? SourceCurrencyId { get; set; }
+        [JsonIgnore]
+        public Currency SourceCurrency { get; set; }
+        public double SourceExchangeRate { get; set; }
+        public double OutMoneyValue { get; set; }
+        [Required]
+        public int? TargetCurrencyId { get; set; }
+        [JsonIgnore]
+        public Currency TargetCurrency { get; set; }
+        public double TargetExchangeRate { get; set; }
+        public string Notes { get; set; }
     }
 }

@@ -15,37 +15,40 @@ namespace ERP_System.Repositories.Accounting_Repository
         }
         public void Add(Currency entity)
         {
-            throw new NotImplementedException();
+            DbContext.Accounting_Currency.Add(entity);
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = GetByID(id);
+            DbContext.Accounting_Currency.Remove(entity);
+            DbContext.SaveChanges();
         }
 
         public void Update(Currency entity)
         {
-            throw new NotImplementedException();
+            var currency = GetByID(entity.Id);
+            if (currency != null)
+            {
+                currency.Name = entity.Name;
+                currency.Symbol = entity.Symbol;
+                currency.ExchangeRate = entity.ExchangeRate;
+                currency.Disable = entity.Disable;
+                DbContext.SaveChanges();
+            }
         }
 
         public Currency GetByID(int id)
         {
-            throw new NotImplementedException();
-        }
-        internal Currency GetReferenceCurrency()
-        {
-            throw new NotImplementedException();
-
-        }
-        internal List<Currency> getList()
-        {
-            throw new NotImplementedException();
-
+            return DbContext.Accounting_Currency.SingleOrDefault(x => x.Id == id);
         }
 
         public IList<Currency> List()
         {
-            throw new NotImplementedException();
+            return DbContext.Accounting_Currency.ToList();
         }
+
+
     }
 }
