@@ -103,7 +103,7 @@ namespace ERP_System.Controllers.Accounting
             }
         }
         [HttpGet("List")]
-        public async Task<ActionResult<IEnumerable<MoneyAccount>>> List([FromQuery] int CategoryID)
+        public async Task<ActionResult<IEnumerable<MoneyAccount>>> List()
         {
             try
             {

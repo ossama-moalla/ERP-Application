@@ -89,11 +89,12 @@ namespace ERP_System.Controllers.Accounting
             }
         }
         [HttpGet("Info")]
-        public async Task<ActionResult<PayIN>> Info([FromQuery] int id)
+        public async Task<ActionResult<PayIN_VM>> Info([FromQuery] int id)
         {
             try
             {
-                return Ok(PayIN_repo.GetByID(id));
+                var payin = PayIN_repo.GetByID(id);
+                return Ok(PayIN.ConvertToPayIN_VM(payin));
             }
             catch (Exception e)
             {
@@ -102,11 +103,12 @@ namespace ERP_System.Controllers.Accounting
             }
         }
         [HttpGet("List")]
-        public async Task<ActionResult<IEnumerable<PayIN>>> List([FromQuery] int CategoryID)
+        public async Task<ActionResult<IEnumerable<PayIN_VM>>> List()
         {
             try
             {
-                return Ok(PayIN_repo.List().ToList());
+                var list = PayIN_repo.List();
+                return Ok(PayIN.ConvertToPayIN_VM(list));
             }
             catch (Exception e)
             {

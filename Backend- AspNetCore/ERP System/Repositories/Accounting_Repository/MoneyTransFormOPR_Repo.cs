@@ -1,4 +1,5 @@
 ﻿using ERP_System.Models.Accounting;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,45 +9,53 @@ namespace ERP_System.Repositories.Accounting_Repository
 {
     public class MoneyTransFormOPR_Repo : IApplicationRepository<MoneyTransFormOPR>
     {
+        Application_Identity_DbContext DbContext;
+        public MoneyTransFormOPR_Repo(Application_Identity_DbContext DbContext_)
+        {
+            DbContext = DbContext_;
+        }
         public void Add(MoneyTransFormOPR entity)
         {
-            throw new NotImplementedException();
+            DbContext.Accounting_MoneyTransFormOPR.Add(entity);
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var moneyTransformOpr = GetByID(id);
+            DbContext.Accounting_MoneyTransFormOPR.Remove(moneyTransformOpr);
+            DbContext.SaveChanges();
         }
 
         public void Update(MoneyTransFormOPR entity)
         {
-            throw new NotImplementedException();
+            var moneyTransformOpr = GetByID(entity.Id);
+            if (moneyTransformOpr != null)
+            {
+                moneyTransformOpr.SourceMoneyAccountId = entity.SourceMoneyAccountId;
+                moneyTransformOpr.TargetMoneyAccountId = entity.TargetMoneyAccountId;
+                moneyTransformOpr.CurrencyId = entity.CurrencyId; 
+                moneyTransformOpr.ExchangeRate = entity.ExchangeRate;
+                moneyTransformOpr.Value = entity.Value;
+                moneyTransformOpr.Notes = entity.Notes;
+                DbContext.SaveChanges();
+            }
         }
 
         public MoneyTransFormOPR GetByID(int id)
         {
-            throw new NotImplementedException();
+            return DbContext.Accounting_MoneyTransFormOPR
+                .Include(x=>x.SourceMoneyAccount)
+                .Include(x => x.TargetMoneyAccount)
+                .Include(x => x.Currency)
+                .SingleOrDefault(x => x.Id == id);
         }
-        internal List<MoneyTransFormOPR> Get_All_MoneyTransFormOPRList()
-        {
-            throw new NotImplementedException();
-        }
-        internal List<Money_Currency> GetMoneyTransFormOPRList_As_MoneyCurrency()
-        {
-            throw new NotImplementedException();
-        }
-        internal List<MoneyTransFormOPR> Get_Stuck_MoneyTransformOPR_IN_List(MoneyAccount moneyAccount)
-        {
-            throw new NotImplementedException();
-        }
-        internal List<MoneyTransFormOPR> Get_Stuck_MoneyTransformOPR_OUT_List(MoneyAccount moneyAccount)
-        {
-            throw new NotImplementedException();
-        }
-
         public IList<MoneyTransFormOPR> List()
         {
-            throw new NotImplementedException();
+            return DbContext.Accounting_MoneyTransFormOPR
+                .Include(x => x.SourceMoneyAccount)
+                .Include(x => x.TargetMoneyAccount)
+                .Include(x => x.Currency).ToList();
         }
     }
 }

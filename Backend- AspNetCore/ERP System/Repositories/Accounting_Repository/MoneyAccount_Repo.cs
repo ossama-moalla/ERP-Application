@@ -15,31 +15,35 @@ namespace ERP_System.Repositories.Accounting_Repository
         }
         public void Add(MoneyAccount entity)
         {
-            throw new NotImplementedException();
+            DbContext.Accounting_MoneyAccount.Add(entity);
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var moneyaccount = GetByID(id);
+            DbContext.Accounting_MoneyAccount.Remove(moneyaccount);
+            DbContext.SaveChanges();
         }
 
         public void Update(MoneyAccount entity)
         {
-            throw new NotImplementedException();
+            var moneyaccount = GetByID(entity.Id);
+            if (moneyaccount != null)
+            {
+                moneyaccount.Name = entity.Name;
+                DbContext.SaveChanges();
+            }
         }
 
         public MoneyAccount GetByID(int id)
         {
-            throw new NotImplementedException();
+            return DbContext.Accounting_MoneyAccount.SingleOrDefault(x => x.Id == id);
         }
-        public List<MoneyAccount> GetMoneyAccount_List()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public IList<MoneyAccount> List()
         {
-            throw new NotImplementedException();
+            return DbContext.Accounting_MoneyAccount.ToList();
         }
     }
 }

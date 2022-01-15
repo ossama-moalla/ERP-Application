@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class MoneyAccountReportByDateType extends Component {
+class MoneyAccountReport extends Component {
     render() {
         return (
             <div >
@@ -102,4 +102,4 @@ class MoneyAccountReportByDateType extends Component {
     }
 }
 
-export default MoneyAccountReportByDateType;
+export default MoneyAccountReport;

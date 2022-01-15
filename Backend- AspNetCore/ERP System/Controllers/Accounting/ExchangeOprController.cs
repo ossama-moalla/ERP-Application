@@ -94,7 +94,8 @@ namespace ERP_System.Controllers.Accounting
         {
             try
             {
-                return Ok(ExchangeOpr_repo.GetByID(id));
+                var exchangeopr = ExchangeOpr_repo.GetByID(id);
+                return Ok(ExchangeOPR.ConvertToExchangeOPR_VM(exchangeopr));
             }
             catch (Exception e)
             {
@@ -103,11 +104,12 @@ namespace ERP_System.Controllers.Accounting
             }
         }
         [HttpGet("List")]
-        public async Task<ActionResult<IEnumerable<ExchangeOPR>>> List([FromQuery] int CategoryID)
+        public async Task<ActionResult<IEnumerable<ExchangeOPR>>> List()
         {
             try
             {
-                return Ok(ExchangeOpr_repo.List().ToList());
+                var list = ExchangeOpr_repo.List().ToList();
+                return Ok(ExchangeOPR.ConvertToExchangeOPR_VM(list));
             }
             catch (Exception e)
             {

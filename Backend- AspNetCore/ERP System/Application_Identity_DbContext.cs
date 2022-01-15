@@ -80,6 +80,7 @@ namespace ERP_System
 
         //------------------
         public DbSet<Currency> Accounting_Currency { get; set; }
+        public DbSet<MoneyAccount> Accounting_MoneyAccount { get; set; }
         public DbSet<PayIN> Accounting_PayIN { get; set; }
         public DbSet<PayOUT> Accounting_PayOUT { get; set; }
         public DbSet<ExchangeOPR> Accounting_ExchangeOPR { get; set; }

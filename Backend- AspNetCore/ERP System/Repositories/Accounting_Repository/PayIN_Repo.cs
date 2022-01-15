@@ -1,5 +1,6 @@
 ﻿using ERP_System.Models.Accounting;
 using ERP_System.Models.Trade;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,39 +15,41 @@ namespace ERP_System.Repositories.Accounting_Repository
         {
             DbContext = DbContext_;
         }
-        public void Add(PayIN entity)
+       public void Add(PayIN entity)
         {
-            throw new NotImplementedException();
+            DbContext.Accounting_PayIN.Add(entity);
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var payin = GetByID(id);
+            DbContext.Accounting_PayIN.Remove(payin);
+            DbContext.SaveChanges();
         }
 
         public void Update(PayIN entity)
         {
-            throw new NotImplementedException();
+            var payin = GetByID(entity.Id);
+            if (payin != null)
+            {
+                payin.MoneyAccountId = entity.MoneyAccountId;
+                payin.CurrencyId = entity.CurrencyId;
+                payin.ExchangeRate = entity.ExchangeRate;
+                payin.Value = entity.Value;
+                payin.Description = entity.Description;
+                payin.Notes = entity.Notes;
+                DbContext.SaveChanges();
+            }
         }
 
         public PayIN GetByID(int id)
         {
-            throw new NotImplementedException();
+            return DbContext.Accounting_PayIN.Include(y=>y.Currency).Include(y => y.MoneyAccount).SingleOrDefault(x => x.Id == id);
         }
-
         public IList<PayIN> List()
         {
-            throw new NotImplementedException();
-        }
-
-        internal List<Money_Currency> GetPayINList_As_Money_Currency(Operation opeartion)
-        {
-            throw new NotImplementedException();
-
-        }
-        internal List<PayIN> Get_All_PayINList(MoneyAccount moneyAccount)
-        {
-            throw new NotImplementedException();
+            return DbContext.Accounting_PayIN.Include(y => y.Currency).Include(y=>y.MoneyAccount).ToList();
         }
     }
 }

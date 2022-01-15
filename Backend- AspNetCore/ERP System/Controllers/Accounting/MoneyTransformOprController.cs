@@ -94,7 +94,8 @@ namespace ERP_System.Controllers.Accounting
         {
             try
             {
-                return Ok(MoneyTransFormOPR_repo.GetByID(id));
+                var moneytransformopr = MoneyTransFormOPR_repo.GetByID(id);
+                return Ok(MoneyTransFormOPR.ConvertToMoneyTransFormOPR_VM(moneytransformopr));
             }
             catch (Exception e)
             {
@@ -103,11 +104,12 @@ namespace ERP_System.Controllers.Accounting
             }
         }
         [HttpGet("List")]
-        public async Task<ActionResult<IEnumerable<MoneyTransFormOPR>>> List([FromQuery] int CategoryID)
+        public async Task<ActionResult<IEnumerable<MoneyTransFormOPR>>> List()
         {
             try
             {
-                return Ok(MoneyTransFormOPR_repo.List().ToList());
+                var list = MoneyTransFormOPR_repo.List().ToList();
+                return Ok(MoneyTransFormOPR.ConvertToMoneyTransFormOPR_VM(list));
             }
             catch (Exception e)
             {
