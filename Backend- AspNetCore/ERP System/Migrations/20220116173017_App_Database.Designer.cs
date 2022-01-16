@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP_System.Migrations
 {
     [DbContext(typeof(Application_Identity_DbContext))]
-    [Migration("20220114212714_App_Database")]
+    [Migration("20220116173017_App_Database")]
     partial class App_Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,6 +62,9 @@ namespace ERP_System.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MoneyAccountId")
                         .HasColumnType("int");
 
@@ -85,10 +88,9 @@ namespace ERP_System.Migrations
                     b.Property<double>("TargetExchangeRate")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("MoneyAccountId");
 
                     b.HasIndex("SourceCurrencyId");
 
@@ -128,6 +130,7 @@ namespace ERP_System.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CurrencyId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -554,6 +557,12 @@ namespace ERP_System.Migrations
 
             modelBuilder.Entity("ERP_System.Models.Accounting.ExchangeOPR", b =>
                 {
+                    b.HasOne("ERP_System.Models.Accounting.MoneyAccount", "MoneyAccount")
+                        .WithMany()
+                        .HasForeignKey("MoneyAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ERP_System.Models.Accounting.Currency", "SourceCurrency")
                         .WithMany()
                         .HasForeignKey("SourceCurrencyId")
@@ -566,6 +575,8 @@ namespace ERP_System.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("MoneyAccount");
+
                     b.Navigation("SourceCurrency");
 
                     b.Navigation("TargetCurrency");
@@ -575,7 +586,9 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Accounting.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId");
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ERP_System.Models.Accounting.MoneyAccount", "SourceMoneyAccount")
                         .WithMany()

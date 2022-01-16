@@ -105,7 +105,7 @@ namespace ERP_System.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MoneyAccountId = table.Column<int>(type: "int", nullable: false),
-                    date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SourceCurrencyId = table.Column<int>(type: "int", nullable: false),
                     SourceExchangeRate = table.Column<double>(type: "float", nullable: false),
                     OutMoneyValue = table.Column<double>(type: "float", nullable: false),
@@ -130,6 +130,12 @@ namespace ERP_System.Migrations
                         principalTable: "Accounting_Currency",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Accounting_ExchangeOPR_Accounting_MoneyAccount_MoneyAccountId",
+                        column: x => x.MoneyAccountId,
+                        principalTable: "Accounting_MoneyAccount",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -141,9 +147,9 @@ namespace ERP_System.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SourceMoneyAccountId = table.Column<int>(type: "int", nullable: false),
                     TargetMoneyAccountId = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<double>(type: "float", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
                     ExchangeRate = table.Column<double>(type: "float", nullable: false),
+                    Value = table.Column<double>(type: "float", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -157,7 +163,7 @@ namespace ERP_System.Migrations
                         column: x => x.CurrencyId,
                         principalTable: "Accounting_Currency",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Accounting_MoneyTransFormOPR_Accounting_MoneyAccount_SourceMoneyAccountId",
                         column: x => x.SourceMoneyAccountId,
@@ -183,8 +189,8 @@ namespace ERP_System.Migrations
                     OperationId = table.Column<int>(type: "int", nullable: true),
                     OperationType = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Value = table.Column<double>(type: "float", nullable: false),
                     CurrencyId = table.Column<int>(type: "int", nullable: true),
+                    Value = table.Column<double>(type: "float", nullable: false),
                     ExchangeRate = table.Column<double>(type: "float", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -407,6 +413,11 @@ namespace ERP_System.Migrations
                 column: "Symbol",
                 unique: true,
                 filter: "[Symbol] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounting_ExchangeOPR_MoneyAccountId",
+                table: "Accounting_ExchangeOPR",
+                column: "MoneyAccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounting_ExchangeOPR_SourceCurrencyId",

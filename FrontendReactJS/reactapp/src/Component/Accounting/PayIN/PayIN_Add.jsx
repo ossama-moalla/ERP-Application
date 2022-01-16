@@ -19,7 +19,7 @@ class PayIN_Add extends Component {
     }
     fetchData=()=>{
         this.setState({fetchDone:false})
-        axios.get("")
+        axios.get("https://localhost:5001/Accounting/MoneyAccount/List")
         .then(res=>{
             var moneyAccountList=res.date;
             console.log(res.data)
@@ -33,7 +33,7 @@ class PayIN_Add extends Component {
             else{
                 this.setState({moneyAccountList:res.date},
                     ()=>{
-                        axios.get("")
+                        axios.get("https://localhost:5001/Accounting/Currency/List")
                         .then(res=>{
                             var currencyList=res.date;
                             if(currencyList.length==0)

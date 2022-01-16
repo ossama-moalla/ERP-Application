@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Controllers.Accounting
 {
-    [Route("api/[controller]")]
+    [Route("Accounting/[controller]")]
     [ApiController]
     public class CurrencyController : ControllerBase
     {
