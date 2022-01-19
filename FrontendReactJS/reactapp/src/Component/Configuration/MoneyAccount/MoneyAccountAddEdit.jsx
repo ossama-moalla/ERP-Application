@@ -6,64 +6,115 @@ import { ExtractErrorMessage } from '../../../GeneralMethods';
 class MoneyAccountAddEdit extends Component {
     constructor(props){
         super(props);
-        this.state={
-            Name:props.MoneyAccount?Name:''
-        }
+        if(props.MoneyAccount){
+            this.state={
+                Id:props.MoneyAccount.id,
+                Name:props.MoneyAccount.name,
+                verifyError:null
+            }
+        }else{
+            this.state={
+                Id:undefined,
+                Name:'',
+                verifyError:null
+            }
+        }        
     }
-    updateMoneyAccount=()=>{
-        document.getElementById('buttonAdd').disabled=true;
+    onChangeInput=async(e)=>{
+        this.setState({[e.target.name]:e.target.value},this.ValidateInput);
+    }
+    ValidateInput=()=>{
+        if(this.state.Name.toString().trim()===""){
+            return;
+        }
         var moneyaccount={
-            Id:this.props.MoneyAccount.Id,
             Name:this.state.Name
         }
-        await axios.put("https://localhost:5001/Accounting/MoneyAccount/Update",moneyaccount)
-        .then(res=>
-            $('moneyaccount_displaymessage').css("background-color","green").text('Money Account Updated').fadeIn(500).delay(1500).fadeOut(500,this.props.closePopUpComponent)
-            )
+        console.log(moneyaccount)
+        axios.post("https://localhost:5001/Accounting/MoneyAccount/verifydata",moneyaccount)
+        .then(res=>{
+            this.setState({
+                verifyError:res.data.Message
+            })
+        })
+        .catch(err=>{console.log(err)})
+    }
+    addMoneyAccount=async ()=>{
+        document.getElementById('buttonAdd').disabled=true;
+        var moneyaccount={
+            name:this.state.Name,
+            }
+            console.log(moneyaccount)
+        await axios.post("https://localhost:5001/Accounting/MoneyAccount/Add",moneyaccount)
+        .then(res=>{
+            $('#AddMoneyAccount_displaymessage').css('background-color','green').text('MoneyAccount Added').fadeIn(500)
+            .delay(1500).fadeOut(500);
+            this.props.fetchMoneyAccounts();
+            this.setState({
+                 Id:undefined,
+                Name:''
+            })
+        })
         .catch(err=>
-            $('moneyaccount_displaymessage').css("background-color","red").text(ExtractErrorMessage(err)).fadeIn(500).delay(1500).fadeOut(500,this.props.closePopUpComponent)
-            )
+            $('#AddMoneyAccount_displaymessage').css('background-color','red')
+            .text(ExtractErrorMessage(err)).fadeIn(500)
+            .delay(1500).fadeOut(500)
+        )
         document.getElementById('buttonAdd').disabled=false;
     }
-    addMoneyAccount=async()=>{
+    updateMoneyAccount=async ()=>{
         document.getElementById('buttonAdd').disabled=true;
         var moneyaccount={
-            Name:this.state.Name
+            id:this.state.Id,
+            name:this.state.Name
         }
-        await axios.post("https://localhost:5001/Accounting/MoneyAccount/Add",moneyaccount)
-        .then(res=>
-            $('moneyaccount_displaymessage').css("background-color","green").text('Money Account Added').fadeIn(500).delay(1500).fadeOut(500,this.props.closePopUpComponent)
-            )
+        await axios.put("https://localhost:5001/Accounting/MoneyAccount/Update",moneyaccount)
+        .then(res=>{
+            $('#AddMoneyAccount_displaymessage').css('background-color','green').text('MoneyAccount Updated').fadeIn(500)
+            .delay(1500).fadeOut(500,()=>{
+                this.props.fetchMoneyAccounts();
+                this.props.closePopUpComponent();
+            });
+        })
         .catch(err=>
-            $('moneyaccount_displaymessage').css("background-color","red").text(ExtractErrorMessage(err)).fadeIn(500).delay(1500).fadeOut(500,this.props.closePopUpComponent)
-            )
+            $('#AddMoneyAccount_displaymessage').css('background-color','red')
+            .text(ExtractErrorMessage(err)).fadeIn(500)
+            .delay(1500).fadeOut(500)
+        )
         document.getElementById('buttonAdd').disabled=false;
     }
     render() {
         return (
-            <div>
-                <div id="moneyaccount_displaymessage" style={{display:"none"}}>
-
-                </div>
-                 <div id="moneyaccountAdd" className="form-group" >
-                    <label>Name:</label>
-                    <input type="text" name="name"
-                    required className="form-control" 
-                    value={this.state.name}
-                    onChange={(e)=>this.setState({Name:e.target.value})}
-                    />
-                </div>  
-                <div className="form-group">
+            <div id='AddMoneyAccount' >
+                <div id="AddMoneyAccount_displaymessage" className="App error-div">
+                </div>                                        
+                <div className="form-group" >
+                    <div>
+                        <label>Name:</label>
+                        <input id="Name" type="text" name="Name"
+                        required className="form-control" 
+                        value={this.state.Name}
+                        onChange={this.onChangeInput}
+                        />
+                        {this.state.verifyError&&          
+                        <label className='form-input-err' >{this.state.verifyError}</label>
+                        }
+                    </div>
+                    <div className="form-group">
                     {
-                        this.this.props.Id?
-                        <button id='buttonAdd'  className="btn btn-primary" style={{margin:5}} onClick={this.updateMoneyAccount}>
-                            Update </button>   :
-                        <button id='buttonAdd'  className="btn btn-primary" style={{margin:5}} onClick={this.addMoneyAccount}>
-                            Add </button>   
+                        this.state.Id===undefined?
+                        
+                    <button id='buttonAdd'  className="btn btn-primary" style={{margin:5}} 
+                    onClick={this.addMoneyAccount}>
+                        Add </button>   :
+                        
+                    <button id='buttonAdd'  className="btn btn-primary" style={{margin:5}} 
+                    onClick={this.updateMoneyAccount}>
+                        Update </button>   
                     }
-                 
-                </div>
-            </div>
+                    </div>
+                </div> 
+        </div>
         );
     }
 }

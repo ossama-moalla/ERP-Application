@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import ItemCategorySpecs from './ItemCategorySpecs.jsx';
 import $ from 'jquery'
-import {ExtractErrorMessage,makeDragable} from '../../../GeneralMethods.js'
+import {ExtractErrorMessage} from '../../../GeneralMethods.js'
 class ItemCategoryAdd extends Component {
     constructor(props){
         
@@ -21,7 +21,7 @@ class ItemCategoryAdd extends Component {
     
     ValidateInput=async()=>{
         const div=document.getElementById("addcategory_displaymessage");
-        if(this.state.name.trim()!="") {
+        if(this.state.name.trim()!=="") {
             var category={
                 ParentID:this.props.parentID,
                 Name:this.state.name,

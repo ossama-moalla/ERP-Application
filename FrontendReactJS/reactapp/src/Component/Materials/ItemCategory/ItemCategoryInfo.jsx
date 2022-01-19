@@ -35,7 +35,7 @@ class ItemCategoryInfo extends Component {
                     </div>
                     <div className="standalone-div borderbuttom">
                         <label >Default ConsumeUnit:</label>
-                        <label>{this.props.Category.defaultConsumeUnit.length==0?
+                        <label>{this.props.Category.defaultConsumeUnit.length===0?
                         "-":this.props.Category.defaultConsumeUnit}</label>
                     </div>
                     <div className="standalone-div borderbuttom">
@@ -46,10 +46,10 @@ class ItemCategoryInfo extends Component {
                             <button>Retry</button>
                             </Fragment>
                             :(
-                                this.state.fetchDone==false?"Loading....":
+                                this.state.fetchDone===false?"Loading....":
                                 (   <div>
                                         {
-                                            this.state.specList.length==0?
+                                            this.state.specList.length===0?
                                             <label style={{backgroundColor:"yellow"}}>"No Spec's Entered For This Category"</label>:
                                             <table className="table" >
                                                 <thead>

@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import $ from 'jquery'
-import {ExtractErrorMessage,makeDragable} from '../../../GeneralMethods.js'
+import {ExtractErrorMessage} from '../../../GeneralMethods.js'
 class ItemUpdate extends Component {
     constructor(props){
         
@@ -19,7 +19,7 @@ class ItemUpdate extends Component {
     }
     ValidateInput=async()=>{
         const div=document.getElementById("updateitem_displaymessage");
-        if(this.state.name.toString().trim()==""){
+        if(this.state.name.toString().trim()===""){
             $(div).css( "background-color", "red" ).slideDown(500).text("name required and Must be not empty");
             return;
         }

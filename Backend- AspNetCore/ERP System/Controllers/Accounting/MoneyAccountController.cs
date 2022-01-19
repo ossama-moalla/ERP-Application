@@ -120,12 +120,15 @@ namespace ERP_System.Controllers.Accounting
         {
             try
             {
+                if (MoneyAccount.Name.Length < 6)
+                    return Ok(new ErrorResponse()
+                    { Message = "Name must be at least 6 charecters" });
+
                 var oldmoneyaccount = MoneyAccount_repo.GetByID(MoneyAccount.Id);
                 if (oldmoneyaccount != null)
                 {
                     if (oldmoneyaccount.Name != MoneyAccount.Name)
                     {
-
                         if (MoneyAccount_repo.List().Where(x => x.Name == MoneyAccount.Name).Count() > 0)
                             return Ok(new ErrorResponse()
                             { Message = $"Money Account Name :{MoneyAccount.Name} is already in use!" });

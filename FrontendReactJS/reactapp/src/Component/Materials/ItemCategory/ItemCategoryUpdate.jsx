@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import ItemCategorySpecs from './ItemCategorySpecs.jsx';
 import $ from 'jquery'
-import {ExtractErrorMessage,makeDragable} from '../../../GeneralMethods.js'
+import {ExtractErrorMessage} from '../../../GeneralMethods.js'
 class ItemCategoryUpdate extends Component {
     constructor(props){
         
@@ -24,7 +24,7 @@ class ItemCategoryUpdate extends Component {
     
     ValidateInput=async()=>{
         var nameError='';
-        if(this.state.name.trim()!="") {
+        if(this.state.name.trim()!=="") {
             var category={
                 id:this.props.Category.id,
                 ParentID:this.props.Category.parentID,
@@ -46,10 +46,9 @@ class ItemCategoryUpdate extends Component {
         await this.setState({[e.target.name]:e.target.value},this.ValidateInput);
     }
     updateCategory=()=>{
-        
         const Category={
             id:this.props.Category.id,
-            parentID:this. props.Category.parentID,
+            parentID:this.props.Category.parentID,
             name:this.state.name,
             defaultConsumeUnit:this.state.defaultConsumeUnit
         }
@@ -93,7 +92,7 @@ class ItemCategoryUpdate extends Component {
                         value={this.state.name}
                         onChange={this.onChangeInput}
                         />
-                        <div className='form-input-err'>{this.state.VerifyError.name==null?"":this.state.VerifyError.name}</div>
+                        <div className='form-input-err'>{this.state.VerifyError.name===null?"":this.state.VerifyError.name}</div>
                         
                         <label>Default Consume Unit</label>
                         <input type="text" name="defaultConsumeUnit"

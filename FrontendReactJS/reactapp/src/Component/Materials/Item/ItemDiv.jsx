@@ -1,6 +1,6 @@
 import ItemInfo from './ItemInfo.jsx';
 import ItemUpdate from './ItemUpdate.jsx';
-const Item_Div=(props)=>{
+const ItemDiv=(props)=>{
     return(
         <div className="hover" style={{float:"left" }} >
             <div className="div-inlineblock">      
@@ -40,4 +40,4 @@ const Item_Div=(props)=>{
 
     );
 }
-export default Item_Div;
+export default ItemDiv;

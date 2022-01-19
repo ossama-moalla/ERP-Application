@@ -11,7 +11,7 @@ import SpecFilter from './SpecFilter.jsx';
 import PopUPComponent from '../../PopUPComponent.jsx';
 import ItemCategoryAdd from '../ItemCategory/ItemCategoryAdd.jsx';
 import ItemAdd from '../Item/ItemAdd.jsx';
-import Item_Div from '../Item/Item_Div.jsx';
+import ItemDiv from '../Item/ItemDiv.jsx';
 
 class ShowMaterials  extends Component {
     constructor(){
@@ -32,7 +32,7 @@ class ShowMaterials  extends Component {
     fetchCategoryList=async()=>{
         try{
             var res= await  axios.get("https://localhost:5001/materials/ItemCategory/GetCategories?parentid="
-            +(this.state.currentCategoryID==null?"":this.state.currentCategoryID))
+            +(this.state.currentCategoryID===null?"":this.state.currentCategoryID))
             return res.data
         }catch(err){
             this.setState(prevState=>
@@ -45,11 +45,11 @@ class ShowMaterials  extends Component {
         }
     }
     fetchItemList=async()=>{
-        if(this.state.currentCategoryID==null) return [];
+        if(this.state.currentCategoryID===null) return [];
         else{
             try{
                 const res=await axios.get("https://localhost:5001/materials/Item/List?CategoryID="
-                +(this.state.currentCategoryID==null?"":this.state.currentCategoryID))
+                +(this.state.currentCategoryID===null?"":this.state.currentCategoryID))
                 return res.data;
             }catch(err){
                 this.setState(prevState=>
@@ -63,7 +63,7 @@ class ShowMaterials  extends Component {
         }     
     }
     openCategory= (ID,fetchCategories,fetchItems)=>{
-       // if(ID==this.state.currentCategoryID) return;
+       // if(ID===this.state.currentCategoryID) return;
          this.setState(prevState=>({
              ...prevState,
              currentCategoryID:ID,fetchDone:false,Error:null
@@ -84,7 +84,7 @@ class ShowMaterials  extends Component {
          );
     }
     deleteCategory=async (ID,name)=>{
-        if(ID==null) return ;
+        if(ID===null) return ;
         var d=window.confirm('are u sure you want to delete category:'+name+'?');
         if(d===false) return;
         await this.setState(prevState=>({...prevState,fetchDone:false}))
@@ -199,9 +199,9 @@ class ShowMaterials  extends Component {
                         
                         <div  style={{float:"none",height:"100%",width:"100%"}}>
                             {
-                                this.state.fetchDone==false?
+                                this.state.fetchDone===false?
                                 <div className="App" >Loading......</div>:                        
-                                this.state.CategoryList.length==0&&this.state.ItemList.length==0?
+                                this.state.CategoryList.length===0&&this.state.ItemList.length===0?
                                 <div className="App" style={{color:"red"}}>No Data Entered !</div>:
                                 <Fragment>
                                     <Fragment>
@@ -221,14 +221,14 @@ class ShowMaterials  extends Component {
                                     <Fragment>
                                     {
                                        this.state.ItemList.map((item,i)=>{
-                                        return  <Item_Div 
+                                        return (<ItemDiv 
                                             item={item}
                                             openCategory=
                                             {()=>this.openCategory(this.state.currentCategoryID,false,true)}
                                             onDelete={this.deleteItem}   
                                             closePopUpComponent={this.closePopUpComponent}
                                             showPopUpComponent={this.showPopUpComponent}
-                                            key={i}/>
+                                            key={i}/>)
                                             }    
                                         )
                                     }

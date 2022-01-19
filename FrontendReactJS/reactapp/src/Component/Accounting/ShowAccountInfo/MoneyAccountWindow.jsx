@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MoneyAccountSelector from "./MoneyAccountSelector";
-import MoneyAccount_Type from "./MoneyAccount_Type.jsx";
+import MoneyAccountType from "./MoneyAccountType.jsx";
 import MoneyAccountDetails from './MoneyAccountDetails.jsx';
 import MoneyAccountReport from "./MoneyAccountReport.jsx";
 import PopUPComponent from '../../PopUPComponent.jsx';
@@ -40,7 +40,7 @@ class MoneyAccountWindow extends Component {
               <MoneyAccountSelector />
           </div>
           <div className="standalone-div borderbuttom">
-              <MoneyAccount_Type />
+              <MoneyAccountType />
           </div>
           <div className="standalone-div borderbuttom">
               <MoneyAccountDetails

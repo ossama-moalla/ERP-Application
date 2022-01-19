@@ -15,17 +15,14 @@ class SpecFilter extends Component {
             return;
         }
         this.setState({SpecList:[],fetchdone:false});
-
-        let SpecList=[],SpecRestrictedList=[];
         await axios.get("https://localhost:5001/materials/ItemCategorySpec/list?categoryID="+this.props.currentCategoryID)
         .then(res=>this.setState({SpecList:res.data,fetchdone:true}))
         .catch(err=>console.log(err));
     
     }
     shouldComponentUpdate(nextProps, nextState){
-
-        if(this.props.currentCategoryID==nextProps.currentCategoryID
-            &&this.state.fetchdone==nextState.fetchdone) {
+        if(this.props.currentCategoryID===nextProps.currentCategoryID
+            &&this.state.fetchdone===nextState.fetchdone) {
                 return false;}
         else {
             return true;
@@ -35,23 +32,23 @@ class SpecFilter extends Component {
         this.getSpecs();
     }
     componentDidUpdate=async(prevProps)=>{
-        if(this.props.currentCategoryID!=prevProps.currentCategoryID){
+        if(this.props.currentCategoryID!==prevProps.currentCategoryID){
             this.getSpecs();
         }
     }
     render(){
-        if(this.props.currentCategoryID==null){
+        if(this.props.currentCategoryID===null){
             return (
                 <Fragment>
                     <label>Root Category not have Spec</label>
                 </Fragment>                  
             )
         }   
-        if(this.state.fetchdone==false) return(<div>Loading...</div>);
+        if(this.state.fetchdone===false) return(<div>Loading...</div>);
         return(
             <Fragment>
             {
-                    (this.state.SpecList.length==0)?"No Spec's Entered":
+                    (this.state.SpecList.length===0)?"No Spec's Entered":
                     (<Fragment>
                         {this.state.SpecList.map((spec)=>{
                         return(

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class MoneyTransformOPR_Add extends Component {
+class MoneyTransformOPRAdd extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ class MoneyTransformOPR_Add extends Component {
     }
 }
 
-export default MoneyTransformOPR_Add;
+export default MoneyTransformOPRAdd;

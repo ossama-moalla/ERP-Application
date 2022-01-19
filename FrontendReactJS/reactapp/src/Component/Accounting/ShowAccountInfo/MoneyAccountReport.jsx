@@ -68,7 +68,7 @@ class MoneyAccountReport extends Component {
                             <td>10</td>
                         </tr>
                         <tr className="bg-danger">
-                            <td scope="row" >Transforms</td>
+                            <td>Transforms</td>
                             <td>5</td>
                             <td>10</td>
                         </tr>

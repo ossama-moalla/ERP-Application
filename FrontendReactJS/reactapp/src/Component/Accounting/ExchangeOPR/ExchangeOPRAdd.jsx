@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ExchangeOPR_Add extends Component {
+class ExchangeOPRAdd extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ class ExchangeOPR_Add extends Component {
     }
 }
 
-export default ExchangeOPR_Add;
+export default ExchangeOPRAdd;

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import $ from 'jquery'
-import { ExtractErrorMessage,makeDragable } from '../../../GeneralMethods.js';
+import { ExtractErrorMessage } from '../../../GeneralMethods.js';
 
 class ItemCategorySpecs extends Component {
     constructor(props){
@@ -57,13 +57,13 @@ class ItemCategorySpecs extends Component {
         
         const index=this.state.spec.index,name=this.state.spec.name;
         let nameError=null,indexError=null;
-        if(isNaN(index)||index.toString().trim()==""){
+        if(isNaN(index)||index.toString().trim()===""){
                 indexError="Index required and Must be Number";
         }
-        if(name.trim()==""){
+        if(name.trim()===""){
             nameError="name required and Must be not empty";
         }
-        if(nameError!=null||indexError!=null){
+        if(nameError!==null||indexError!==null){
             this.setState(prevstat=>({
                 ...prevstat,
                 VerifyError:{
@@ -94,7 +94,7 @@ class ItemCategorySpecs extends Component {
         .catch(err=>{});
     }
     onChangeInput=async(e)=>{
-        if(e.target.name=="isRestricted"){
+        if(e.target.name==="isRestricted"){
             this.setState(prevState => ({
                 ...prevState,
                 spec: {
@@ -122,7 +122,7 @@ class ItemCategorySpecs extends Component {
             index:this.state.spec.index
         }
         console.log(spec)
-        if(this.state.spec.name.trim()==""){
+        if(this.state.spec.name.trim()===""){
             document.getElementById("spec_displayerror").innerHTML='Spec Name Required'
             $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow');  
             return; 
@@ -147,7 +147,6 @@ class ItemCategorySpecs extends Component {
             $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow'); });     
     }
     updateSpec=async()=>{
-        {
             const spec={
                 categoryID:this.props.Category.id,
                 id:this.state.spec.id,
@@ -155,7 +154,7 @@ class ItemCategorySpecs extends Component {
                 isRestricted:this.state.spec.isRestricted,
                 index:this.state.spec.index
             }
-            if(this.state.spec.name.trim()==""){
+            if(this.state.spec.name.trim()===""){
                 document.getElementById("spec_displayerror").innerHTML='Spec Name Required'
                 $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow');  
                 return; 
@@ -179,10 +178,9 @@ class ItemCategorySpecs extends Component {
                 document.getElementById("spec_displayerror").innerHTML='Server Replay:'
                 +ExtractErrorMessage(err)
                 $('#spec_displayerror').slideDown(500).delay(5000).slideUp('slow'); });     
-        } 
     }
     deleteSpec=(id,name)=>{
-        if(id==null) return ;
+        if(id===null) return ;
         var d=window.confirm('are u sure you want to delete Spec:'+name+'?');
         if(d===false) return;
         axios.delete("https://localhost:5001/materials/ItemCategorySpec/delete?id="+id)
@@ -201,7 +199,7 @@ class ItemCategorySpecs extends Component {
     }
     render() {
         var displayErrorDivStyle={display:"none"};
-        if(this.state.VerifyError.nameError!=null||this.state.VerifyError.indexError!=null) 
+        if(this.state.VerifyError.nameError!==null||this.state.VerifyError.indexError!==null) 
              displayErrorDivStyle={display:"block"};
         return (
             <div id='specscontainer' style={{display:"none"}}>

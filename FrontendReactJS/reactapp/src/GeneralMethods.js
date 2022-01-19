@@ -1,12 +1,12 @@
 const ExtractErrorMessage=(err)=>{
-    try{
+    try{            
       if(err.response.data.message)
         return err.response.data.message
       else{
         if(err.response.statusText)
           return err.response.status+' '+ err.response.statusText
         else
-          return 'Unknown Error'
+        return 'Network Error(maybe server is down)'
 
       }
     }catch{
@@ -33,11 +33,11 @@ function makeDragable(dragHandle, dragTarget) {
       e.preventDefault();
       e.stopPropagation();
       dragObj = document.querySelector(dragTarget);
-      if (e.type=="mousedown") {
+      if (e.type==="mousedown") {
         xOffset = e.clientX - dragObj.offsetLeft; 
         yOffset = e.clientY -  dragObj.offsetTop;
         window.addEventListener('mousemove', dragObject, true);
-      } else if(e.type=="touchstart") {
+      } else if(e.type==="touchstart") {
         xOffset = e.targetTouches[0].clientX - dragObj.offsetLeft;
         yOffset = e.targetTouches[0].clientY - dragObj.offsetTop;
         window.addEventListener('touchmove', dragObject, true);
@@ -48,12 +48,12 @@ function makeDragable(dragHandle, dragTarget) {
       e.preventDefault();
       e.stopPropagation();
     
-      if(dragObj == null) {
+      if(dragObj === null) {
         return; 
-      } else if(e.type=="mousemove") {
+      } else if(e.type==="mousemove") {
         dragObj.style.left = e.clientX-xOffset +"px"; 
         dragObj.style.top = e.clientY-yOffset +"px";
-      } else if(e.type=="touchmove") {
+      } else if(e.type==="touchmove") {
         dragObj.style.left = e.targetTouches[0].clientX-xOffset +"px"; 
         dragObj.style.top = e.targetTouches[0].clientY-yOffset +"px";
       }

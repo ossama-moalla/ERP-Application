@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import $ from 'jquery'
 
-class PayIN_Add extends Component {
+class PayINAdd extends Component {
     constructor(props){
         console.log(props)
         super(props);
@@ -23,7 +23,7 @@ class PayIN_Add extends Component {
         .then(res=>{
             var moneyAccountList=res.date;
             console.log(res.data)
-            if(moneyAccountList.length==0)
+            if(moneyAccountList.length===0)
                 this.setState({
                     fetchDone:true,
                     Error:{
@@ -36,7 +36,7 @@ class PayIN_Add extends Component {
                         axios.get("https://localhost:5001/Accounting/Currency/List")
                         .then(res=>{
                             var currencyList=res.date;
-                            if(currencyList.length==0)
+                            if(currencyList.length===0)
                                 this.setState({
                                     fetchDone:true,
                                     Error:{
@@ -62,7 +62,7 @@ class PayIN_Add extends Component {
         })
     }
     render() {
-        if(this.state.fetchDone==false){
+        if(this.state.fetchDone===false){
             return(
                 <div id="PayinAdd" className="App">
                     Loading.......
@@ -89,4 +89,4 @@ class PayIN_Add extends Component {
     }
 }
 
-export default PayIN_Add;
+export default PayINAdd;

@@ -13,7 +13,6 @@ namespace ERP_System.Models.Accounting
         [Key]
         public int Id { get; set; }
         [Required]
-        [MinLength(6,ErrorMessage = "Money Account Name Must Be At Least 6 Charecters")]
         public string Name { get; set; }
     }
 }

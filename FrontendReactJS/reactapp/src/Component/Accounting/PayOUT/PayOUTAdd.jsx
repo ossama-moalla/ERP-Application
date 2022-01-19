@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class PayOUT_Edit extends Component {
+class PayOUTAdd extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ class PayOUT_Edit extends Component {
     }
 }
 
-export default PayOUT_Edit;
+export default PayOUTAdd;

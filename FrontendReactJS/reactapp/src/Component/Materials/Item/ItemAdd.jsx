@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import $ from 'jquery'
-import {ExtractErrorMessage,makeDragable} from '../../../GeneralMethods.js'
+import {ExtractErrorMessage} from '../../../GeneralMethods.js'
 class ItemAdd extends Component {
     constructor(props){
         
@@ -58,7 +58,7 @@ class ItemAdd extends Component {
     }
     ValidateInput=async()=>{
         const div=document.getElementById("additem_displaymessage");
-        if(this.state.name.toString().trim()==""){
+        if(this.state.name.toString().trim()===""){
             $(div).css( "background-color", "red" ).slideDown(500).text("name required and Must be not empty");
             return;
         }
@@ -99,7 +99,6 @@ class ItemAdd extends Component {
             {
                 $(div).css( "background-color", "green" ).text('Item Added').delay(1500)
                 .slideUp(500,()=>{document.getElementById("buttonAdd").disabled =false });
-                var item_=res.data;
                 this.setState({
                     Id:undefined,
                     name:'',
@@ -123,8 +122,8 @@ class ItemAdd extends Component {
                 <div id="additem_displaymessage" className="App error-div">
                 </div>
                 {
-                    (this.state.fetchCategoryDone==false)?'':
-                    (this.state.Category==null)?
+                    (this.state.fetchCategoryDone===false)?'':
+                    (this.state.Category===null)?
                     <div className="App" style={{backgroundColor:"#0dcaf0",padding:20}}>
                         <button className="btn btn-danger" onClick={this.fetchCategoryInfo}>Retry</button>
                     </div>:                                         

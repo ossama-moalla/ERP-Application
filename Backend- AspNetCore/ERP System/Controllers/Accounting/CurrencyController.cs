@@ -124,29 +124,23 @@ namespace ERP_System.Controllers.Accounting
             try
             {
                 string nameError = null, symbolError = null,exchangeRateError=null;
-                if (currency.Name == Currency.ReferenceCurrency.Name || currency.Symbol == Currency.ReferenceCurrency.Symbol)
-                {
-                    if(currency.Name.ToLower() == Currency.ReferenceCurrency.Name.ToLower())
-                        nameError = "Currency Name 'US Dollar' Is Reversed.";
-                    if (currency.Symbol== Currency.ReferenceCurrency.Symbol)
-                        nameError = "Currency Symbol $ Is Reversed.";
-                    return Ok(new Currency_ValidationError()
-                        { nameError = nameError, symbolError = symbolError, exchangeRateError = exchangeRateError });
-
-                }
 
                 var oldcurrency = Currency_repo.GetByID(currency.Id);
                 if (oldcurrency != null)
                 {
-                    if (oldcurrency.Name.ToLower() != currency.Name.ToLower())
+                    if (oldcurrency.Name != currency.Name)
                     {
-                        if (Currency_repo.List().Where(x => x.Name.ToLower() == currency.Name.ToLower()).Count() > 0)
+                        if (currency.Name.Length < 1 || currency.Name.Length > 50)
+                            nameError = "Name must be maximum 50 charecters and minimum 1 charecter ";
+                        else if (Currency_repo.List().Where(x => x.Name == currency.Name).Count() > 0)
                             nameError = $"Currency Name '{currency.Name}' is already in use.";
                     }
-                    if (oldcurrency.Symbol.ToLower() != currency.Symbol.ToLower())
+                    if (oldcurrency.Symbol != currency.Symbol)
                     {
-                        if (Currency_repo.List().Where(x => x.Symbol == currency.Symbol).Count() > 0)
-                            symbolError = $"Index [{ currency.Symbol}] is already in use.";
+                        if(currency.Symbol.Length<1 || currency.Symbol.Length>25)
+                            symbolError = "Symbol must be maximum 25 charecters and minimum 1 charecter ";
+                        else if (Currency_repo.List().Where(x => x.Symbol == currency.Symbol).Count() > 0)
+                            symbolError = $"Symbol  [{ currency.Symbol}] is already in use.";
 
                     }
                     if (currency.ExchangeRate <= 0)
@@ -154,10 +148,20 @@ namespace ERP_System.Controllers.Accounting
                 }
                 else
                 {
-                    if (Currency_repo.List().Where(x => x.Name.ToLower() == currency.Name.ToLower()).Count() > 0)
+  		            if(currency.Name.ToLower() == Currency.ReferenceCurrency.Name.ToLower())
+                        nameError = "Currency Name 'US Dollar' Is Reversed.";
+                    else if (currency.Name.Length < 1 || currency.Name.Length > 50)
+                        nameError = "Name must be maximum 50 charecters and minimum 1 charecter ";
+                    else if (Currency_repo.List().Where(x => x.Name.ToLower() == currency.Name.ToLower()).Count() > 0)
                         nameError = $"Currency Name '{currency.Name}' is already in use.";
-                    if (Currency_repo.List().Where(x => x.Symbol.ToLower() == currency.Symbol.ToLower()).Count() > 0)
-                        symbolError = $"Index [{ currency.Symbol}] is already in use.";
+
+		            if (currency.Symbol== Currency.ReferenceCurrency.Symbol)
+                        symbolError = "Currency Symbol'$' Is Reversed.";
+                    else if (currency.Symbol.Length < 1 || currency.Symbol.Length > 25)
+                        symbolError = "Symbol must be maximum 25 charecters and minimum 1 charecter ";
+                    else if (Currency_repo.List().Where(x => x.Symbol.ToLower() == currency.Symbol.ToLower()).Count() > 0)
+                        symbolError = $"Symbol [{ currency.Symbol}] is already in use.";
+
                     if (currency.ExchangeRate <= 0)
                         exchangeRateError = "Exchange Rate Must Be Greater Than Zero";
                 }

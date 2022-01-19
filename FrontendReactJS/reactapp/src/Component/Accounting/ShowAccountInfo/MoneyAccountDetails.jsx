@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import PayIN_Add from '../PayIN/PayIN_Add.jsx';
-import PayOUT_Add from '../PayOUT/PayOUT_Add.jsx'
-import ExchangeOPR_Add from '../ExchangeOPR/ExchangeOPR_Add.jsx'
-import MoneyTransformOPR_Add from '../MoneyTransformOPR/MoneyTransformOPR_Add.jsx'
+import PayINAdd from '../PayIN/PayINAdd.jsx';
+import PayOUTAdd from '../PayOUT/PayOUTAdd.jsx'
+import ExchangeOPRAdd from '../ExchangeOPR/ExchangeOPRAdd.jsx'
+import MoneyTransformOPRAdd from '../MoneyTransformOPR/MoneyTransformOPRAdd.jsx'
 
 class MoneyAccountDetails extends Component {
     constructor(props){
@@ -17,28 +17,28 @@ class MoneyAccountDetails extends Component {
                 <button className="btn-flat color-button radius"
                 onClick={()=>
                     this.props.showPopUpComponent(
-                    <PayIN_Add
+                    <PayINAdd
                     closePopUpComponent={this.props.closePopUpComponent}
                     showPopUpComponent={this.props.showPopUpComponent}
                     />,'Add PayIN')} >Add PayIN</button>
                 <button className="btn-flat color-button radius" 
                 onClick={()=>
                     this.props.showPopUpComponent(
-                    <PayOUT_Add    
+                    <PayOUTAdd    
                     closePopUpComponent={this.props.closePopUpComponent}
                     showPopUpComponent={this.props.showPopUpComponent}
                     />,'Add PayOUT')}>Add PayOUT</button>
                 <button className="btn-flat color-button radius" 
                 onClick={()=>
                     this.props.showPopUpComponent(
-                    <ExchangeOPR_Add
+                    <ExchangeOPRAdd
                     closePopUpComponent={this.props.closePopUpComponent}
                     showPopUpComponent={this.props.showPopUpComponent}
                     />,'Add Exchange Operation')}>Add Exchange OPR</button>
                 <button className="btn-flat color-button radius"
                 onClick={()=>
                     this.props.showPopUpComponent(
-                    <MoneyTransformOPR_Add
+                    <MoneyTransformOPRAdd
                     closePopUpComponent={this.props.closePopUpComponent}
                     showPopUpComponent={this.props.showPopUpComponent}
                     />,'Add MoneyTransform Operation')} >Add Transform OPR</button>
