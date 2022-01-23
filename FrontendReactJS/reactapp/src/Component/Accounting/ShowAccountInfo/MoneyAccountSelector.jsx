@@ -9,9 +9,17 @@ class MoneyAccountSelector extends Component {
                     <div >
                         <div className="div-inlineblock" style={{marginRight:20}}>
                             <label >MoneyAccounts:</label><br/>
-                            <select className="bordered color-yellow" style={{fontWeight:"bold"}}>
-                                <option>No Money Account Configured</option>
-                            </select  >
+                            <select className="bordered color-yellow" 
+                            
+                            value={this.props.selectedMoneyAccountID}>
+                                {
+                                    this.props.moneyAccountList.map((account,index)=>{
+                                        return (
+                                            <option key={index} value={account.id}>{account.name}</option>
+                                        )
+                                    })
+                                }
+                          </select  >
                         </div>
                         <label className="color-yellow radius" style={{marginBottom:5}}>
                             {this.props.moneyAccountValue?

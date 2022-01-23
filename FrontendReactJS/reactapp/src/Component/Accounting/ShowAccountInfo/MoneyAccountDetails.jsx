@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import PayINAdd from '../PayIN/PayINAdd.jsx';
+import PayINAddEdit from '../PayIN/PayINAddEdit.jsx';
 import PayOUTAdd from '../PayOUT/PayOUTAdd.jsx'
 import ExchangeOPRAdd from '../ExchangeOPR/ExchangeOPRAdd.jsx'
 import MoneyTransformOPRAdd from '../MoneyTransformOPR/MoneyTransformOPRAdd.jsx'
 
 class MoneyAccountDetails extends Component {
     constructor(props){
-        console.log(props)
         super(props);
+        this.state={
+            fetchDone:false,
+
+        }
     }
     render() {
         
@@ -17,7 +20,10 @@ class MoneyAccountDetails extends Component {
                 <button className="btn-flat color-button radius"
                 onClick={()=>
                     this.props.showPopUpComponent(
-                    <PayINAdd
+                    <PayINAddEdit
+                    selectedMoneyAccountID={this.props.selectedMoneyAccountID}
+                    currencyList={this.props.currencyList}
+                    moneyAccountList={this.props.moneyAccountList}
                     closePopUpComponent={this.props.closePopUpComponent}
                     showPopUpComponent={this.props.showPopUpComponent}
                     />,'Add PayIN')} >Add PayIN</button>

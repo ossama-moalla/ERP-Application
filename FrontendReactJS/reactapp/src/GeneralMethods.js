@@ -1,14 +1,18 @@
 const ExtractErrorMessage=(err)=>{
-    try{            
-      if(err.response.data.message)
+    try{   
+      if(err.response){
+        if(err.response.data.message)
         return err.response.data.message
-      else{
-        if(err.response.statusText)
-          return err.response.status+' '+ err.response.statusText
-        else
-        return 'Network Error(maybe server is down)'
+        else{
+          if(err.response.statusText)
+            return err.response.status+' '+ err.response.statusText
+          else
+          return 'Network Error(maybe server is down)'
 
-      }
+        }
+      }  
+      else
+        return 'Network Error(maybe server is down)'  
     }catch{
         return 'Unknown Error'
     }

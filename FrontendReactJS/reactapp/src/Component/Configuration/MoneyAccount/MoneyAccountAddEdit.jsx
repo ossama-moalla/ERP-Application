@@ -24,22 +24,30 @@ class MoneyAccountAddEdit extends Component {
         this.setState({[e.target.name]:e.target.value},this.ValidateInput);
     }
     ValidateInput=()=>{
-        if(this.state.Name.toString().trim()===""){
+        if(this.state.Name.toString().trim()===""||this.state.Name.toString().length<=6){
+            this.setState({
+                verifyError:null
+            })
             return;
         }
         var moneyaccount={
-            Name:this.state.Name
+            name:this.state.Name
         }
-        console.log(moneyaccount)
         axios.post("https://localhost:5001/Accounting/MoneyAccount/verifydata",moneyaccount)
-        .then(res=>{
+        .then(res=>{console.log(res.data)
             this.setState({
-                verifyError:res.data.Message
+                verifyError:res.data.message
             })
         })
         .catch(err=>{console.log(err)})
     }
     addMoneyAccount=async ()=>{
+        if(this.state.Name.toString().trim()===""||this.state.Name.toString().length<=6){
+            this.setState({
+                verifyError:'Name must be at least 6 charecters and maximum 50 charecters'
+            });
+            return;
+        }
         document.getElementById('buttonAdd').disabled=true;
         var moneyaccount={
             name:this.state.Name,
@@ -63,6 +71,12 @@ class MoneyAccountAddEdit extends Component {
         document.getElementById('buttonAdd').disabled=false;
     }
     updateMoneyAccount=async ()=>{
+        if(this.state.Name.toString().trim()===""||this.state.Name.toString().length<=6){
+            this.setState({
+                verifyError:'Name must be at least 6 charecters and maximum 50 charecters'
+            });
+            return;
+        }
         document.getElementById('buttonAdd').disabled=true;
         var moneyaccount={
             id:this.state.Id,

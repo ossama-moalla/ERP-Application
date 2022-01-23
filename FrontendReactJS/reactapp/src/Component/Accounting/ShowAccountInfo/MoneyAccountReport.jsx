@@ -19,7 +19,7 @@ class MoneyAccountReport extends Component {
                     <table className="table table-bordered">
                         <thead>
                         <tr className="color-cyan">
-                            <th colspan="2" >currency</th>
+                            <th colSpan="2" >currency</th>
                             <th >Syrian bound</th>
                             <th >Dollar</th>
                         </tr>
@@ -88,7 +88,7 @@ class MoneyAccountReport extends Component {
                             <td>10</td>
                         </tr>
                         <tr className="color-yellow">
-                            <td colspan="2">Clear Value</td>
+                            <td colSpan="2">Clear Value</td>
                             <td>5</td>
                             <td>10</td>
                         </tr>

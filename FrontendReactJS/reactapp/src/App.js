@@ -22,7 +22,7 @@ const App=()=>(
     {<Navbar/>}
     <BrowserRouter>
         <Routes>
-        <Route path="/"  element={<Configuration/>}/>
+        <Route path="/"  element={<MoneyAccountWindow/>}/>
         <Route path="/configuration"  element={<Configuration/>}/>
         <Route path="accounting/*"  element={<MoneyAccountWindow/>}/>
         <Route  path={'materials/*'}  element={<ShowMaterials/>} />
