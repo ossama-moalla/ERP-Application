@@ -17,6 +17,7 @@ namespace ERP_System.Repositories.Accounting_Repository
         }
        public void Add(PayIN entity)
         {
+            if (entity.CurrencyId == -1) entity.CurrencyId = null;
             DbContext.Accounting_PayIN.Add(entity);
             DbContext.SaveChanges();
         }
@@ -34,7 +35,7 @@ namespace ERP_System.Repositories.Accounting_Repository
             if (payin != null)
             {
                 payin.MoneyAccountId = entity.MoneyAccountId;
-                payin.CurrencyId = entity.CurrencyId;
+                payin.CurrencyId = entity.CurrencyId==-1?null:entity.CurrencyId;
                 payin.ExchangeRate = entity.ExchangeRate;
                 payin.Value = entity.Value;
                 payin.Description = entity.Description;
@@ -45,11 +46,18 @@ namespace ERP_System.Repositories.Accounting_Repository
 
         public PayIN GetByID(int id)
         {
-            return DbContext.Accounting_PayIN.Include(y=>y.Currency).Include(y => y.MoneyAccount).SingleOrDefault(x => x.Id == id);
+            var payin= DbContext.Accounting_PayIN.Include(y=>y.Currency).Include(y => y.MoneyAccount).SingleOrDefault(x => x.Id == id);
+            if (payin.Currency == null) payin.Currency = Currency.ReferenceCurrency;
+            return payin;
         }
         public IList<PayIN> List()
         {
-            return DbContext.Accounting_PayIN.Include(y => y.Currency).Include(y=>y.MoneyAccount).ToList();
+            var list = DbContext.Accounting_PayIN.Include(y => y.Currency).Include(y=>y.MoneyAccount).ToList();
+            foreach(var payin in list)
+            {
+                if (payin.Currency == null) payin.Currency = Currency.ReferenceCurrency;
+            }
+            return list;
         }
     }
 }

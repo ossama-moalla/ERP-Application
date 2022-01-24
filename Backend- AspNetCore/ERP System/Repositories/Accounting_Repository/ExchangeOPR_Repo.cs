@@ -16,6 +16,8 @@ namespace ERP_System.Repositories.Accounting_Repository
         }
         public void Add(ExchangeOPR entity)
         {
+            if (entity.SourceCurrencyId == -1) entity.SourceCurrencyId = null;
+            if (entity.TargetCurrencyId == -1) entity.TargetCurrencyId = null;
             DbContext.Accounting_ExchangeOPR.Add(entity);
             DbContext.SaveChanges();
         }
@@ -33,9 +35,9 @@ namespace ERP_System.Repositories.Accounting_Repository
             if (exchangeopr != null)
             {
                 exchangeopr.MoneyAccountId = entity.MoneyAccountId;
-                exchangeopr.SourceCurrencyId = entity.SourceCurrencyId;
+                exchangeopr.SourceCurrencyId = entity.SourceCurrencyId == -1 ? null : entity.SourceCurrencyId;
                 exchangeopr.SourceExchangeRate = entity.SourceExchangeRate;
-                exchangeopr.TargetCurrencyId = entity.TargetCurrencyId;
+                exchangeopr.TargetCurrencyId = entity.TargetCurrencyId==-1?null:entity.TargetCurrencyId;
                 exchangeopr.TargetExchangeRate = entity.TargetExchangeRate;
                 exchangeopr.OutMoneyValue = entity.OutMoneyValue;
                 exchangeopr.Notes = entity.Notes;
@@ -45,18 +47,28 @@ namespace ERP_System.Repositories.Accounting_Repository
 
         public ExchangeOPR GetByID(int id)
         {
-            return DbContext.Accounting_ExchangeOPR
+            var exchangeopr= DbContext.Accounting_ExchangeOPR
                 .Include(x=>x.SourceCurrency)
                 .Include(x => x.TargetCurrency)
                 .Include(x => x.MoneyAccount)
                 .SingleOrDefault(x => x.Id == id);
+            if (exchangeopr.SourceCurrency == null) exchangeopr.SourceCurrency = Currency.ReferenceCurrency;
+            if (exchangeopr.TargetCurrency == null) exchangeopr.TargetCurrency = Currency.ReferenceCurrency;
+            return exchangeopr;
         }
         public IList<ExchangeOPR> List()
         {
-            return DbContext.Accounting_ExchangeOPR
+            var list= DbContext.Accounting_ExchangeOPR
                 .Include(x => x.SourceCurrency)
                 .Include(x => x.TargetCurrency)
                 .Include(x => x.MoneyAccount).ToList();
+            foreach (var exchangeopr in list)
+            {
+                if (exchangeopr.SourceCurrency == null) exchangeopr.SourceCurrency = Currency.ReferenceCurrency;
+                if (exchangeopr.TargetCurrency == null) exchangeopr.TargetCurrency = Currency.ReferenceCurrency;
+
+            }
+            return list;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Models.Accounting
 {
-    public class Account_Info_By_Date_Type
+    public class MoneyAccount_Report_DateType
     {
         public class YearRange
         {
@@ -30,7 +30,7 @@ namespace ERP_System.Models.Accounting
         public int Year;
         public int Month;
         public int Day;
-        public Account_Info_By_Date_Type( YearRange YearRange__, int year, int month, int day)
+        public MoneyAccount_Report_DateType( YearRange YearRange__, int year, int month, int day)
         {
             YearRange_ = YearRange__;
             Year = year;

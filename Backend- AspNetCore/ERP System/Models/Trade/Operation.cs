@@ -28,38 +28,29 @@ namespace ERP_System.Models.Trade
         }
         public static string GetOperationName(int operationtype)
         {
-            string operationname = "";
             switch (operationtype)
             {
                 case BILL_BUY:
-                    operationname = "فاتور شراء";
-                    break;
+                    return "Buy Bill";
                 case BILL_SELL:
-                    operationname = "فاتور مبيع";
-                    break;
+                    return "Sell Bill";
                 case BILL_MAINTENANCE:
-                    operationname = "فاتور صيانة";
-                    break;
+                    return "Maintenance Bill";
                 case Employee_PayOrder:
-                    operationname = "امر صرف";
-                    break;
+                    return "Pay Order";
                 case MAINTENANCE_OPR:
-                    operationname = "عملية صيانة";
-                    break;
+                    return "Maintenance Operation";
                 case ASSEMBLAGE:
-                    operationname = "عملية تجميع";
-                    break;
+                    return "Assemblage Operation";
                 case DISASSEMBLAGE:
-                    operationname = "عملية تفكيك";
-                    break;
+                    return "Disassemlage Operation";
                 case RavageOPR:
-                    operationname = "عملية اتلاف";
-                    break;
+                    return "Ravage Operation";
                 case REPAIROPR:
-                    operationname = "عملية اصلاح";
-                    break;
+                    return "Repair Operation";
+                default:
+                    throw new Exception( "Incorrect Operation");
             }
-            return operationname;
         }
         public static string GetOperationItemOutDesc(int operationtype)
         {

@@ -16,6 +16,7 @@ namespace ERP_System.Repositories.Accounting_Repository
         }
         public void Add(MoneyTransFormOPR entity)
         {
+            if (entity.CurrencyId == -1) entity.CurrencyId = null;
             DbContext.Accounting_MoneyTransFormOPR.Add(entity);
             DbContext.SaveChanges();
         }
@@ -34,7 +35,7 @@ namespace ERP_System.Repositories.Accounting_Repository
             {
                 moneyTransformOpr.SourceMoneyAccountId = entity.SourceMoneyAccountId;
                 moneyTransformOpr.TargetMoneyAccountId = entity.TargetMoneyAccountId;
-                moneyTransformOpr.CurrencyId = entity.CurrencyId; 
+                moneyTransformOpr.CurrencyId = entity.CurrencyId == -1 ? null : entity.CurrencyId; 
                 moneyTransformOpr.ExchangeRate = entity.ExchangeRate;
                 moneyTransformOpr.Value = entity.Value;
                 moneyTransformOpr.Notes = entity.Notes;
@@ -44,18 +45,26 @@ namespace ERP_System.Repositories.Accounting_Repository
 
         public MoneyTransFormOPR GetByID(int id)
         {
-            return DbContext.Accounting_MoneyTransFormOPR
+            var moneytransformopr= DbContext.Accounting_MoneyTransFormOPR
                 .Include(x=>x.SourceMoneyAccount)
                 .Include(x => x.TargetMoneyAccount)
                 .Include(x => x.Currency)
                 .SingleOrDefault(x => x.Id == id);
+            if (moneytransformopr.Currency == null) moneytransformopr.Currency = Currency.ReferenceCurrency;
+            return moneytransformopr;
+
         }
         public IList<MoneyTransFormOPR> List()
         {
-            return DbContext.Accounting_MoneyTransFormOPR
+            var list= DbContext.Accounting_MoneyTransFormOPR
                 .Include(x => x.SourceMoneyAccount)
                 .Include(x => x.TargetMoneyAccount)
                 .Include(x => x.Currency).ToList();
+            foreach (var moneytransformopr in list)
+            {
+                if (moneytransformopr.Currency == null) moneytransformopr.Currency = Currency.ReferenceCurrency;
+            }
+            return list;
         }
     }
 }
