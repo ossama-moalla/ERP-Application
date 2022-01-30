@@ -95,7 +95,8 @@ namespace ERP_System.Controllers.Accounting
             try
             {
                 var exchangeopr = ExchangeOpr_repo.GetByID(id);
-                return Ok(ExchangeOPR.ConvertToExchangeOPR_VM(exchangeopr));
+                if (exchangeopr == null) return NotFound();
+                return Ok(exchangeopr);
             }
             catch (Exception e)
             {
@@ -109,7 +110,7 @@ namespace ERP_System.Controllers.Accounting
             try
             {
                 var list = ExchangeOpr_repo.List().ToList();
-                return Ok(ExchangeOPR.ConvertToExchangeOPR_VM(list));
+                return Ok(list);
             }
             catch (Exception e)
             {

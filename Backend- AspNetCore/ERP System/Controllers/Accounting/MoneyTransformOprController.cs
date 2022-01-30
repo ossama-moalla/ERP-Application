@@ -95,7 +95,8 @@ namespace ERP_System.Controllers.Accounting
             try
             {
                 var moneytransformopr = MoneyTransFormOPR_repo.GetByID(id);
-                return Ok(MoneyTransFormOPR.ConvertToMoneyTransFormOPR_VM(moneytransformopr));
+                if (moneytransformopr == null) return NotFound();
+                return Ok(moneytransformopr);
             }
             catch (Exception e)
             {
@@ -109,7 +110,7 @@ namespace ERP_System.Controllers.Accounting
             try
             {
                 var list = MoneyTransFormOPR_repo.List().ToList();
-                return Ok(MoneyTransFormOPR.ConvertToMoneyTransFormOPR_VM(list));
+                return Ok(list);
             }
             catch (Exception e)
             {

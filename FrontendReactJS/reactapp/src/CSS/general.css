@@ -155,3 +155,12 @@ select{
 .btn-text:hover{
     z-index: 1;
 }
+.tablerow-button:hover{
+    font-weight: bold;
+    cursor:pointer;
+    background-color: lightskyblue;
+}
+.tablerow-button:hover td{
+    font-style: italic;
+    text-decoration: underline;
+}

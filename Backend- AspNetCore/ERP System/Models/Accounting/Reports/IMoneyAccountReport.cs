@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Models.Accounting.Reports
 {
-    public class MoneyAccountReport
+    public class IMoneyAccountReport
     {
         public int PaysIN_Count { get; set; }
         public int PaysOUT_Count { get; set; }

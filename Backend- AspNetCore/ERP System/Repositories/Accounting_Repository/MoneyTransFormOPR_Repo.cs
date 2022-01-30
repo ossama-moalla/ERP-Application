@@ -50,7 +50,7 @@ namespace ERP_System.Repositories.Accounting_Repository
                 .Include(x => x.TargetMoneyAccount)
                 .Include(x => x.Currency)
                 .SingleOrDefault(x => x.Id == id);
-            if (moneytransformopr.Currency == null) moneytransformopr.Currency = Currency.ReferenceCurrency;
+            if (moneytransformopr != null && moneytransformopr.Currency == null) moneytransformopr.Currency = Currency.ReferenceCurrency;
             return moneytransformopr;
 
         }

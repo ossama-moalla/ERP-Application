@@ -1,5 +1,5 @@
 .color-gray{
-    background-color: #f8f9fa;
+    background-color: lightgray;
 }
 .color-blue{
     background-color: #23c6e766;
@@ -16,6 +16,30 @@
 .color-cyan{
     background-color: cyan;
 }
+.row-color-green{
+    background-color: green;
+    color:white;
+}
+.row-color-red{
+    background-color: red;
+    color:white;
+}
+.row-color-green{
+    background-color: green;
+    color:white;
+}
+.row-color-goldenrod{
+    background-color: goldenrod;
+    color:white;
+}
 .color-button{
     background-color: palegreen;
+}
+.color-moneyin{
+    background-color: #10b166;
+    color: white;
+}
+.color-moneyout{
+    background-color: #eb5959;
+    color: white;
 }

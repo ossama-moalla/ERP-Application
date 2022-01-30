@@ -52,8 +52,11 @@ namespace ERP_System.Repositories.Accounting_Repository
                 .Include(x => x.TargetCurrency)
                 .Include(x => x.MoneyAccount)
                 .SingleOrDefault(x => x.Id == id);
-            if (exchangeopr.SourceCurrency == null) exchangeopr.SourceCurrency = Currency.ReferenceCurrency;
-            if (exchangeopr.TargetCurrency == null) exchangeopr.TargetCurrency = Currency.ReferenceCurrency;
+            if (exchangeopr != null)
+            {
+                if (exchangeopr.SourceCurrency == null) exchangeopr.SourceCurrency = Currency.ReferenceCurrency;
+                if (exchangeopr.TargetCurrency == null) exchangeopr.TargetCurrency = Currency.ReferenceCurrency;
+            }
             return exchangeopr;
         }
         public IList<ExchangeOPR> List()

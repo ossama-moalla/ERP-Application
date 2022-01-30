@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Models.Accounting.Reports
 {
-    public class MoneyAccountReport_InYear:MoneyAccountReport
+    public class MoneyAccountReport_InYear:IMoneyAccountReport
     {
         public int Year { get; set; }
     }

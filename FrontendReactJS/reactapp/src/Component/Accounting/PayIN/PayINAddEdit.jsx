@@ -72,10 +72,13 @@ class PayINAddEdit extends Component {
             Notes :this.state.Notes
         }
         await axios.post("https://localhost:5001/Accounting/PayIN/Add",payin)
-        .then(res=>
-                $(div).css('background-color','green').text('PayIN Added').fadeIn(500)
-                .delay(1500).fadeOut(500,this.props.closePopUpComponent)
-            )
+        .then(res=>{
+            this.props.fetchAccountInfo();
+            this.props.fetchReport();
+            $(div).css('background-color','green').text('PayIN Added').fadeIn(500)
+            .delay(1500).fadeOut(500,this.props.closePopUpComponent)
+            }
+        )
         .catch(err=>$(div).css('background-color','red').text(ExtractErrorMessage(err)).fadeIn(500)
             .delay(2000).fadeOut(500))
 

@@ -33,7 +33,8 @@ namespace ERP_System
                 p.HasCheckConstraint("ExchangeOPR_Source Currency And Target Currency Must Not Be Same",
                "[SourceCurrencyId]<>[TargetCurrencyId]");
                 p.HasCheckConstraint("ExchangeOPR_Exchange Rate Must Be Greater Than Zero",
-               "[SourceExchangeRate]>0 and [TargetExchangeRate]>0");
+               "[SourceExchangeRate]>0 and [TargetExchangeRate]>0")
+                .Property(x => x.Date).HasDefaultValueSql("getdate()");
             }
             );
             builder.Entity<Currency>(p =>
@@ -45,12 +46,15 @@ namespace ERP_System
                 "[ExchangeRate]>0 ")
                 .HasCheckConstraint("PayIN_Value Must Be Greater Than Zero",
                 "[Value]>0 ")
+                .Property(x=>x.Date).HasDefaultValueSql("getdate()")
             );
             builder.Entity<PayOUT>(p =>
                 p.HasCheckConstraint("PayOUT_Exchange Rate Must Be Greater Than Zero",
                 "[ExchangeRate]>0 ")
                 .HasCheckConstraint("PayOUT_Value Must Be Greater Than Zero",
                 "[Value]>0 ")
+                .Property(x => x.Date).HasDefaultValueSql("getdate()")
+
             );
             builder.Entity<MoneyTransFormOPR>(p =>
             {
@@ -61,7 +65,8 @@ namespace ERP_System
                .HasCheckConstraint("MoneyTransFormOPR_Exchange Rate Must Be Greater Than Zero",
                "[ExchangeRate]>0")
                .HasCheckConstraint("MoneyTransFormOPR_Value  Must Be Greater Than Zero",
-               "[Value]>0");
+               "[Value]>0")
+               .Property(x => x.Date).HasDefaultValueSql("getdate()");
             }
             );
         }

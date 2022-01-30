@@ -47,7 +47,7 @@ namespace ERP_System.Repositories.Accounting_Repository
         public PayIN GetByID(int id)
         {
             var payin= DbContext.Accounting_PayIN.Include(y=>y.Currency).Include(y => y.MoneyAccount).SingleOrDefault(x => x.Id == id);
-            if (payin.Currency == null) payin.Currency = Currency.ReferenceCurrency;
+            if (payin!=null&&payin.Currency == null) payin.Currency = Currency.ReferenceCurrency;
             return payin;
         }
         public IList<PayIN> List()

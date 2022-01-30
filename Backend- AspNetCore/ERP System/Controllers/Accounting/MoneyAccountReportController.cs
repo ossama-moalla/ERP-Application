@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Controllers.Accounting
 {
-    [Route("api/[controller]")]
+    [Route("Accounting/[controller]")]
     [ApiController]
     public class MoneyAccountReportController : ControllerBase
     {
@@ -35,33 +35,67 @@ namespace ERP_System.Controllers.Accounting
             this.ExchangeOPR_Repo = ExchangeOPR_Repo;
             this.MoneyTransFormOPR_Repo = MoneyTransFormOPR_Repo;
         }
-
-        [HttpGet("day_operations")]
-        public ActionResult<IEnumerable<MoneyAccountOperation>> DayOperations([FromQuery] int MoneyAccountId, [FromQuery] int year,[FromQuery] int month,[FromQuery]int day)
+        [HttpGet("moneyaccount_value")]
+        public ActionResult<string> MoneyAccountValue([FromQuery] int MoneyAccountId)
         {
             try
             {
-                List<MoneyAccountOperation> list = new List<MoneyAccountOperation>();
+                List<MoneyAccountOperation> list = new();
                 {
-                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
+                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId).ToList();
                     list.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(PayINList));
                 }
                 {
-                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
+                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId ).ToList();
                     list.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(PayOUTList));
                 }
                 {
-                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
+                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId ).ToList();
                     list.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(ExchangeOPRList));
+                }
+                {
+                    var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)).ToList();
+                    list.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
+                }
+                return Ok(MoneyAccountOperation.Get_Clear_MoneyValue(list));
+
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Controller:MoneyAccountReportController,Method:MoneyAccountValue,Error:" + e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+            }
+        }
+        [HttpGet("day_report")]
+        public ActionResult<MoneyAccount_DayReport> DayReport([FromQuery] int MoneyAccountId, [FromQuery] int year,[FromQuery] int month,[FromQuery]int day)
+        {
+            try
+            {
+                List<MoneyAccountOperation> operationList = new();
+
+                {
+                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(PayINList));
+                }
+                {
+                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(PayOUTList));
+                }
+                {
+                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(ExchangeOPRList));
                 }
                 {
                     var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)
                                     && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
-                    list.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
+                    operationList.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
 
                 }
 
-                return Ok(list);
+                List<MoneyAccount_CurrencyReport> CurrencyReportList 
+                    = MoneyAccountOperation.Convert_MoneyAccountOperation_To_CurrencyReport(operationList);
+
+                return Ok(new MoneyAccount_DayReport() { OperationsList=operationList,CurrencyReportList=CurrencyReportList});
             }
             catch (Exception e)
             {
@@ -70,62 +104,58 @@ namespace ERP_System.Controllers.Accounting
             }
         }
         [HttpGet("month_report")]
-        public ActionResult<IEnumerable<MoneyAccountReport_InDay>> MonthReport([FromQuery] int MoneyAccountId, [FromQuery] int year, [FromQuery] int month)
+        public ActionResult<MoneyAccount_MonthReport> MonthReport([FromQuery] int MoneyAccountId, [FromQuery] int year, [FromQuery] int month)
         {
             try
             {
-                List<MoneyAccountReport_InDay> list = new List<MoneyAccountReport_InDay>();
-                var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Month == month && x.Date.Year == year).ToList();
-                var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Month == month && x.Date.Year == year).ToList();
-                var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Month == month && x.Date.Year == year).ToList();
-                var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)&&
-                x.Date.Month == month && x.Date.Year == year).ToList();
+                List<MoneyAccountOperation> operationList = new ();
 
+                {
+                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Month == month && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(PayINList));
+                }
+                {
+                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Month == month && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(PayOUTList));
+                }
+                {
+                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Month == month && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(ExchangeOPRList));
+                }
+                {
+                    var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)
+                                     && x.Date.Month == month && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
+                }
+
+                List<MoneyAccountReport_InDay> MoneyAccountReport_InDay_List = new();
                 int max_days = DateTime.DaysInMonth(year, month);
                 for(int i = 1; i <= max_days; i++)
                 {
-                    int paysin_count, paysout_count, exchangeoprs_count, moneytransformoprsIN_count, moneytransformoprsOUT_count;
-                    List<MoneyAccountOperation> operations = new List<MoneyAccountOperation>();
+                    List<MoneyAccountOperation> day_operations_IN, day_operations_OUT;
+                    day_operations_IN = operationList.Where(x => x.Date.Day == i && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).ToList();
+                    day_operations_OUT = operationList.Where(x => x.Date.Day == i && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).ToList();
                     
-                    {
-                        var day_payinlist = PayINList.Where(x => x.Date.Day == i).ToList();
-                        paysin_count = day_payinlist.Count;
-                        operations.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(day_payinlist));
-                    }
-                    {
-                        var day_payoutlist = PayOUTList.Where(x => x.Date.Day == i).ToList();
-                        paysout_count = day_payoutlist.Count;
-                        operations.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(day_payoutlist));
-                    }
-                    {
-                        var day_exchangeoprlist = ExchangeOPRList.Where(x => x.Date.Day == i).ToList();
-                        exchangeoprs_count = day_exchangeoprlist.Count;
-                        operations.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(day_exchangeoprlist));
-                    }
-                    {
-                        var day_moneytransformoprlist = MoneyTransformOPRList.Where(x => x.Date.Day == i).ToList();
-                        moneytransformoprsIN_count = day_moneytransformoprlist.Where(x => x.TargetMoneyAccountId == MoneyAccountId).Count();
-                        moneytransformoprsOUT_count = day_moneytransformoprlist.Where(x => x.SourceMoneyAccountId == MoneyAccountId).Count();
-                        operations.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, day_moneytransformoprlist));
-                    }
                     var report_in_day = new MoneyAccountReport_InDay()
                     {
                         DateDayNo = i,
                         Date_day = new DateTime(year, month, i),
-                        PaysIN_Count = paysin_count,
-                        PaysOUT_Count = paysout_count,
-                        ExchangeOPR_Count = exchangeoprs_count,
-                        MoneyTransform_IN_Count = moneytransformoprsIN_count,
-                        MoneyTransform_OUT_Count = moneytransformoprsOUT_count,
-                        MoneyIN_Value = MoneyAccountOperation.Get_MoneyIN_Value(operations),
-                        MoneyIN_Real_Value = operations.Where(x => x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.RealValue),
-                        MoneyOUT_Value = MoneyAccountOperation.Get_MoneyOUT_Value(operations),
-                        MoneyOUT_Real_Value = operations.Where(x => x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.RealValue)
+                        PaysIN_Count = day_operations_IN.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR).Count(),
+                        PaysOUT_Count = day_operations_OUT.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR).Count(),
+                        ExchangeOPR_Count = day_operations_IN.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR).Count(),
+                        //exchange opr added as 2 operation (in with tartget currency and out with source currency)
+                        MoneyTransform_IN_Count = day_operations_IN.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR).Count(),
+                        MoneyTransform_OUT_Count = day_operations_OUT.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR).Count(),
+                        MoneyIN_Value = MoneyAccountOperation.Get_MoneyIN_Value(day_operations_IN),
+                        MoneyIN_Real_Value = day_operations_IN.Sum(x => x.RealValue),
+                        MoneyOUT_Value = MoneyAccountOperation.Get_MoneyOUT_Value(day_operations_OUT),
+                        MoneyOUT_Real_Value = day_operations_OUT.Sum(x => x.RealValue)
                     };
-                    list.Add(report_in_day);
+                    MoneyAccountReport_InDay_List.Add(report_in_day);
 
                 }
-                return Ok(list);
+                return Ok(new MoneyAccount_MonthReport() { MoneyAccountReport_InDay_List=MoneyAccountReport_InDay_List
+                ,CurrencyReportList=MoneyAccountOperation.Convert_MoneyAccountOperation_To_CurrencyReport(operationList)});
             }
             catch (Exception e)
             {
@@ -134,62 +164,61 @@ namespace ERP_System.Controllers.Accounting
             }
         }
         [HttpGet("year_report")]
-        public ActionResult<IEnumerable<MoneyAccountReport_InMonth>> YearReport([FromQuery] int MoneyAccountId,[FromQuery] int year)
+        public ActionResult<MoneyAccount_YearReport> YearReport([FromQuery] int MoneyAccountId,[FromQuery] int year)
         {
             try
             {
+                List<MoneyAccountOperation> operationList = new();
 
-                List<MoneyAccountReport_InMonth> list = new List<MoneyAccountReport_InMonth>();
-                var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Year == year).ToList();
-                var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Year == year).ToList();
-                var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Year == year).ToList();
-                var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId) &&
-                 x.Date.Year == year).ToList();
+                {
+                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(PayINList));
+                }
+                {
+                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(PayOUTList));
+                }
+                {
+                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(ExchangeOPRList));
+                }
+                {
+                    var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)
+                                     && x.Date.Year == year).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
+                }
 
+                List<MoneyAccountReport_InMonth> MoneyAccountReport_InMonth_List = new();
                 for (int i = 1; i <= 12; i++)
                 {
-                    int paysin_count, paysout_count, exchangeoprs_count, moneytransformoprsIN_count, moneytransformoprsOUT_count;
-                    List<MoneyAccountOperation> operations = new List<MoneyAccountOperation>();
+                    List<MoneyAccountOperation> month_operations_IN, month_operations_OUT;
+                    month_operations_IN = operationList.Where(x => x.Date.Month == i && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).ToList();
+                    month_operations_OUT = operationList.Where(x => x.Date.Month == i && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).ToList();
 
-                    {
-                        var day_payinlist = PayINList.Where(x => x.Date.Month == i).ToList();
-                        paysin_count = day_payinlist.Count;
-                        operations.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(day_payinlist));
-                    }
-                    {
-                        var day_payoutlist = PayOUTList.Where(x => x.Date.Month == i).ToList();
-                        paysout_count = day_payoutlist.Count;
-                        operations.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(day_payoutlist));
-                    }
-                    {
-                        var day_exchangeoprlist = ExchangeOPRList.Where(x => x.Date.Month == i).ToList();
-                        exchangeoprs_count = day_exchangeoprlist.Count;
-                        operations.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(day_exchangeoprlist));
-                    }
-                    {
-                        var day_moneytransformoprlist = MoneyTransformOPRList.Where(x => x.Date.Month == i).ToList();
-                        moneytransformoprsIN_count = day_moneytransformoprlist.Where(x => x.TargetMoneyAccountId == MoneyAccountId).Count();
-                        moneytransformoprsOUT_count = day_moneytransformoprlist.Where(x => x.SourceMoneyAccountId == MoneyAccountId).Count();
-                        operations.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, day_moneytransformoprlist));
-                    }
                     var report_in_month = new MoneyAccountReport_InMonth()
                     {
                         Year_Month = i,
-                        Year_Month_Name = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(i),
-                        PaysIN_Count = paysin_count,
-                        PaysOUT_Count = paysout_count,
-                        ExchangeOPR_Count = exchangeoprs_count,
-                        MoneyTransform_IN_Count = moneytransformoprsIN_count,
-                        MoneyTransform_OUT_Count = moneytransformoprsOUT_count,
-                        MoneyIN_Value = MoneyAccountOperation.Get_MoneyIN_Value(operations),
-                        MoneyIN_Real_Value = operations.Where(x => x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.RealValue),
-                        MoneyOUT_Value = MoneyAccountOperation.Get_MoneyOUT_Value(operations),
-                        MoneyOUT_Real_Value = operations.Where(x => x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.RealValue)
+                        Year_Month_Name = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.GetAbbreviatedMonthName(i),
+                        PaysIN_Count = month_operations_IN.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR).Count(),
+                        PaysOUT_Count = month_operations_OUT.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR).Count(),
+                        ExchangeOPR_Count = month_operations_IN.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR).Count(),
+                        //exchange opr added as 2 operation (in with tartget currency and out with source currency)
+                        MoneyTransform_IN_Count = month_operations_IN.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR).Count(),
+                        MoneyTransform_OUT_Count = month_operations_OUT.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR).Count(),
+                        MoneyIN_Value = MoneyAccountOperation.Get_MoneyIN_Value(month_operations_IN),
+                        MoneyIN_Real_Value = month_operations_IN.Sum(x => x.RealValue),
+                        MoneyOUT_Value = MoneyAccountOperation.Get_MoneyOUT_Value(month_operations_OUT),
+                        MoneyOUT_Real_Value = month_operations_OUT.Sum(x => x.RealValue)
                     };
-                    list.Add(report_in_month);
+                    MoneyAccountReport_InMonth_List.Add(report_in_month);
 
                 }
-                return Ok(list);
+                return Ok(new MoneyAccount_YearReport()
+                {
+                    MoneyAccountReport_InMonth_List = MoneyAccountReport_InMonth_List
+                ,
+                    CurrencyReportList = MoneyAccountOperation.Convert_MoneyAccountOperation_To_CurrencyReport(operationList)
+                });
             }
             catch (Exception e)
             {
@@ -198,12 +227,12 @@ namespace ERP_System.Controllers.Accounting
             }
         }
         [HttpGet("year_range_report")]
-        public ActionResult<IEnumerable<MoneyAccountReport_InYear>> YearRangeReport([FromQuery] int MoneyAccountId, [FromQuery] int year1, [FromQuery] int year2)
+        public ActionResult<MoneyAccount_YearRangeReport> YearRangeReport([FromQuery] int MoneyAccountId, [FromQuery] int year1, [FromQuery] int year2)
         {
             try
             {
 
-                List<MoneyAccountReport_InYear> list = new List<MoneyAccountReport_InYear>();
+                List<MoneyAccountReport_InYear> list = new ();
                 int minYear, maxYear;
                 if(year1>year2)
                 {
@@ -215,304 +244,59 @@ namespace ERP_System.Controllers.Accounting
                     minYear = year1;
                     maxYear = year2;
                 }
-                var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId
-                && x.Date.Year >= minYear&&x.Date.Year<=maxYear).ToList();
-                var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId
-                && x.Date.Year >= minYear && x.Date.Year <= maxYear).ToList();
-                var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId
-                && x.Date.Year >= minYear && x.Date.Year <= maxYear).ToList();
-                var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)
-                 && x.Date.Year >= minYear && x.Date.Year <= maxYear).ToList();
+                List<MoneyAccountOperation> operationList = new();
 
-                for (int i = minYear; i <= maxYear; i++)
                 {
-                    int paysin_count, paysout_count, exchangeoprs_count, moneytransformoprsIN_count, moneytransformoprsOUT_count;
-                    List<MoneyAccountOperation> operations = new List<MoneyAccountOperation>();
-
-                    {
-                        var day_payinlist = PayINList.Where(x => x.Date.Month == i).ToList();
-                        paysin_count = day_payinlist.Count;
-                        operations.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(day_payinlist));
-                    }
-                    {
-                        var day_payoutlist = PayOUTList.Where(x => x.Date.Month == i).ToList();
-                        paysout_count = day_payoutlist.Count;
-                        operations.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(day_payoutlist));
-                    }
-                    {
-                        var day_exchangeoprlist = ExchangeOPRList.Where(x => x.Date.Month == i).ToList();
-                        exchangeoprs_count = day_exchangeoprlist.Count;
-                        operations.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(day_exchangeoprlist));
-                    }
-                    {
-                        var day_moneytransformoprlist = MoneyTransformOPRList.Where(x => x.Date.Month == i).ToList();
-                        moneytransformoprsIN_count = day_moneytransformoprlist.Where(x => x.TargetMoneyAccountId == MoneyAccountId).Count();
-                        moneytransformoprsOUT_count = day_moneytransformoprlist.Where(x => x.SourceMoneyAccountId == MoneyAccountId).Count();
-                        operations.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, day_moneytransformoprlist));
-                    }
-                    var report_in_year = new MoneyAccountReport_InYear()
-                    {
-                        Year = i,
-                        PaysIN_Count = paysin_count,
-                        PaysOUT_Count = paysout_count,
-                        ExchangeOPR_Count = exchangeoprs_count,
-                        MoneyTransform_IN_Count = moneytransformoprsIN_count,
-                        MoneyTransform_OUT_Count = moneytransformoprsOUT_count,
-                        MoneyIN_Value = MoneyAccountOperation.Get_MoneyIN_Value(operations),
-                        MoneyIN_Real_Value = operations.Where(x => x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.RealValue),
-                        MoneyOUT_Value = MoneyAccountOperation.Get_MoneyOUT_Value(operations),
-                        MoneyOUT_Real_Value = operations.Where(x => x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.RealValue)
-                    };
-                    list.Add(report_in_year);
-
-                }
-                return Ok(list);
-            }
-            catch (Exception e)
-            {
-                logger.LogError("Controller:MoneyAccountReportController,Method:YearRangeReport,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
-            }
-        }
-        [HttpGet("currency_report_in_day")]
-        public ActionResult<IEnumerable<MoneyAccount_CurrencyReport>> CurrencyReportInDay([FromQuery] int MoneyAccountId, [FromQuery] int year, [FromQuery] int month, [FromQuery] int day)
-        {
-            try
-            {
-                
-                List<MoneyAccount_CurrencyReport> list = new List<MoneyAccount_CurrencyReport>();
-                List<MoneyAccountOperation> operations = new List<MoneyAccountOperation>();
-                {
-                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(PayINList));
+                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId
+                    && x.Date.Year >= minYear && x.Date.Year <= maxYear).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(PayINList));
                 }
                 {
-                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(PayOUTList));
+                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId
+                    && x.Date.Year >= minYear && x.Date.Year <= maxYear).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(PayOUTList));
                 }
                 {
-                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(ExchangeOPRList));
-                }
-                {
-                    var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)
-                                    && x.Date.Day == day && x.Date.Month == month && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
-
-                }
-                List<int> CurrencyIdList = operations.Select(x => x.CurrencyID).Distinct().ToList();
-                for(int i = 0; i < CurrencyIdList.Count; i++)
-                {
-                    var operations_currency_List = operations.Where(x => x.CurrencyID == CurrencyIdList[i]).ToList();
-                    var moneyAccount_CurrencyReport = new MoneyAccount_CurrencyReport()
-                    {
-                        CurrencyID = operations_currency_List[0].CurrencyID,
-                        CurrencyName = operations_currency_List[0].CurrencyName,
-                        CurrencySymbol = operations_currency_List[0].CurrencySymbol,
-                        MoneyIN_FromSells = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_SELL).Sum(x => x.Value),
-                        MoneyIN_FromMaintenance = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_MAINTENANCE).Sum(x => x.Value),
-                        MoneyIN_FromExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
-                        MoneyIN_FromMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
-                        MoneyIN_FromOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType == null).Sum(x => x.Value),
-
-                        MoneyOUT_ByBuy = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_BUY).Sum(x => x.Value),
-                        MoneyOUT_ByEmpPayOrders = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.Employee_PayOrder).Sum(x => x.Value),
-                        MoneyOUT_ByExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
-                        MoneyOUT_ByMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
-                        MoneyOUT_ByOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType == null).Sum(x => x.Value),
-
-
-                    };
-                    list.Add(moneyAccount_CurrencyReport);
-                }
-                return Ok(list);
-            }
-            catch (Exception e)
-            {
-                logger.LogError("Controller:MoneyAccountReportController,Method:CurrencyReportInDay,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
-            }
-        }
-        [HttpGet("currency_report_in_month")]
-        public ActionResult<IEnumerable<MoneyAccount_CurrencyReport>> CurrencyReportInMonth([FromQuery] int MoneyAccountId, [FromQuery] int year, [FromQuery] int month)
-        {
-            try
-            {
-
-                List<MoneyAccount_CurrencyReport> list = new List<MoneyAccount_CurrencyReport>();
-                List<MoneyAccountOperation> operations = new List<MoneyAccountOperation>();
-                {
-                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Month == month && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(PayINList));
-                }
-                {
-                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Month == month && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(PayOUTList));
-                }
-                {
-                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Month == month && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(ExchangeOPRList));
-                }
-                {
-                    var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)
-                                     && x.Date.Month == month && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
-
-                }
-                List<int> CurrencyIdList = operations.Select(x => x.CurrencyID).Distinct().ToList();
-                for (int i = 0; i < CurrencyIdList.Count; i++)
-                {
-                    var operations_currency_List = operations.Where(x => x.CurrencyID == CurrencyIdList[i]).ToList();
-                    var moneyAccount_CurrencyReport = new MoneyAccount_CurrencyReport()
-                    {
-                        CurrencyID = operations_currency_List[0].CurrencyID,
-                        CurrencyName = operations_currency_List[0].CurrencyName,
-                        CurrencySymbol = operations_currency_List[0].CurrencySymbol,
-                        MoneyIN_FromSells = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_SELL).Sum(x => x.Value),
-                        MoneyIN_FromMaintenance = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_MAINTENANCE).Sum(x => x.Value),
-                        MoneyIN_FromExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
-                        MoneyIN_FromMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
-                        MoneyIN_FromOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType == null).Sum(x => x.Value),
-
-                        MoneyOUT_ByBuy = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_BUY).Sum(x => x.Value),
-                        MoneyOUT_ByEmpPayOrders = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.Employee_PayOrder).Sum(x => x.Value),
-                        MoneyOUT_ByExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
-                        MoneyOUT_ByMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
-                        MoneyOUT_ByOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType == null).Sum(x => x.Value),
-
-
-                    };
-                    list.Add(moneyAccount_CurrencyReport);
-                }
-                return Ok(list);
-            }
-            catch (Exception e)
-            {
-                logger.LogError("Controller:MoneyAccountReportController,Method:MonthReport,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
-            }
-        }
-        [HttpGet("currency_report_in_year")]
-        public ActionResult<IEnumerable<MoneyAccount_CurrencyReport>> CurrencyReportInYear([FromQuery] int MoneyAccountId, [FromQuery] int year)
-        {
-            try
-            {
-                List<MoneyAccount_CurrencyReport> list = new List<MoneyAccount_CurrencyReport>();
-                List<MoneyAccountOperation> operations = new List<MoneyAccountOperation>();
-                {
-                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(PayINList));
-                }
-                {
-                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(PayOUTList));
-                }
-                {
-                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId  && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(ExchangeOPRList));
-                }
-                {
-                    var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)
-                                      && x.Date.Year == year).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
-
-                }
-                List<int> CurrencyIdList = operations.Select(x => x.CurrencyID).Distinct().ToList();
-                for (int i = 0; i < CurrencyIdList.Count; i++)
-                {
-                    var operations_currency_List = operations.Where(x => x.CurrencyID == CurrencyIdList[i]).ToList();
-                    var moneyAccount_CurrencyReport = new MoneyAccount_CurrencyReport()
-                    {
-                        CurrencyID = operations_currency_List[0].CurrencyID,
-                        CurrencyName = operations_currency_List[0].CurrencyName,
-                        CurrencySymbol = operations_currency_List[0].CurrencySymbol,
-                        MoneyIN_FromSells = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_SELL).Sum(x => x.Value),
-                        MoneyIN_FromMaintenance = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_MAINTENANCE).Sum(x => x.Value),
-                        MoneyIN_FromExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
-                        MoneyIN_FromMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
-                        MoneyIN_FromOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType == null).Sum(x => x.Value),
-
-                        MoneyOUT_ByBuy = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_BUY).Sum(x => x.Value),
-                        MoneyOUT_ByEmpPayOrders = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.Employee_PayOrder).Sum(x => x.Value),
-                        MoneyOUT_ByExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
-                        MoneyOUT_ByMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
-                        MoneyOUT_ByOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType == null).Sum(x => x.Value),
-
-
-                    };
-                    list.Add(moneyAccount_CurrencyReport);
-                }
-                return Ok(list);
-            }
-            catch (Exception e)
-            {
-                logger.LogError("Controller:MoneyAccountReportController,Method:YearReport,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
-            }
-        }
-        [HttpGet("currency_report_in_yearrange")]
-        public ActionResult<IEnumerable<MoneyAccount_CurrencyReport>> CurrencyReportInYearRange([FromQuery] int MoneyAccountId, [FromQuery] int year1, [FromQuery] int year2)
-        {
-            try
-            {
-                int minYear, maxYear;
-                if (year1 > year2)
-                {
-                    minYear = year2;
-                    maxYear = year1;
-                }
-                else
-                {
-                    minYear = year1;
-                    maxYear = year2;
-                }
-
-                List<MoneyAccount_CurrencyReport> list = new List<MoneyAccount_CurrencyReport>();
-                List<MoneyAccountOperation> operations = new List<MoneyAccountOperation>();
-                {
-                    var PayINList = PayIN_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Year >= minYear && x.Date.Year <=maxYear).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_PayIN_To_MoneyAccountOperation(PayINList));
-                }
-                {
-                    var PayOUTList = PayOUT_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId &&  x.Date.Year >= minYear && x.Date.Year <= maxYear).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_PayOUT_To_MoneyAccountOperation(PayOUTList));
-                }
-                {
-                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId && x.Date.Year >= minYear && x.Date.Year <= maxYear).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(ExchangeOPRList));
+                    var ExchangeOPRList = ExchangeOPR_Repo.List().Where(x => x.MoneyAccountId == MoneyAccountId
+                    && x.Date.Year >= minYear && x.Date.Year <= maxYear).ToList();
+                    operationList.AddRange(MoneyAccountOperation.Convert_ExchangeOPR_To_MoneyAccountOperation(ExchangeOPRList));
                 }
                 {
                     var MoneyTransformOPRList = MoneyTransFormOPR_Repo.List().Where(x => (x.SourceMoneyAccountId == MoneyAccountId || x.TargetMoneyAccountId == MoneyAccountId)
                                      && x.Date.Year >= minYear && x.Date.Year <= maxYear).ToList();
-                    operations.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
-
+                    operationList.AddRange(MoneyAccountOperation.Convert_MoneyTransformOPR_To_MoneyAccountOperation(MoneyAccountId, MoneyTransformOPRList));
                 }
-                List<int> CurrencyIdList = operations.Select(x => x.CurrencyID).Distinct().ToList();
-                for (int i = 0; i < CurrencyIdList.Count; i++)
+
+                List<MoneyAccountReport_InYear> MoneyAccountReport_InYear_List = new();
+                for (int i = minYear; i <= maxYear; i++)
                 {
-                    var operations_currency_List = operations.Where(x => x.CurrencyID == CurrencyIdList[i]).ToList();
-                    var moneyAccount_CurrencyReport = new MoneyAccount_CurrencyReport()
+                    List<MoneyAccountOperation> year_operations_IN, year_operations_OUT;
+                    year_operations_IN = operationList.Where(x => x.Date.Year == i && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).ToList();
+                    year_operations_OUT = operationList.Where(x => x.Date.Year == i && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).ToList();
+
+                    var report_in_year = new MoneyAccountReport_InYear()
                     {
-                        CurrencyID = operations_currency_List[0].CurrencyID,
-                        CurrencyName = operations_currency_List[0].CurrencyName,
-                        CurrencySymbol = operations_currency_List[0].CurrencySymbol,
-                        MoneyIN_FromSells = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_SELL).Sum(x => x.Value),
-                        MoneyIN_FromMaintenance = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_MAINTENANCE).Sum(x => x.Value),
-                        MoneyIN_FromExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
-                        MoneyIN_FromMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
-                        MoneyIN_FromOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType == null).Sum(x => x.Value),
-
-                        MoneyOUT_ByBuy = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_BUY).Sum(x => x.Value),
-                        MoneyOUT_ByEmpPayOrders = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.Employee_PayOrder).Sum(x => x.Value),
-                        MoneyOUT_ByExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
-                        MoneyOUT_ByMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
-                        MoneyOUT_ByOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType == null).Sum(x => x.Value),
-
-
+                        Year = i,
+                        PaysIN_Count = year_operations_IN.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR).Count(),
+                        PaysOUT_Count = year_operations_OUT.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR).Count(),
+                        ExchangeOPR_Count = year_operations_IN.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR).Count(),
+                        //exchange opr added as 2 operation (in with tartget currency and out with source currency)
+                        MoneyTransform_IN_Count = year_operations_IN.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR).Count(),
+                        MoneyTransform_OUT_Count = year_operations_OUT.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR).Count(),
+                        MoneyIN_Value = MoneyAccountOperation.Get_MoneyIN_Value(year_operations_IN),
+                        MoneyIN_Real_Value = year_operations_IN.Sum(x => x.RealValue),
+                        MoneyOUT_Value = MoneyAccountOperation.Get_MoneyOUT_Value(year_operations_OUT),
+                        MoneyOUT_Real_Value = year_operations_OUT.Sum(x => x.RealValue)
                     };
-                    list.Add(moneyAccount_CurrencyReport);
+                    MoneyAccountReport_InYear_List.Add(report_in_year);
+
                 }
-                return Ok(list);
+                return Ok(new MoneyAccount_YearRangeReport()
+                {
+                    MoneyAccountReport_InYear_List = MoneyAccountReport_InYear_List
+                ,
+                    CurrencyReportList = MoneyAccountOperation.Convert_MoneyAccountOperation_To_CurrencyReport(operationList)
+                });
             }
             catch (Exception e)
             {

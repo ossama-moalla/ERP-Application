@@ -47,7 +47,7 @@ namespace ERP_System.Repositories.Accounting_Repository
         public PayOUT GetByID(int id)
         {
             var payout= DbContext.Accounting_PayOUT.Include(y => y.Currency).Include(y => y.MoneyAccount).SingleOrDefault(x => x.Id == id);
-            if (payout.Currency == null) payout.Currency = Currency.ReferenceCurrency;
+            if (payout!=null&&payout.Currency == null) payout.Currency = Currency.ReferenceCurrency;
             return payout;
         }
         public IList<PayOUT> List()

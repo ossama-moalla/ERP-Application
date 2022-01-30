@@ -12,10 +12,24 @@ const ExtractErrorMessage=(err)=>{
         }
       }  
       else
-        return 'Network Error(maybe server is down)'  
+        return 'Unknown Error:'+err  
     }catch{
         return 'Unknown Error'
     }
+}
+const getOperationName=(typeID)=>{
+  switch(typeID){
+    case 1:return "Bill Buy";
+    case 2:return "Bill Sell";
+    case 3:return "BILL MAINTENANCE";
+    case 4:return "Employee PayOrder";
+    case 5:return "MAINTENANCE OPR";
+    case 6:return "ASSEMBLAGE";
+    case 7:return "DISASSEMBLAGE";
+    case 8:return "Ravage OPR";
+    case 9:return "REPAIR OPR";
+    default:return "unknown operation"
+  }
 }
 const toggleDivByCheckbox=(e,divId)=>{
     var s=document.getElementById(divId);
@@ -72,4 +86,4 @@ function makeDragable(dragHandle, dragTarget) {
     }
   }
   
-export {ExtractErrorMessage,toggleDivByCheckbox,makeDragable}
+export {ExtractErrorMessage,getOperationName,toggleDivByCheckbox,makeDragable}

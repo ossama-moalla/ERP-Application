@@ -105,7 +105,7 @@ namespace ERP_System.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MoneyAccountId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     SourceCurrencyId = table.Column<int>(type: "int", nullable: false),
                     SourceExchangeRate = table.Column<double>(type: "float", nullable: false),
                     OutMoneyValue = table.Column<double>(type: "float", nullable: false),
@@ -144,7 +144,7 @@ namespace ERP_System.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     SourceMoneyAccountId = table.Column<int>(type: "int", nullable: false),
                     TargetMoneyAccountId = table.Column<int>(type: "int", nullable: false),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
@@ -185,7 +185,7 @@ namespace ERP_System.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MoneyAccountId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     OperationId = table.Column<int>(type: "int", nullable: true),
                     OperationType = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -220,7 +220,7 @@ namespace ERP_System.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MoneyAccountId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     OperationId = table.Column<int>(type: "int", nullable: true),
                     OperationType = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),

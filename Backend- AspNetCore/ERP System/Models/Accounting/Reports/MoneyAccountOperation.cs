@@ -16,10 +16,10 @@ namespace ERP_System.Models.Accounting.Reports
         public const short TYPE_EXCHANGE_OPR = 1;
         public const short TYPE_MoneyTransform_OPR = 2;
 
-        public DateTime OprTime{ get; set; }
+        public int Id { get; set; }
+        public DateTime Date{ get; set; }
         public short OprType{ get; set; }
         public short OprDirection{ get; set; }
-        public int OprID{ get; set; }
         public int? TradeOperationId{ get; set; }
         public int? TradeOperationType { get; set; }
 
@@ -30,20 +30,21 @@ namespace ERP_System.Models.Accounting.Reports
         public double ExchangeRate{ get; set; }
         public double RealValue{ get; set; }
 
+
         public static  List<MoneyAccountOperation> Convert_PayIN_To_MoneyAccountOperation(List<PayIN> PayINList)
         {
             try
             {
-                List<MoneyAccountOperation> list = new List<MoneyAccountOperation>();
+                List<MoneyAccountOperation> list = new ();
                 for (int i = 0; i < PayINList.Count; i++)
                 {
                     
-                    MoneyAccountOperation moneyaccountoperation = new MoneyAccountOperation()
+                    MoneyAccountOperation moneyaccountoperation = new ()
                     {
-                        OprTime = PayINList[i].Date,
+                        Id = PayINList[i].Id,
+                        Date = PayINList[i].Date,
                         OprType = MoneyAccountOperation.TYPE_PAY_OPR,
                         OprDirection = MoneyAccountOperation.DIRECTION_IN,
-                        OprID = PayINList[i].Id,
                         TradeOperationId = PayINList[i].OperationId,
                         TradeOperationType= PayINList[i].OperationType,
                         Value = PayINList[i].Value,
@@ -60,23 +61,23 @@ namespace ERP_System.Models.Accounting.Reports
             }
             catch(Exception e)
             {
-                throw new Exception("MoneyAccountOperation-Convert_PayIN_To_MoneyAccountOperation Error:" + e);
+                throw new Exception("MoneyAccountOperation-Convert_PayIN_To_MoneyAccountOperation -Error:" + e);
             } 
         }
         public static List<MoneyAccountOperation> Convert_PayOUT_To_MoneyAccountOperation(List<PayOUT> PayOUTList)
         {
             try
             {
-                List<MoneyAccountOperation> list = new List<MoneyAccountOperation>();
+                List<MoneyAccountOperation> list = new ();
                 for (int i = 0; i < PayOUTList.Count; i++)
                 {
                    
-                    MoneyAccountOperation moneyaccountoperation = new MoneyAccountOperation()
+                    var moneyaccountoperation = new MoneyAccountOperation()
                     {
-                        OprTime = PayOUTList[i].Date,
+                        Id = PayOUTList[i].Id,
+                        Date = PayOUTList[i].Date,
                         OprType = MoneyAccountOperation.TYPE_PAY_OPR,
                         OprDirection = MoneyAccountOperation.DIRECTION_OUT,
-                        OprID = PayOUTList[i].Id,
                         TradeOperationId = PayOUTList[i].OperationId,
                         TradeOperationType = PayOUTList[i].OperationType,
                         Value = PayOUTList[i].Value,
@@ -93,22 +94,22 @@ namespace ERP_System.Models.Accounting.Reports
             }
             catch (Exception e)
             {
-                throw new Exception("MoneyAccountOperation-Convert_PayOUT_To_MoneyAccountOperation Error:" + e);
+                throw new Exception("MoneyAccountOperation-Convert_PayOUT_To_MoneyAccountOperation -Error:" + e);
             }
         }
         public static List<MoneyAccountOperation> Convert_ExchangeOPR_To_MoneyAccountOperation(List<ExchangeOPR> ExchangeOPRList)
         {
             try
             {
-                List<MoneyAccountOperation> list = new List<MoneyAccountOperation>();
+                List<MoneyAccountOperation> list = new ();
                 for (int i = 0; i < ExchangeOPRList.Count; i++)
                 {
-                    MoneyAccountOperation moneyaccountoperationOUT = new MoneyAccountOperation()
+                    var  moneyaccountoperationOUT = new MoneyAccountOperation()
                     {
-                        OprTime = ExchangeOPRList[i].Date,
+                        Id = ExchangeOPRList[i].Id,
+                        Date = ExchangeOPRList[i].Date,
                         OprType = MoneyAccountOperation.TYPE_EXCHANGE_OPR,
                         OprDirection = MoneyAccountOperation.DIRECTION_OUT,
-                        OprID = ExchangeOPRList[i].Id,
                         TradeOperationId = null,
                         TradeOperationType = null,
                         Value = ExchangeOPRList[i].OutMoneyValue,
@@ -120,12 +121,12 @@ namespace ERP_System.Models.Accounting.Reports
 
                     };
                     list.Add(moneyaccountoperationOUT);
-                    MoneyAccountOperation moneyaccountoperationIN = new MoneyAccountOperation()
+                    var moneyaccountoperationIN = new MoneyAccountOperation()
                     {
-                        OprTime = ExchangeOPRList[i].Date,
+                        Id = ExchangeOPRList[i].Id,
+                        Date = ExchangeOPRList[i].Date,
                         OprType = MoneyAccountOperation.TYPE_EXCHANGE_OPR,
                         OprDirection = MoneyAccountOperation.DIRECTION_IN,
-                        OprID = ExchangeOPRList[i].Id,
                         TradeOperationId = null,
                         TradeOperationType = null,
                         Value =Math.Round( ExchangeOPRList[i].OutMoneyValue
@@ -143,26 +144,26 @@ namespace ERP_System.Models.Accounting.Reports
             }
             catch (Exception e)
             {
-                throw new Exception("MoneyAccountOperation-Convert_ExchangeOPR_To_MoneyAccountOperation Error:" + e);
+                throw new Exception("MoneyAccountOperation-Convert_ExchangeOPR_To_MoneyAccountOperation -Error:" + e);
             }
         }
         public static List<MoneyAccountOperation> Convert_MoneyTransformOPR_To_MoneyAccountOperation(int moneyAccountID, List<MoneyTransFormOPR> MoneyTransFormOPRList)
         {
             try
             {
-                List<MoneyAccountOperation> list = new List<MoneyAccountOperation>();
+                List<MoneyAccountOperation> list = new ();
 
                 var MoneyTransFormOPRList_IN = MoneyTransFormOPRList.Where(x => x.TargetMoneyAccountId == moneyAccountID).ToList();
                 var MoneyTransFormOPRList_OUT = MoneyTransFormOPRList.Where(x => x.SourceMoneyAccountId == moneyAccountID).ToList();
 
                 for (int i = 0; i < MoneyTransFormOPRList_IN.Count; i++)
                 {
-                    MoneyAccountOperation moneyaccountoperation = new MoneyAccountOperation()
+                    var moneyaccountoperation = new MoneyAccountOperation()
                     {
-                        OprTime = MoneyTransFormOPRList_IN[i].Date,
+                        Id = MoneyTransFormOPRList_IN[i].Id,
+                        Date = MoneyTransFormOPRList_IN[i].Date,
                         OprType = MoneyAccountOperation.TYPE_MoneyTransform_OPR,
                         OprDirection = MoneyAccountOperation.DIRECTION_IN,
-                        OprID = MoneyTransFormOPRList_IN[i].Id,
                         TradeOperationId = null,
                         TradeOperationType = null,
                         Value = MoneyTransFormOPRList_IN[i].Value,
@@ -177,12 +178,12 @@ namespace ERP_System.Models.Accounting.Reports
                 }
                 for (int i = 0; i < MoneyTransFormOPRList_OUT.Count; i++)
                 {
-                    MoneyAccountOperation moneyaccountoperation = new MoneyAccountOperation()
+                    var moneyaccountoperation = new MoneyAccountOperation()
                     {
-                        OprTime = MoneyTransFormOPRList_OUT[i].Date,
+                        Id = MoneyTransFormOPRList_OUT[i].Id,
+                        Date = MoneyTransFormOPRList_OUT[i].Date,
                         OprType = MoneyAccountOperation.TYPE_MoneyTransform_OPR,
                         OprDirection = MoneyAccountOperation.DIRECTION_OUT,
-                        OprID = MoneyTransFormOPRList_OUT[i].Id,
                         TradeOperationId = null,
                         TradeOperationType = null,
                         Value = MoneyTransFormOPRList_OUT[i].Value,
@@ -199,8 +200,60 @@ namespace ERP_System.Models.Accounting.Reports
             }
             catch (Exception e)
             {
-                throw new Exception("MoneyAccountOperation-Convert_MoneyTransformOPR_To_MoneyAccountOperation Error:" + e);
+                throw new Exception("MoneyAccountOperation-Convert_MoneyTransformOPR_To_MoneyAccountOperation -Error:" + e);
             }
+        }
+        public static List<MoneyAccount_CurrencyReport> Convert_MoneyAccountOperation_To_CurrencyReport(List<MoneyAccountOperation> operationList)
+        {
+            try
+            {
+                var CurrencyReportList = new List<MoneyAccount_CurrencyReport>();
+                List<int> CurrencyIdList = operationList.Select(x => x.CurrencyID).Distinct().ToList();
+                for (int i = 0; i < CurrencyIdList.Count; i++)
+                {
+                    var operations_currency_List = operationList.Where(x => x.CurrencyID == CurrencyIdList[i]).ToList();
+                    var moneyAccount_CurrencyReport = new MoneyAccount_CurrencyReport()
+                    {
+                        CurrencyID = operations_currency_List[0].CurrencyID,
+                        CurrencyName = operations_currency_List[0].CurrencyName,
+                        CurrencySymbol = operations_currency_List[0].CurrencySymbol,
+                        MoneyIN_FromSells = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_SELL).Sum(x => x.Value),
+                        MoneyIN_FromMaintenance = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_MAINTENANCE).Sum(x => x.Value),
+                        MoneyIN_FromExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
+                        MoneyIN_FromMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN).Sum(x => x.Value),
+                        MoneyIN_FromOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_IN && x.TradeOperationType == null).Sum(x => x.Value),
+
+                        MoneyOUT_ByBuy = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.BILL_BUY).Sum(x => x.Value),
+                        MoneyOUT_ByEmpPayOrders = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType != null && x.TradeOperationType == Operation.Employee_PayOrder).Sum(x => x.Value),
+                        MoneyOUT_ByExchangeOPR = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_EXCHANGE_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
+                        MoneyOUT_ByMoneyTransform = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_MoneyTransform_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value),
+                        MoneyOUT_ByOther = operations_currency_List.Where(x => x.OprType == MoneyAccountOperation.TYPE_PAY_OPR && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT && x.TradeOperationType == null).Sum(x => x.Value),
+
+
+                    };
+                    CurrencyReportList.Add(moneyAccount_CurrencyReport);
+                }
+                return CurrencyReportList;
+            }
+            catch(Exception e)
+            {
+                throw new Exception("MoneyAccountOperation-Convert_MoneyAccountOperation_To_CurrencyReport - Error:" + e);
+            }
+        }
+        public static string Get_Clear_MoneyValue(List<MoneyAccountOperation> list)
+        {
+            string return_value = string.Empty;
+            List<int> currencyIdList = list.Select(x => x.CurrencyID).Distinct().ToList();
+            for (int i = 0; i < currencyIdList.Count; i++)
+            {
+                string symbol = list.Where(x => x.CurrencyID == currencyIdList[i]).ToList()[0].CurrencySymbol;
+                double currency_money_in = list.Where(x => x.CurrencyID == currencyIdList[i]&&x.OprDirection==MoneyAccountOperation.DIRECTION_IN).Sum(x=>x.Value);
+                double currency_money_out = list.Where(x => x.CurrencyID == currencyIdList[i] && x.OprDirection == MoneyAccountOperation.DIRECTION_OUT).Sum(x => x.Value);
+                return_value += (currency_money_in- currency_money_out)  + symbol;
+                if (i != currencyIdList.Count - 1) return_value += " - ";
+
+            }
+            return return_value;
         }
         public static string Get_MoneyIN_Value(List<MoneyAccountOperation> list)
         {
@@ -211,8 +264,9 @@ namespace ERP_System.Models.Accounting.Reports
             {
                 var currency_in_list = in_list.Where(x => x.CurrencyID == currencyIdList[i]).ToList();
                 double value = currency_in_list.Sum(x => x.Value);
-                if (i != 0 && i != currencyIdList.Count - 1) return_value += " - ";
                 return_value += value + " " + currency_in_list[0].CurrencySymbol;
+                if (i != currencyIdList.Count - 1) return_value += " - ";
+
             }
             return return_value;
         }
@@ -225,8 +279,9 @@ namespace ERP_System.Models.Accounting.Reports
             {
                 var currency_in_list = out_list.Where(x => x.CurrencyID == currencyIdList[i]).ToList();
                 double value = currency_in_list.Sum(x => x.Value);
-                if (i != 0 && i != currencyIdList.Count - 1) return_value += " - ";
                 return_value += value + " " + currency_in_list[0].CurrencySymbol;
+                if (i != currencyIdList.Count - 1) return_value += " - ";
+
             }
             return return_value;
         }
