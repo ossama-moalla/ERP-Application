@@ -35,12 +35,16 @@ const ReportRecords = (props) => {
                 const date=new Date(operation.date);
                 let type,belongTO;
                 let classname=" tablerow-button";
-
                 switch(operation.oprType){
-                    case 0:type="Pay OPR";classname="row-color-green"+classname;break;
-                    case 1:type="Pay OPR";classname="row-color-red"+classname;break;
-                    case 2:type="Exchange OPR";classname="row-color-goldenrod"+classname;break;
-                    case 3:type="Money Transform OPR";classname="color-yellow"+classname;break;
+                    case 0:
+                        type="Pay OPR";
+                        if(operation.oprDirection===0)    
+                            classname="color-green"+classname;
+                        else
+                            classname="color-red"+classname;
+                        break;
+                    case 1:type="Exchange OPR";classname="row-color-goldenrod"+classname;break;
+                    case 2:type="Money Transform OPR";classname="color-yellow"+classname;break;
                     default:type="unknown"
                 }
                 if(operation.tradeOperationId!==null &&operation.tradeOperationType!=null){

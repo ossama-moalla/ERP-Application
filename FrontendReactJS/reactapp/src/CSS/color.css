@@ -20,26 +20,19 @@
     background-color: green;
     color:white;
 }
-.row-color-red{
-    background-color: red;
-    color:white;
-}
-.row-color-green{
-    background-color: green;
-    color:white;
-}
-.row-color-goldenrod{
+
+.color-goldenrod{
     background-color: goldenrod;
     color:white;
 }
 .color-button{
     background-color: palegreen;
 }
-.color-moneyin{
+.color-green{
     background-color: #10b166;
     color: white;
 }
-.color-moneyout{
+.color-red{
     background-color: #eb5959;
     color: white;
 }

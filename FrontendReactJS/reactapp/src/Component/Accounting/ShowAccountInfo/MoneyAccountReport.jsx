@@ -2,8 +2,8 @@ import React,{ Component } from 'react';
 import CurrencyReport from './CurrencyReport.jsx';
 import ReportRecords from './ReportRecords.jsx'
 import PayINAddEdit from '../PayIN/PayINAddEdit.jsx';
-import PayOUTAdd from '../PayOUT/PayOUTAdd.jsx'
-import ExchangeOPRAdd from '../ExchangeOPR/ExchangeOPRAdd.jsx'
+import PayOUTAddEdit from '../PayOUT/PayOUTAddEdit.jsx'
+import ExchangeOPRAddEdit from '../ExchangeOPR/ExchangeOPRAddEdit.jsx'
 import MoneyTransformOPRAdd from '../MoneyTransformOPR/MoneyTransformOPRAdd.jsx'
 import axios from 'axios';
 import { ExtractErrorMessage } from '../../../GeneralMethods.js';
@@ -221,6 +221,7 @@ class MoneyAccountReport extends Component {
                         this.props.showPopUpComponent(
                         <PayINAddEdit
                         selectedMoneyAccountID={this.props.selectedMoneyAccountID}
+                        dateAccount={dateAccount}
                         fetchAccountInfo={this.props.fetchAccountInfo}
                         fetchReport={this.fetchReport}
                         currencyList={this.props.currencyList}
@@ -230,23 +231,38 @@ class MoneyAccountReport extends Component {
                     <button className="btn-flat color-button radius" 
                     onClick={()=>
                         this.props.showPopUpComponent(
-                        <PayOUTAdd    
+                        <PayOUTAddEdit    
+                        selectedMoneyAccountID={this.props.selectedMoneyAccountID}
+                        dateAccount={dateAccount}
+                        fetchAccountInfo={this.props.fetchAccountInfo}
+                        fetchReport={this.fetchReport}
+                        currencyList={this.props.currencyList}
+                        moneyAccountList={this.props.moneyAccountList}
                         closePopUpComponent={this.props.closePopUpComponent}
-                        showPopUpComponent={this.props.showPopUpComponent}
                         />,'Add PayOUT')}>Add PayOUT</button>
                     <button className="btn-flat color-button radius" 
                     onClick={()=>
                         this.props.showPopUpComponent(
-                        <ExchangeOPRAdd
+                        <ExchangeOPRAddEdit
+                        selectedMoneyAccountID={this.props.selectedMoneyAccountID}
+                        dateAccount={dateAccount}
+                        fetchAccountInfo={this.props.fetchAccountInfo}
+                        fetchReport={this.fetchReport}
+                        currencyList={this.props.currencyList}
+                        moneyAccountList={this.props.moneyAccountList}
                         closePopUpComponent={this.props.closePopUpComponent}
-                        showPopUpComponent={this.props.showPopUpComponent}
                         />,'Add Exchange Operation')}>Add Exchange OPR</button>
                     <button className="btn-flat color-button radius"
                     onClick={()=>
                         this.props.showPopUpComponent(
                         <MoneyTransformOPRAdd
+                        selectedMoneyAccountID={this.props.selectedMoneyAccountID}
+                        dateAccount={dateAccount}
+                        fetchAccountInfo={this.props.fetchAccountInfo}
+                        fetchReport={this.fetchReport}
+                        currencyList={this.props.currencyList}
+                        moneyAccountList={this.props.moneyAccountList}
                         closePopUpComponent={this.props.closePopUpComponent}
-                        showPopUpComponent={this.props.showPopUpComponent}
                         />,'Add MoneyTransform Operation')} >Add Transform OPR</button>
 
                     </div>)}

@@ -3,22 +3,22 @@ import axios from 'axios'
 import $ from 'jquery'
 import { ExtractErrorMessage } from '../../../GeneralMethods.js';
 
-class PayINAddEdit extends Component {
+class PayOUTAddEdit extends Component {
     constructor(props){
         super(props);
         var selectedMoneyAccount=props.selectedMoneyAccountID?props.selectedMoneyAccountID:props.moneyAccountList[0].id;
         const date=new Date();
-        if(props.PayIN){
-            const payin=props.PayIN;
+        if(props.PayOUT){
+            const payout=props.PayOUT;
             this.state={
-                Id:payin.Id,
-                Date:payin.Date,
-                MoneyAccountId :payin.MoneyAccountId,
-                Description :payin.Description,
-                Currency :payin.Currency,
-                Value :payin.Value,
-                ExchangeRate :payin.exchangeRate,
-                Notes :payin.Notes,
+                Id:payout.Id,
+                Date:payout.Date,
+                MoneyAccountId :payout.MoneyAccountId,
+                Description :payout.Description,
+                Currency :payout.Currency,
+                Value :payout.Value,
+                ExchangeRate :payout.exchangeRate,
+                Notes :payout.Notes,
                 fetchDone:false
             }
         }
@@ -61,10 +61,10 @@ class PayINAddEdit extends Component {
         });
     
     }
-    addPayIN=async ()=>{
+    addPayOUT=async ()=>{
         document.getElementById('buttonAdd').disabled=true;
-        var div=document.getElementById('PayinAdd_displaymessage');
-        var payin={
+        var div=document.getElementById('PayoutAdd_displaymessage');
+        var payout={
             Id:this.state.Id,
             Date:this.state.Date,
             MoneyAccountId :this.state.MoneyAccountId,
@@ -74,11 +74,11 @@ class PayINAddEdit extends Component {
             ExchangeRate :this.state.ExchangeRate,
             Notes :this.state.Notes
         }
-        await axios.post("https://localhost:5001/Accounting/PayIN/Add",payin)
+        await axios.post("https://localhost:5001/Accounting/PayOUT/Add",payout)
         .then(res=>{
             this.props.fetchAccountInfo();
             this.props.fetchReport();
-            $(div).css('background-color','green').text('PayIN Added').fadeIn(500)
+            $(div).css('background-color','green').text('PayOUT Added').fadeIn(500)
             .delay(1500).fadeOut(500);
             this.setState({
                 Id:undefined,
@@ -95,10 +95,10 @@ class PayINAddEdit extends Component {
 
 
     }
-    updatePayIN=async()=>{
+    updatePayOUT=async()=>{
         document.getElementById('buttonAdd').disabled=true;
-        var div=document.getElementById('PayinAdd_displaymessage');
-        var payin={
+        var div=document.getElementById('PayoutAdd_displaymessage');
+        var payout={
             Id:this.state.Id,
             Date:this.state.Date,
             MoneyAccountId :this.state.MoneyAccountId,
@@ -108,11 +108,11 @@ class PayINAddEdit extends Component {
             ExchangeRate :this.state.ExchangeRate,
             Notes :this.state.Notes
         }
-        await axios.post("https://localhost:5001/Accounting/PayIN/Update",payin)
+        await axios.post("https://localhost:5001/Accounting/PayOUT/Update",payout)
         .then(res=>{
             this.props.fetchAccountInfo();
             this.props.fetchReport();
-            $(div).css('background-color','green').text('PayIN Added').fadeIn(500)
+            $(div).css('background-color','green').text('PayOUT Added').fadeIn(500)
             .delay(1500).fadeOut(500,this.props.closePopUpComponent)
             }
         )
@@ -149,9 +149,10 @@ class PayINAddEdit extends Component {
             )
         }
         
+        
         return (
-            <div id="PayinAdd " style={{backgroundColor:"#10b166"}}  >
-                <div id="PayinAdd_displaymessage" className="App error-div">
+            <div id="PayoutAdd " style={{backgroundColor:"#eb5959"}}  >
+                <div id="PayoutAdd_displaymessage" className="App error-div">
             </div>                                        
                 <div >
                     <div  className="form-group" >
@@ -236,11 +237,11 @@ class PayINAddEdit extends Component {
                             this.state.Id===undefined?
                             
                         <button id='buttonAdd'  className="btn btn-primary" style={{margin:5}} 
-                        onClick={this.addPayIN}>
+                        onClick={this.addPayOUT}>
                             Add </button>   :
                             
                         <button id='buttonAdd'  className="btn btn-primary" style={{margin:5}} 
-                        onClick={this.updatePayIN}>
+                        onClick={this.updatePayOUT}>
                             Update </button>   
                         }
                     </div>
@@ -250,4 +251,4 @@ class PayINAddEdit extends Component {
     }
 }
 
-export default PayINAddEdit;
+export default PayOUTAddEdit;
