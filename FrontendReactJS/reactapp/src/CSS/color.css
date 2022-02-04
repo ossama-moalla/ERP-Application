@@ -4,6 +4,9 @@
 .color-blue{
     background-color: #23c6e766;
 }
+.color-cadetblue{
+    background-color: cadetblue;
+}
 .color-info{
     background-color:lightgreen;
 }
@@ -33,6 +36,6 @@
     color: white;
 }
 .color-red{
-    background-color: #eb5959;
+    background-color: rgb(235, 157, 113);
     color: white;
 }

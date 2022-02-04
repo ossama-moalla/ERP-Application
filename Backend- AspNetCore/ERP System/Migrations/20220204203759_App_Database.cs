@@ -106,10 +106,10 @@ namespace ERP_System.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MoneyAccountId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
-                    SourceCurrencyId = table.Column<int>(type: "int", nullable: false),
+                    SourceCurrencyId = table.Column<int>(type: "int", nullable: true),
                     SourceExchangeRate = table.Column<double>(type: "float", nullable: false),
                     OutMoneyValue = table.Column<double>(type: "float", nullable: false),
-                    TargetCurrencyId = table.Column<int>(type: "int", nullable: false),
+                    TargetCurrencyId = table.Column<int>(type: "int", nullable: true),
                     TargetExchangeRate = table.Column<double>(type: "float", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -147,7 +147,7 @@ namespace ERP_System.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     SourceMoneyAccountId = table.Column<int>(type: "int", nullable: false),
                     TargetMoneyAccountId = table.Column<int>(type: "int", nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    CurrencyId = table.Column<int>(type: "int", nullable: true),
                     ExchangeRate = table.Column<double>(type: "float", nullable: false),
                     Value = table.Column<double>(type: "float", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -163,7 +163,7 @@ namespace ERP_System.Migrations
                         column: x => x.CurrencyId,
                         principalTable: "Accounting_Currency",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Accounting_MoneyTransFormOPR_Accounting_MoneyAccount_SourceMoneyAccountId",
                         column: x => x.SourceMoneyAccountId,

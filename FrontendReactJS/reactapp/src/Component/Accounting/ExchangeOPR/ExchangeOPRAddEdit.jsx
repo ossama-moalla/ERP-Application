@@ -17,7 +17,7 @@ class ExchangeOPRAddEdit extends Component {
                     MoneyAccountId :exchangeopr.MoneyAccountId,
                     SourceCurrency :exchangeopr.SourceCurrency,
                     SourceExchangeRate  :exchangeopr.SourceExchangeRate ,
-                    OutValue :exchangeopr.OutValue,
+                    OutMoneyValue :exchangeopr.OutMoneyValue,
                     TargetCurrency :exchangeopr.TargetCurrency,
                     TargetExchangeRate  :exchangeopr.TargetExchangeRate ,
                     Notes :exchangeopr.Notes,
@@ -31,7 +31,7 @@ class ExchangeOPRAddEdit extends Component {
                     MoneyAccountId :selectedMoneyAccount,
                     SourceCurrency :props.currencyList[0],
                     SourceExchangeRate :props.currencyList[0].exchangeRate,
-                    OutValue :0,
+                    OutMoneyValue :0,
                     TargetCurrency :props.currencyList[1],
                     TargetExchangeRate :props.currencyList[1].exchangeRate,
                     Notes :'',
@@ -49,7 +49,7 @@ class ExchangeOPRAddEdit extends Component {
         if(e.target.name==="SourceExchangeRate" && isNaN (e.target.value) ) return;
         if(e.target.name==="TargetExchangeRate" && isNaN (e.target.value) ) return;
 
-        if(e.target.name==="OutValue" && isNaN (e.target.value) ) return;
+        if(e.target.name==="OutMoneyValue" && isNaN (e.target.value) ) return;
         if(e.target.name==="SourceCurrency" ) {
             const currency=this.props.currencyList.find(c=> c.id===Number(e.target.value));
             this.setState({
@@ -80,7 +80,7 @@ class ExchangeOPRAddEdit extends Component {
             MoneyAccountId :this.state.MoneyAccountId,
             SourceCurrencyId :this.state.SourceCurrency.id,
             SourceExchangeRate :this.state.SourceExchangeRate,
-            OutValue :this.state.OutValue,
+            OutMoneyValue :this.state.OutMoneyValue,
             TargetCurrencyId :this.state.TargetCurrency.id,
             TargetExchangeRate :this.state.TargetExchangeRate,
             Notes :this.state.Notes
@@ -93,7 +93,7 @@ class ExchangeOPRAddEdit extends Component {
             .delay(1500).fadeOut(500);
             this.setState({
                 Id:undefined,
-                OutValue :0,
+                OutMoneyValue :0,
                 Notes :'',
             })
             }
@@ -114,7 +114,7 @@ class ExchangeOPRAddEdit extends Component {
             MoneyAccountId :this.state.MoneyAccountId,
             SourceCurrencyId :this.state.SourceCurrency.id,
             SourceExchangeRate :this.state.SourceExchangeRate,
-            OutValue :this.state.OutValue,
+            OutMoneyValue :this.state.OutMoneyValue,
             TargetCurrencyId :this.state.TargetCurrency.id,
             TargetExchangeRate :this.state.TargetExchangeRate,
             Notes :this.state.Notes
@@ -144,9 +144,9 @@ class ExchangeOPRAddEdit extends Component {
         }
         if(this.props.moneyAccountList.length===0){
             return (
-                <div className='error'>
+                <div className='App error'>
                     no money accounts found<br/>
-                    <button on onClick={this.props.closePopUpComponent}>Close</button>
+                    <button className="btn btn-primary" onClick={this.props.closePopUpComponent}>Close</button>
                 </div>
             )
         }
@@ -204,10 +204,10 @@ class ExchangeOPRAddEdit extends Component {
                         </div>
                         
                         <div  style={{maxWidth:175}}>
-                                <label>OutValue:</label>
-                                <input id="OutValue" type="text" name="OutValue"
+                                <label>Out Money Value:</label>
+                                <input id="OutMoneyValue" type="text" name="OutMoneyValue"
                                 required className="form-control" 
-                                value={this.state.OutValue}
+                                value={this.state.OutMoneyValue}
                                 onChange={this.onChangeInput}
                                 />
                         </div>
@@ -243,7 +243,7 @@ class ExchangeOPRAddEdit extends Component {
                                 <input type="text" 
                                  className="form-control" readOnly
                                 value={(
-                                     this.state.OutValue*
+                                     this.state.OutMoneyValue*
                                      (this.state.TargetExchangeRate/this.state.SourceExchangeRate)).toFixed(2)}
                                 />
                                                    

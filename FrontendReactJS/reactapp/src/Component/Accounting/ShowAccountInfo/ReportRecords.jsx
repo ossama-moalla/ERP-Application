@@ -43,8 +43,8 @@ const ReportRecords = (props) => {
                         else
                             classname="color-red"+classname;
                         break;
-                    case 1:type="Exchange OPR";classname="row-color-goldenrod"+classname;break;
-                    case 2:type="Money Transform OPR";classname="color-yellow"+classname;break;
+                    case 1:type="Exchange OPR";classname="color-goldenrod"+classname;break;
+                    case 2:type="Money Transform OPR";classname="color-cadetblue"+classname;break;
                     default:type="unknown"
                 }
                 if(operation.tradeOperationId!==null &&operation.tradeOperationType!=null){

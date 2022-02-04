@@ -95,11 +95,10 @@ class MoneyAccountWindow extends Component {
     moneyAccountChanged=(moneyAccountId)=>{
         this.setState({
             selectedMoneyAccountID:moneyAccountId,
-
             fetchAccountInfoDone:false,
             fetchAccountInfoError:null,
             moneyAccountValue:null,
-        },this.fetchAccountInfo)
+        },()=>{this.fetchAccountInfo();})
     }
     render() {
         if(this.state.fetchInitialDataDone===false){

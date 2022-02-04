@@ -4,7 +4,7 @@ import ReportRecords from './ReportRecords.jsx'
 import PayINAddEdit from '../PayIN/PayINAddEdit.jsx';
 import PayOUTAddEdit from '../PayOUT/PayOUTAddEdit.jsx'
 import ExchangeOPRAddEdit from '../ExchangeOPR/ExchangeOPRAddEdit.jsx'
-import MoneyTransformOPRAdd from '../MoneyTransformOPR/MoneyTransformOPRAdd.jsx'
+import MoneyTransformOPRAddEdit from '../MoneyTransformOPR/MoneyTransformOPRAddEdit.jsx'
 import axios from 'axios';
 import { ExtractErrorMessage } from '../../../GeneralMethods.js';
 import AccountSelector from './AccountSelector.jsx';
@@ -28,6 +28,11 @@ class MoneyAccountReport extends Component {
     }
     componentDidMount(){
         this.fetchReport();
+    }
+    componentDidUpdate(prevProps){
+        if(prevProps.selectedMoneyAccountID!==this.props.selectedMoneyAccountID) {
+            this.fetchReport();
+        }
     }
     accountDateUP=()=>{
         if(this.state.day!=null){
@@ -255,7 +260,7 @@ class MoneyAccountReport extends Component {
                     <button className="btn-flat color-button radius"
                     onClick={()=>
                         this.props.showPopUpComponent(
-                        <MoneyTransformOPRAdd
+                        <MoneyTransformOPRAddEdit
                         selectedMoneyAccountID={this.props.selectedMoneyAccountID}
                         dateAccount={dateAccount}
                         fetchAccountInfo={this.props.fetchAccountInfo}

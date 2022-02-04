@@ -3,49 +3,44 @@ import axios from 'axios'
 import $ from 'jquery'
 import { ExtractErrorMessage } from '../../../GeneralMethods.js';
 
-class PayOUTAddEdit extends Component {
+class MoneyTransformOPRAddEdit extends Component {
     constructor(props){
         super(props);
-        var selectedMoneyAccount=props.selectedMoneyAccountID?props.selectedMoneyAccountID:props.moneyAccountList[0].id;
-        const date=new Date();
-        if(props.PayOUT){
-            const payout=props.PayOUT;
-            this.state={
-                Id:payout.Id,
-                Date:payout.Date,
-                MoneyAccountId :payout.MoneyAccountId,
-                Description :payout.Description,
-                Currency :payout.Currency,
-                Value :payout.Value,
-                ExchangeRate :payout.exchangeRate,
-                Notes :payout.Notes,
-                fetchDone:false
-            }
-        }
-        else{
-            this.state={
-                Id:undefined,
-                Date:new Date(props.dateAccount.year,props.dateAccount.month-1,props.dateAccount.day
-                   ,date.getHours(),date.getMinutes() ),
-                MoneyAccountId :selectedMoneyAccount,
-                Description :'',
-                Currency :props.currencyList[0],
-                Value :0,
-                ExchangeRate :props.currencyList[0].exchangeRate,
-                Notes :'',
-                fetchDone:false
-            }
-        }
-    }
-    componentDidMount(){
-        if(this.props.OperationId &&this.props.OperationType){
-            //fetch operation info
-        }
-        else this.setState({fetchDone:true})
+        this.selectedMoneyAccount=props.moneyAccountList.find(x=>x.id===props.selectedMoneyAccountID);
+        this.moneyAccountList= props.moneyAccountList.filter(x=>x.id!==this.selectedMoneyAccount.id);
 
+        const date=new Date();
+        if(this.moneyAccountList.length>0){
+            if(props.MoneyTransformOPR){
+                const moneytransformopr=props.MoneyTransformOPR;
+                this.state={
+                    Id:moneytransformopr.Id,
+                    Date:moneytransformopr.Date,
+                    TargetMoneyAccountId :moneytransformopr.TargetMoneyAccountId,
+                    Currency :moneytransformopr.Currency,
+                    ExchangeRate  :moneytransformopr.ExchangeRate ,
+                    Value :moneytransformopr.Value,
+                    Notes :moneytransformopr.Notes,
+                }
+            }
+            else{
+                this.state={
+                    Id:undefined,
+                    Date:new Date(props.dateAccount.year,props.dateAccount.month-1,props.dateAccount.day
+                       ,date.getHours(),date.getMinutes() ),
+                    TargetMoneyAccountId :this.moneyAccountList[0].id,
+                    Currency :props.currencyList[0],
+                    ExchangeRate :props.currencyList[0].exchangeRate,
+                    Value :0,
+                    Notes :''
+                }
+            }
+        }
+        else this.state={}
     }
     onChangeInput=async(e)=>{  
         if(e.target.name==="ExchangeRate" && isNaN (e.target.value) ) return;
+
         if(e.target.name==="Value" && isNaN (e.target.value) ) return;
         if(e.target.name==="Currency" ) {
             const currency=this.props.currencyList.find(c=> c.id===Number(e.target.value));
@@ -53,36 +48,36 @@ class PayOUTAddEdit extends Component {
                 Currency:currency,
                 ExchangeRate:currency.exchangeRate
             })
-            return;
-                
+            return;      
         }
         this.setState({
             [e.target.name]:e.target.value 
         });
     
     }
-    addPayOUT=async ()=>{
+    addMoneyTransformOPR=async ()=>{
         document.getElementById('buttonAdd').disabled=true;
-        var div=document.getElementById('PayoutAdd_displaymessage');
-        var payout={
-            Id:this.state.Id,
-            Date:this.state.Date,
-            MoneyAccountId :this.state.MoneyAccountId,
-            Description :this.state.Description,
-            CurrencyId :this.state.Currency.id,
-            Value :this.state.Value,
-            ExchangeRate :this.state.ExchangeRate,
-            Notes :this.state.Notes
+        console.log(this.state)
+        var div=document.getElementById('MoneyTransformOPRAdd_displaymessage');
+        var moneytransformopr={
+            id: this.state.Id,
+            date:this.state.Date ,
+            sourceMoneyAccountId: this.selectedMoneyAccount.id,
+            targetMoneyAccountId: this.state.TargetMoneyAccountId,
+            currencyId: this.state.Currency.id,
+            exchangeRate: this.state.ExchangeRate,
+            value: this.state.Value,
+            notes: this.state.Notes
         }
-        await axios.post("https://localhost:5001/Accounting/PayOUT/Add",payout)
+        console.log(moneytransformopr)
+        await axios.post("https://localhost:5001/Accounting/MoneyTransformOPR/Add",moneytransformopr)
         .then(res=>{
             this.props.fetchAccountInfo();
             this.props.fetchReport();
-            $(div).css('background-color','green').text('PayOUT Added').fadeIn(500)
+            $(div).css('background-color','green').text('MoneyTransformOPR Added').fadeIn(500)
             .delay(1500).fadeOut(500);
             this.setState({
                 Id:undefined,
-                Description :'',
                 Value :0,
                 Notes :'',
             })
@@ -95,24 +90,24 @@ class PayOUTAddEdit extends Component {
 
 
     }
-    updatePayOUT=async()=>{
+    updateMoneyTransformOPR=async()=>{
         document.getElementById('buttonAdd').disabled=true;
-        var div=document.getElementById('PayoutAdd_displaymessage');
-        var payout={
+        var div=document.getElementById('MoneyTransformOPRAdd_displaymessage');
+        var moneytransformopr={
             Id:this.state.Id,
             Date:this.state.Date,
-            MoneyAccountId :this.state.MoneyAccountId,
-            Description :this.state.Description,
-            CurrencyId :this.state.Currency.id,
+            SourceMoneyAcount:this.selectedMoneyAccount.id,
+            TargetMoneyAccountId :this.state.TargetMoneyAccountId,
+            CurrencyId :this.state.Currency.Id,
+            ExchangeRate  :this.state.ExchangeRate ,
             Value :this.state.Value,
-            ExchangeRate :this.state.ExchangeRate,
-            Notes :this.state.Notes
+            Notes :this.state.Notes,
         }
-        await axios.post("https://localhost:5001/Accounting/PayOUT/Update",payout)
+        await axios.post("https://localhost:5001/Accounting/MoneyTransformOPR/Update",moneytransformopr)
         .then(res=>{
             this.props.fetchAccountInfo();
             this.props.fetchReport();
-            $(div).css('background-color','green').text('PayOUT Added').fadeIn(500)
+            $(div).css('background-color','green').text('MoneyTransformOPR Added').fadeIn(500)
             .delay(1500).fadeOut(500,this.props.closePopUpComponent)
             }
         )
@@ -126,44 +121,38 @@ class PayOUTAddEdit extends Component {
         if(this.props.currencyList.length===0){
             return (
                 <div className='App error'>
-                    no currencies found
-                    <br/><br/>
+                    No Currencies Found<br/><br/>
                     <button className="btn btn-primary" onClick={this.props.closePopUpComponent}>Close</button>
                 </div>
             )
         }
-        if(this.props.moneyAccountList.length===0){
+        if(this.moneyAccountList.length===0){
             return (
                 <div className='App error'>
-                    no money accounts found
-                    <br/><br/>
+                     money accounts must be at least 2<br/>
                     <button className="btn btn-primary" onClick={this.props.closePopUpComponent}>Close</button>
                 </div>
             )
         }
-        if(this.state.fetchDone===false){
-            return(
-                <div  className="App">
-                    Loading.......
-                </div>
-            )
-        }
-        
-        
         return (
-            <div id="PayoutAdd" className="color-red"  >
-                <div id="PayoutAdd_displaymessage" className="App error-div">
+            <div id="MoneyTransformOPRAdd" className="color-cadetblue" style={{padding:10}}  >
+                <div id="MoneyTransformOPRAdd_displaymessage" className="App error-div">
             </div>                                        
                 <div >
                     <div  className="form-group" >
+                        <div className="bordered color-blue">
+                            <label>Source Money Acount:{this.selectedMoneyAccount.name}</label><br/>
+                            <label>Date:{this.state.Date.getDate()+"/"+(this.state.Date.getMonth()+1)+"/"+
+                            this.state.Date.getFullYear()}</label>
+                        </div>
                         <div >
-                            <label>Monney Account:</label><br/>
+                            <label>Target Monney Account:</label><br/>
                             <select className="color-yellow bordered" 
                                  onChange={this.onChangeInput}
-                                 name="MoneyAccountId"
+                                 name="TargetMoneyAccountId"
                             >
                                 {
-                                    this.props.moneyAccountList.map((account,index)=>{
+                                    this.moneyAccountList.map((account,index)=>{
                                         return (
                                             <option key={index} value={account.id}>{account.name}</option>
                                         )
@@ -171,30 +160,8 @@ class PayOUTAddEdit extends Component {
                                 }
                             </select>
                         </div>
-                        <div>
-                        <label>Date:</label>
-                        <label>{this.state.Date.getDate()+"/"+(this.state.Date.getMonth()+1)+"/"+
-                        this.state.Date.getFullYear()}</label>
-                        </div>
-                        <div>
-                            <label>Description:</label>
-                            <input id="Description" type="text" name="Description"
-                            required className="form-control" 
-                            value={this.state.Description}
-                            onChange={this.onChangeInput}
-                            />
-                            
-                        </div>
                         
                         <div>
-                            <div className="div-inlineblock" style={{maxWidth:175}}>
-                                <label>Value:</label>
-                                <input id="Value" type="text" name="Value"
-                                required className="form-control" 
-                                value={this.state.Value}
-                                onChange={this.onChangeInput}
-                                />
-                            </div>
                             <div className="div-inlineblock">
                                 <label>Currency:</label><br/>
                                 <select className="color-yellow bordered" style={{padding:7}}
@@ -210,18 +177,26 @@ class PayOUTAddEdit extends Component {
                                     }
                                 </select>
                             </div>
-                            <div className="div-inlineblock" style={{maxWidth:125}}>
+                            <div className="div-inlineblock" style={{maxWidth:225}}>
                                 <label>ExchangeRate:</label>
                                 <input type="text" id='ExchangeRate' name="ExchangeRate"
                                 required className="form-control" readOnly
                                 value={this.state.ExchangeRate}
                                 onChange={this.onChangeInput}
                                 />
-                                                   
+                                                    
                             </div>
-                            
                         </div>
                         
+                        <div  style={{maxWidth:175}}>
+                                <label>Value:</label>
+                                <input id="Value" type="text" name="Value"
+                                required className="form-control" 
+                                value={this.state.Value}
+                                onChange={this.onChangeInput}
+                                />
+                        </div>
+                            
                         <div>
                             <label>Notes:</label>
                             <input id="Notes" type="text" name="Notes"
@@ -237,11 +212,11 @@ class PayOUTAddEdit extends Component {
                             this.state.Id===undefined?
                             
                         <button id='buttonAdd'  className="btn btn-primary" style={{margin:5}} 
-                        onClick={this.addPayOUT}>
+                        onClick={this.addMoneyTransformOPR}>
                             Add </button>   :
                             
                         <button id='buttonAdd'  className="btn btn-primary" style={{margin:5}} 
-                        onClick={this.updatePayOUT}>
+                        onClick={this.updateMoneyTransformOPR}>
                             Update </button>   
                         }
                     </div>
@@ -251,4 +226,4 @@ class PayOUTAddEdit extends Component {
     }
 }
 
-export default PayOUTAddEdit;
+export default MoneyTransformOPRAddEdit;

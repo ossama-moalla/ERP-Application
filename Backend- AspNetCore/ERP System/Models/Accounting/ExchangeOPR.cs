@@ -16,16 +16,17 @@ namespace ERP_System.Models.Accounting
         [Key]
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        [Required]
         public int? SourceCurrencyId { get; set; }
         [JsonIgnore]
         public Currency SourceCurrency { get; set; }
-        public double SourceExchangeRate { get; set; }
-        public double OutMoneyValue { get; set; }
         [Required]
+        public double SourceExchangeRate { get; set; }
+        [Required]
+        public double OutMoneyValue { get; set; }
         public int? TargetCurrencyId { get; set; }
         [JsonIgnore]
         public Currency TargetCurrency { get; set; }
+        [Required]
         public double TargetExchangeRate { get; set; }
         public string Notes { get; set; }
     }

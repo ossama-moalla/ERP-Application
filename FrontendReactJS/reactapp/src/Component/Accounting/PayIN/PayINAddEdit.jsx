@@ -150,7 +150,7 @@ class PayINAddEdit extends Component {
         }
         
         return (
-            <div id="PayinAdd " style={{backgroundColor:"#10b166"}}  >
+            <div id="PayinAdd" className="color-green"  >
                 <div id="PayinAdd_displaymessage" className="App error-div">
             </div>                                        
                 <div >

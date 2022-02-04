@@ -13,18 +13,20 @@ namespace ERP_System.Models.Accounting
         [Key]
         public int Id { get; set; }
         public DateTime Date { get; set; }
+        [Required]
         public int SourceMoneyAccountId { get; set; }
         [JsonIgnore]
         public MoneyAccount SourceMoneyAccount { get; set; }
+        [Required]
         public int TargetMoneyAccountId { get; set; }
         [JsonIgnore]
         public MoneyAccount TargetMoneyAccount { get; set; }
-        [Required]
         public int? CurrencyId { get; set; }
         [JsonIgnore]
         public Currency Currency { get; set; }
         [Required]
         public double ExchangeRate { get; set; }
+        [Required]
         public double Value { get; set; }
         public string Notes { get; set; }
         /*
