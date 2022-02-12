@@ -15,14 +15,14 @@ namespace ERP_System.Models.Accounting
         public DateTime Date { get; set; }
         [Required]
         public int SourceMoneyAccountId { get; set; }
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public MoneyAccount SourceMoneyAccount { get; set; }
         [Required]
         public int TargetMoneyAccountId { get; set; }
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public MoneyAccount TargetMoneyAccount { get; set; }
         public int? CurrencyId { get; set; }
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Currency Currency { get; set; }
         [Required]
         public double ExchangeRate { get; set; }

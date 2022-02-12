@@ -57,11 +57,14 @@ class MoneyTransformOPRAddEdit extends Component {
     }
     addMoneyTransformOPR=async ()=>{
         document.getElementById('buttonAdd').disabled=true;
-        console.log(this.state)
         var div=document.getElementById('MoneyTransformOPRAdd_displaymessage');
+        let date=this.state.Date;
+        date.setHours(new Date().getHours());
+        date.setMinutes(new Date().getMinutes())
+        const offset=new Date().getTimezoneOffset();
         var moneytransformopr={
             id: this.state.Id,
-            date:this.state.Date ,
+            date:new Date(date.getTime()-offset*60*1000) ,
             sourceMoneyAccountId: this.selectedMoneyAccount.id,
             targetMoneyAccountId: this.state.TargetMoneyAccountId,
             currencyId: this.state.Currency.id,
@@ -69,7 +72,6 @@ class MoneyTransformOPRAddEdit extends Component {
             value: this.state.Value,
             notes: this.state.Notes
         }
-        console.log(moneytransformopr)
         await axios.post("https://localhost:5001/Accounting/MoneyTransformOPR/Add",moneytransformopr)
         .then(res=>{
             this.props.fetchAccountInfo();
@@ -141,7 +143,8 @@ class MoneyTransformOPRAddEdit extends Component {
                 <div >
                     <div  className="form-group" >
                         <div className="bordered color-blue">
-                            <label>Source Money Acount:{this.selectedMoneyAccount.name}</label><br/>
+                            <label>Source Money Acount:
+                                <span className="color-yellow bordered" >{this.selectedMoneyAccount.name}</span></label><br/>
                             <label>Date:{this.state.Date.getDate()+"/"+(this.state.Date.getMonth()+1)+"/"+
                             this.state.Date.getFullYear()}</label>
                         </div>
@@ -162,6 +165,14 @@ class MoneyTransformOPRAddEdit extends Component {
                         </div>
                         
                         <div>
+                            <div className="div-inlineblock" style={{maxWidth:150}}>
+                                    <label>Value:</label>
+                                    <input id="Value" type="text" name="Value"
+                                    required className="form-control" 
+                                    value={this.state.Value}
+                                    onChange={this.onChangeInput}
+                                    />
+                            </div>
                             <div className="div-inlineblock">
                                 <label>Currency:</label><br/>
                                 <select className="color-yellow bordered" style={{padding:7}}
@@ -177,7 +188,7 @@ class MoneyTransformOPRAddEdit extends Component {
                                     }
                                 </select>
                             </div>
-                            <div className="div-inlineblock" style={{maxWidth:225}}>
+                            <div className="div-inlineblock" style={{maxWidth:150}}>
                                 <label>ExchangeRate:</label>
                                 <input type="text" id='ExchangeRate' name="ExchangeRate"
                                 required className="form-control" readOnly
@@ -186,15 +197,6 @@ class MoneyTransformOPRAddEdit extends Component {
                                 />
                                                     
                             </div>
-                        </div>
-                        
-                        <div  style={{maxWidth:175}}>
-                                <label>Value:</label>
-                                <input id="Value" type="text" name="Value"
-                                required className="form-control" 
-                                value={this.state.Value}
-                                onChange={this.onChangeInput}
-                                />
                         </div>
                             
                         <div>

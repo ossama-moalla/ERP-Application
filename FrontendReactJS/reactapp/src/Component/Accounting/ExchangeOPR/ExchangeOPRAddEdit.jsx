@@ -7,7 +7,6 @@ class ExchangeOPRAddEdit extends Component {
     constructor(props){
         super(props);
         var selectedMoneyAccount=props.selectedMoneyAccountID?props.selectedMoneyAccountID:props.moneyAccountList[0].id;
-        const date=new Date();
         if(props.currencyList.length>1){
             if(props.ExchangeOPR){
                 const exchangeopr=props.ExchangeOPR;
@@ -26,8 +25,7 @@ class ExchangeOPRAddEdit extends Component {
             else{
                 this.state={
                     Id:undefined,
-                    Date:new Date(props.dateAccount.year,props.dateAccount.month-1,props.dateAccount.day
-                       ,date.getHours(),date.getMinutes() ),
+                    Date: new Date(props.dateAccount.year,props.dateAccount.month-1,props.dateAccount.day ),
                     MoneyAccountId :selectedMoneyAccount,
                     SourceCurrency :props.currencyList[0],
                     SourceExchangeRate :props.currencyList[0].exchangeRate,
@@ -39,11 +37,6 @@ class ExchangeOPRAddEdit extends Component {
             }
         }
         else this.state={}
-        
-    }
-    componentDidMount(){
-        
-
     }
     onChangeInput=async(e)=>{  
         if(e.target.name==="SourceExchangeRate" && isNaN (e.target.value) ) return;
@@ -74,9 +67,13 @@ class ExchangeOPRAddEdit extends Component {
     addExchangeOPR=async ()=>{
         document.getElementById('buttonAdd').disabled=true;
         var div=document.getElementById('ExchangeoprAdd_displaymessage');
+        let date=this.state.Date;
+        date.setHours(new Date().getHours());
+        date.setMinutes(new Date().getMinutes())
+        const offset=new Date().getTimezoneOffset();
         var exchangeopr={
             Id:this.state.Id,
-            Date:this.state.Date,
+            Date:new Date(date.getTime()-offset*60*1000),
             MoneyAccountId :this.state.MoneyAccountId,
             SourceCurrencyId :this.state.SourceCurrency.id,
             SourceExchangeRate :this.state.SourceExchangeRate,
@@ -170,13 +167,22 @@ class ExchangeOPRAddEdit extends Component {
                                     })
                                 }
                             </select>
+                            <div style={{float:"right",display:"inline-block"}}>
+                                <label>Date:</label>
+                                <label>{this.state.Date.getDate()+"/"+(this.state.Date.getMonth()+1)+"/"+
+                                this.state.Date.getFullYear()}</label>
+                            </div>
                         </div>
+                        
                         <div>
-                        <label>Date:</label>
-                        <label>{this.state.Date.getDate()+"/"+(this.state.Date.getMonth()+1)+"/"+
-                        this.state.Date.getFullYear()}</label>
-                        </div>
-                        <div>
+                            <div className="div-inlineblock" style={{maxWidth:150}}>
+                                    <label>Out Money Value:</label>
+                                    <input id="OutMoneyValue" type="text" name="OutMoneyValue"
+                                    required className="form-control" 
+                                    value={this.state.OutMoneyValue}
+                                    onChange={this.onChangeInput}
+                                    />
+                            </div>
                             <div className="div-inlineblock">
                                 <label>Source Currency:</label><br/>
                                 <select className="color-yellow bordered" style={{padding:7}}
@@ -192,7 +198,7 @@ class ExchangeOPRAddEdit extends Component {
                                     }
                                 </select>
                             </div>
-                            <div className="div-inlineblock" style={{maxWidth:225}}>
+                            <div className="div-inlineblock" style={{maxWidth:180}}>
                                 <label>Source ExchangeRate:</label>
                                 <input type="text" id='SourceExchangeRate' name="SourceExchangeRate"
                                 required className="form-control" readOnly
@@ -201,15 +207,6 @@ class ExchangeOPRAddEdit extends Component {
                                 />
                                                     
                             </div>
-                        </div>
-                        
-                        <div  style={{maxWidth:175}}>
-                                <label>Out Money Value:</label>
-                                <input id="OutMoneyValue" type="text" name="OutMoneyValue"
-                                required className="form-control" 
-                                value={this.state.OutMoneyValue}
-                                onChange={this.onChangeInput}
-                                />
                         </div>
                         <div>    
                             <div className="div-inlineblock">
@@ -227,7 +224,7 @@ class ExchangeOPRAddEdit extends Component {
                                     }
                                 </select>
                             </div>
-                            <div className="div-inlineblock" style={{maxWidth:225}}>
+                            <div className="div-inlineblock" style={{maxWidth:180}}>
                                 <label>Target ExchangeRate:</label>
                                 <input type="text" id='TargetExchangeRate' name="TargetExchangeRate"
                                 required className="form-control" readOnly
@@ -236,9 +233,7 @@ class ExchangeOPRAddEdit extends Component {
                                 />
                                                    
                             </div>
-                            
-                        </div>
-                        <div  style={{maxWidth:225}}>
+                            <div className="div-inlineblock" style={{maxWidth:150}}>
                                 <label>In Value:</label>
                                 <input type="text" 
                                  className="form-control" readOnly
@@ -248,6 +243,8 @@ class ExchangeOPRAddEdit extends Component {
                                 />
                                                    
                             </div>
+                            
+                        </div>
                         <div>
                             <label>Notes:</label>
                             <input id="Notes" type="text" name="Notes"

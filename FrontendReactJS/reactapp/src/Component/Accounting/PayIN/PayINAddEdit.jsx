@@ -64,9 +64,13 @@ class PayINAddEdit extends Component {
     addPayIN=async ()=>{
         document.getElementById('buttonAdd').disabled=true;
         var div=document.getElementById('PayinAdd_displaymessage');
+        let date=this.state.Date;
+        date.setHours(new Date().getHours());
+        date.setMinutes(new Date().getMinutes())
+        const offset=new Date().getTimezoneOffset();
         var payin={
             Id:this.state.Id,
-            Date:this.state.Date,
+            Date:new Date(date.getTime()-offset*60*1000) ,
             MoneyAccountId :this.state.MoneyAccountId,
             Description :this.state.Description,
             CurrencyId :this.state.Currency.id,

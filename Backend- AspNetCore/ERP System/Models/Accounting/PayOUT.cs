@@ -13,7 +13,7 @@ namespace ERP_System.Models.Accounting
     public class PayOUT
     {
         public int MoneyAccountId { get; set; }
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public MoneyAccount MoneyAccount { get; set; }
         public int Id { get; set; }
         public DateTime Date { get; set;  }
@@ -28,7 +28,7 @@ namespace ERP_System.Models.Accounting
         [Required]
         public double Value { get; set; }
         public int? CurrencyId { get; set; }
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Currency Currency { get; set; }
         [Required]
         public double ExchangeRate { get; set; }

@@ -11,20 +11,20 @@ namespace ERP_System.Models.Accounting
     public class ExchangeOPR
     {
         public int MoneyAccountId { get; set; }
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public MoneyAccount MoneyAccount { get; set; }
         [Key]
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public int? SourceCurrencyId { get; set; }
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Currency SourceCurrency { get; set; }
         [Required]
         public double SourceExchangeRate { get; set; }
         [Required]
         public double OutMoneyValue { get; set; }
         public int? TargetCurrencyId { get; set; }
-        [JsonIgnore]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Currency TargetCurrency { get; set; }
         [Required]
         public double TargetExchangeRate { get; set; }

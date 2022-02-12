@@ -8,6 +8,10 @@ import MoneyTransformOPRAddEdit from '../MoneyTransformOPR/MoneyTransformOPRAddE
 import axios from 'axios';
 import { ExtractErrorMessage } from '../../../GeneralMethods.js';
 import AccountSelector from './AccountSelector.jsx';
+import PayINInfo from '../PayIN/PayINInfo.jsx';
+import PayOUTInfo from '../PayOUT/PayOUTInfo.jsx';
+import ExchangeOPRInfo from '../ExchangeOPR/ExchangeOPRInfo.jsx';
+import MoneyTransformOPRInfo from '../MoneyTransformOPR/MoneyTransformOPRInfo.jsx';
 
 class MoneyAccountReport extends Component {
     constructor(props){
@@ -46,7 +50,7 @@ class MoneyAccountReport extends Component {
         }
         else return;
     }
-     accountDateDown=(value,type)=>{
+     accountDateDown=(value,operation)=>{
         if(this.state.year==null){
             this.setState({year:value},this.fetchReport)
         }
@@ -58,7 +62,26 @@ class MoneyAccountReport extends Component {
         }
         else {
             //open operation by value=id and getoperationtype from type
-            return};
+            if(operation.oprType===0){//pay opr
+                if(operation.oprDirection===0){//payin
+                    this.props.showPopUpComponent(<PayINInfo Id={value} 
+                        closePopUpComponent={this.props.closePopUpComponent}/>,'Pay In Info') 
+                }
+                else{
+                    this.props.showPopUpComponent(<PayOUTInfo Id={value} 
+                        closePopUpComponent={this.props.closePopUpComponent}/>,'Pay Out Info')
+                }
+            }
+            else if(operation.oprType===1){//exchange opr
+                this.props.showPopUpComponent(<ExchangeOPRInfo Id={value} 
+                    closePopUpComponent={this.props.closePopUpComponent}/>,'ExchangeOPR Info')
+            }
+            else if(operation.oprType===2){//money transform opr
+                this.props.showPopUpComponent(<MoneyTransformOPRInfo Id={value} 
+                    closePopUpComponent={this.props.closePopUpComponent}/>,'MoneyTransformOPR Info')
+            }
+            return;
+        }
     }
     acountDateShift=(value)=>{
         if(this.state.day!=null){

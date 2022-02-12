@@ -34,7 +34,7 @@ const ReportRecords = (props) => {
             tableRecords=props.moneyAccount_Report_Records.map((operation,index)=>{
                 const date=new Date(operation.date);
                 let type,belongTO;
-                let classname=" tablerow-button";
+                let classname=" tablerow-button font-white ";
                 switch(operation.oprType){
                     case 0:
                         type="Pay OPR";
@@ -53,7 +53,7 @@ const ReportRecords = (props) => {
                 else belongTO="-";
                 return(
                     <tr   className={classname} key={index}
-                     onClick={()=>props.accountDateDown(operation.id,operation.oprType)}>
+                     onClick={()=>props.accountDateDown(operation.id,operation)}>
                         <td>{date.getHours()+":"+date.getMinutes()}</td>
                         <td>{type}</td>
                         <td>{operation.oprDirection===0?"IN":"OUT"}</td>

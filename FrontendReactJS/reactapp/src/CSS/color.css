@@ -26,16 +26,16 @@
 
 .color-goldenrod{
     background-color: goldenrod;
-    color:white;
 }
 .color-button{
     background-color: palegreen;
 }
 .color-green{
     background-color: #10b166;
-    color: white;
 }
 .color-red{
-    background-color: rgb(235, 157, 113);
-    color: white;
+    background-color: brown;
+}
+.font-white{
+    color:white
 }
