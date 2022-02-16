@@ -38,6 +38,54 @@ class MoneyAccountReport extends Component {
             this.fetchReport();
         }
     }
+    
+    editMoneyAccountOperation=async(operation,operationType)=>{
+        if(operationType===0){//payIN
+            this.props.showPopUpComponent(<PayINAddEdit
+            PayIN={operation}
+            selectedMoneyAccountID={this.props.selectedMoneyAccountID}
+            fetchAccountInfo={this.props.fetchAccountInfo}
+            fetchReport={this.fetchReport}
+            currencyList={this.props.currencyList}
+            moneyAccountList={this.props.moneyAccountList}
+            closePopUpComponent={this.props.closePopUpComponent}
+            />,'Edit PayIN');
+        }
+        else if(operationType===1){//payOUT
+            this.props.showPopUpComponent(<PayOUTAddEdit
+            PayOUT={operation}
+            selectedMoneyAccountID={this.props.selectedMoneyAccountID}
+            fetchAccountInfo={this.props.fetchAccountInfo}
+            fetchReport={this.fetchReport}
+            currencyList={this.props.currencyList}
+            moneyAccountList={this.props.moneyAccountList}
+            closePopUpComponent={this.props.closePopUpComponent}
+            />,'Edit PayOUT');
+        }
+        else if(operationType===2){//exchangeOPR
+            this.props.showPopUpComponent(<ExchangeOPRAddEdit
+            ExchangeOPR={operation}
+            selectedMoneyAccountID={this.props.selectedMoneyAccountID}
+            fetchAccountInfo={this.props.fetchAccountInfo}
+            fetchReport={this.fetchReport}
+            currencyList={this.props.currencyList}
+            moneyAccountList={this.props.moneyAccountList}
+            closePopUpComponent={this.props.closePopUpComponent}
+            />,'Edit ExchangeOPR');
+        }
+        else if(operationType===3){//MoneyTransformOPR
+            this.props.showPopUpComponent(<MoneyTransformOPRAddEdit
+            MoneyTransformOPR={operation}
+            selectedMoneyAccountID={this.props.selectedMoneyAccountID}
+            fetchAccountInfo={this.props.fetchAccountInfo}
+            fetchReport={this.fetchReport}
+            currencyList={this.props.currencyList}
+            moneyAccountList={this.props.moneyAccountList}
+            closePopUpComponent={this.props.closePopUpComponent}
+            />,'Edit MoneyTransformOPR');
+        }
+        else return;
+    }
     accountDateUP=()=>{
         if(this.state.day!=null){
             this.setState({day:null},this.fetchReport)
@@ -64,20 +112,24 @@ class MoneyAccountReport extends Component {
             //open operation by value=id and getoperationtype from type
             if(operation.oprType===0){//pay opr
                 if(operation.oprDirection===0){//payin
-                    this.props.showPopUpComponent(<PayINInfo Id={value} 
+                    this.props.showPopUpComponent(<PayINInfo Id={value} editMoneyAccountOperation={this.editMoneyAccountOperation}  
+                       fetchAccountInfo={this.props.fetchAccountInfo}   fetchReport={this.fetchReport} 
                         closePopUpComponent={this.props.closePopUpComponent}/>,'Pay In Info') 
                 }
                 else{
-                    this.props.showPopUpComponent(<PayOUTInfo Id={value} 
+                    this.props.showPopUpComponent(<PayOUTInfo Id={value} editMoneyAccountOperation={this.editMoneyAccountOperation}
+                        fetchAccountInfo={this.props.fetchAccountInfo}   fetchReport={this.fetchReport}
                         closePopUpComponent={this.props.closePopUpComponent}/>,'Pay Out Info')
                 }
             }
             else if(operation.oprType===1){//exchange opr
-                this.props.showPopUpComponent(<ExchangeOPRInfo Id={value} 
+                this.props.showPopUpComponent(<ExchangeOPRInfo Id={value} editMoneyAccountOperation={this.editMoneyAccountOperation}
+                    fetchAccountInfo={this.props.fetchAccountInfo}   fetchReport={this.fetchReport}
                     closePopUpComponent={this.props.closePopUpComponent}/>,'ExchangeOPR Info')
             }
             else if(operation.oprType===2){//money transform opr
-                this.props.showPopUpComponent(<MoneyTransformOPRInfo Id={value} 
+                this.props.showPopUpComponent(<MoneyTransformOPRInfo Id={value} editMoneyAccountOperation={this.editMoneyAccountOperation}
+                    fetchAccountInfo={this.props.fetchAccountInfo}   fetchReport={this.fetchReport}
                     closePopUpComponent={this.props.closePopUpComponent}/>,'MoneyTransformOPR Info')
             }
             return;

@@ -42,19 +42,24 @@ namespace ERP_System
                 "[ExchangeRate]>0")
             );
             builder.Entity<PayIN>(p =>
+            { 
+                p.HasOne(c => c.Currency).WithMany().OnDelete(DeleteBehavior.Restrict);
                 p.HasCheckConstraint("PayIN_Exchange Rate Must Be Greater Than Zero",
-                "[ExchangeRate]>0 ")
-                .HasCheckConstraint("PayIN_Value Must Be Greater Than Zero",
-                "[Value]>0 ")
-                .Property(x=>x.Date).HasDefaultValueSql("getdate()")
+                    "[ExchangeRate]>0 ")
+                    .HasCheckConstraint("PayIN_Value Must Be Greater Than Zero",
+                    "[Value]>0 ")
+                    .Property(x => x.Date).HasDefaultValueSql("getdate()");
+                }
             );
             builder.Entity<PayOUT>(p =>
+            {
+                p.HasOne(c => c.Currency).WithMany().OnDelete(DeleteBehavior.Restrict);
                 p.HasCheckConstraint("PayOUT_Exchange Rate Must Be Greater Than Zero",
-                "[ExchangeRate]>0 ")
-                .HasCheckConstraint("PayOUT_Value Must Be Greater Than Zero",
-                "[Value]>0 ")
-                .Property(x => x.Date).HasDefaultValueSql("getdate()")
-
+                    "[ExchangeRate]>0 ")
+                    .HasCheckConstraint("PayOUT_Value Must Be Greater Than Zero",
+                    "[Value]>0 ")
+                    .Property(x => x.Date).HasDefaultValueSql("getdate()");
+                }
             );
             builder.Entity<MoneyTransFormOPR>(p =>
             {

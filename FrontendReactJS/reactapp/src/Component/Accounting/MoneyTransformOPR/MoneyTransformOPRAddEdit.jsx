@@ -14,13 +14,13 @@ class MoneyTransformOPRAddEdit extends Component {
             if(props.MoneyTransformOPR){
                 const moneytransformopr=props.MoneyTransformOPR;
                 this.state={
-                    Id:moneytransformopr.Id,
-                    Date:moneytransformopr.Date,
-                    TargetMoneyAccountId :moneytransformopr.TargetMoneyAccountId,
-                    Currency :moneytransformopr.Currency,
-                    ExchangeRate  :moneytransformopr.ExchangeRate ,
-                    Value :moneytransformopr.Value,
-                    Notes :moneytransformopr.Notes,
+                    Id:moneytransformopr.id,
+                    Date:new Date(moneytransformopr.date),
+                    TargetMoneyAccountId :moneytransformopr.targetMoneyAccountId,
+                    Currency :moneytransformopr.currency,
+                    ExchangeRate  :moneytransformopr.exchangeRate ,
+                    Value :moneytransformopr.value,
+                    Notes :moneytransformopr.notes,
                 }
             }
             else{
@@ -105,19 +105,18 @@ class MoneyTransformOPRAddEdit extends Component {
             Value :this.state.Value,
             Notes :this.state.Notes,
         }
-        await axios.post("https://localhost:5001/Accounting/MoneyTransformOPR/Update",moneytransformopr)
+        await axios.put("https://localhost:5001/Accounting/MoneyTransformOPR/Update",moneytransformopr)
         .then(res=>{
             this.props.fetchAccountInfo();
             this.props.fetchReport();
-            $(div).css('background-color','green').text('MoneyTransformOPR Added').fadeIn(500)
-            .delay(1500).fadeOut(500,this.props.closePopUpComponent)
+            this.props.closePopUpComponent();
             }
         )
-        .catch(err=>$(div).css('background-color','red').text(ExtractErrorMessage(err)).fadeIn(500)
-            .delay(2000).fadeOut(500))
-
-        document.getElementById('buttonAdd').disabled=false;
-
+        .catch(err=>{
+            document.getElementById('buttonAdd').disabled=false;
+            $(div).css('background-color','red').text(ExtractErrorMessage(err)).fadeIn(500)
+            .delay(2000).fadeOut(500)
+        })
     }
     render() {
         if(this.props.currencyList.length===0){

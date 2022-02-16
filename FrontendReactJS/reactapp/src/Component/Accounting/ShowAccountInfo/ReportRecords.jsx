@@ -26,7 +26,7 @@ const ReportRecords = (props) => {
                     <th style={{width:60}}> Currency</th>
                     <th style={{width:60}}> Value</th>
                     <th style={{width:60}}>ExchangeRate</th>
-                    <th style={{width:60}}>Real Value</th>
+                    <th style={{width:60}}>Real Value($)</th>
                     <th style={{width:100,whiteSpace:"unset",overflowWrap:"break-word"}}>Belong to</th> 
                 </tr>
             </thead>;
@@ -59,7 +59,7 @@ const ReportRecords = (props) => {
                         <td>{operation.oprDirection===0?"IN":"OUT"}</td>
                         <td>{operation.id}</td>
                         <td>{operation.currencyName}</td>
-                        <td>{operation.value}</td>     
+                        <td>{operation.value+" "+operation.currencySymbol}</td>     
                         <td>{operation.exchangeRate}</td>
                         <td>{operation.realValue}</td>
                         <td>{belongTO}</td>

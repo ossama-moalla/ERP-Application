@@ -23,14 +23,15 @@ namespace ERP_System.Repositories.Accounting_Repository
 
         public void Delete(int id)
         {
-            var moneyTransformOpr = GetByID(id);
+            var moneyTransformOpr = DbContext.Accounting_MoneyTransFormOPR.SingleOrDefault(x => x.Id == id);
+            if (moneyTransformOpr == null) return;
             DbContext.Accounting_MoneyTransFormOPR.Remove(moneyTransformOpr);
             DbContext.SaveChanges();
         }
 
         public void Update(MoneyTransFormOPR entity)
         {
-            var moneyTransformOpr = GetByID(entity.Id);
+            var moneyTransformOpr = DbContext.Accounting_MoneyTransFormOPR.SingleOrDefault(x => x.Id == entity.Id);
             if (moneyTransformOpr != null)
             {
                 moneyTransformOpr.SourceMoneyAccountId = entity.SourceMoneyAccountId;

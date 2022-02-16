@@ -11,15 +11,15 @@ class ExchangeOPRAddEdit extends Component {
             if(props.ExchangeOPR){
                 const exchangeopr=props.ExchangeOPR;
                 this.state={
-                    Id:exchangeopr.Id,
-                    Date:exchangeopr.Date,
-                    MoneyAccountId :exchangeopr.MoneyAccountId,
-                    SourceCurrency :exchangeopr.SourceCurrency,
-                    SourceExchangeRate  :exchangeopr.SourceExchangeRate ,
-                    OutMoneyValue :exchangeopr.OutMoneyValue,
-                    TargetCurrency :exchangeopr.TargetCurrency,
-                    TargetExchangeRate  :exchangeopr.TargetExchangeRate ,
-                    Notes :exchangeopr.Notes,
+                    Id:exchangeopr.id,
+                    Date:new Date(exchangeopr.date),
+                    MoneyAccountId :exchangeopr.moneyAccountId,
+                    SourceCurrency :exchangeopr.sourceCurrency,
+                    SourceExchangeRate  :exchangeopr.sourceExchangeRate ,
+                    OutMoneyValue :exchangeopr.outMoneyValue,
+                    TargetCurrency :exchangeopr.targetCurrency,
+                    TargetExchangeRate  :exchangeopr.targetExchangeRate ,
+                    Notes :exchangeopr.notes,
                 }
             }
             else{
@@ -116,19 +116,18 @@ class ExchangeOPRAddEdit extends Component {
             TargetExchangeRate :this.state.TargetExchangeRate,
             Notes :this.state.Notes
         }
-        await axios.post("https://localhost:5001/Accounting/ExchangeOPR/Update",exchangeopr)
+        await axios.put("https://localhost:5001/Accounting/ExchangeOPR/Update",exchangeopr)
         .then(res=>{
             this.props.fetchAccountInfo();
             this.props.fetchReport();
-            $(div).css('background-color','green').text('ExchangeOPR Added').fadeIn(500)
-            .delay(1500).fadeOut(500,this.props.closePopUpComponent)
+            this.props.closePopUpComponent();
             }
         )
-        .catch(err=>$(div).css('background-color','red').text(ExtractErrorMessage(err)).fadeIn(500)
-            .delay(2000).fadeOut(500))
-
-        document.getElementById('buttonAdd').disabled=false;
-
+        .catch(err=>{
+            document.getElementById('buttonAdd').disabled=false;
+            $(div).css('background-color','red').text(ExtractErrorMessage(err)).fadeIn(500)
+            .delay(2000).fadeOut(500)
+        })
     }
     render() {
         if(this.props.currencyList.length<2){

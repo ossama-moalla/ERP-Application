@@ -164,3 +164,11 @@ select{
     font-style: italic;
     text-decoration: underline;
 }
+.table td.td-moneyin{
+    background-color: #10b166;
+    color:white
+}
+.table td.td-moneyout{
+    background-color: brown;
+    color:white
+}

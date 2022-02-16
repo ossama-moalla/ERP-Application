@@ -24,16 +24,18 @@ namespace ERP_System.Repositories.Accounting_Repository
 
         public void Delete(int id)
         {
-            var payout = GetByID(id);
+            var payout = DbContext.Accounting_PayOUT.SingleOrDefault(x => x.Id == id);
+            if (payout == null) return;
             DbContext.Accounting_PayOUT.Remove(payout);
             DbContext.SaveChanges();
         }
 
         public void Update(PayOUT entity)
         {
-            var payout = GetByID(entity.Id);
+            var payout = DbContext.Accounting_PayOUT.SingleOrDefault(x => x.Id == entity.Id);
             if (payout != null)
             {
+                if (payout.CurrencyId == null) payout.Currency = null;
                 payout.MoneyAccountId = entity.MoneyAccountId;
                 payout.CurrencyId = entity.CurrencyId == -1 ? null : entity.CurrencyId;
                 payout.ExchangeRate = entity.ExchangeRate;

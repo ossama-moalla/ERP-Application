@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP_System.Migrations
 {
     [DbContext(typeof(Application_Identity_DbContext))]
-    [Migration("20220204203759_App_Database")]
+    [Migration("20220215220754_App_Database")]
     partial class App_Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -614,7 +614,8 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Accounting.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId");
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ERP_System.Models.Accounting.MoneyAccount", "MoneyAccount")
                         .WithMany()
@@ -631,7 +632,8 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Accounting.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId");
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ERP_System.Models.Accounting.MoneyAccount", "MoneyAccount")
                         .WithMany()

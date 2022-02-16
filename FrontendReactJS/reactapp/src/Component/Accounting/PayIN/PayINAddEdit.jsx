@@ -11,14 +11,14 @@ class PayINAddEdit extends Component {
         if(props.PayIN){
             const payin=props.PayIN;
             this.state={
-                Id:payin.Id,
-                Date:payin.Date,
-                MoneyAccountId :payin.MoneyAccountId,
-                Description :payin.Description,
-                Currency :payin.Currency,
-                Value :payin.Value,
+                Id:payin.id,
+                Date:new Date(payin.date),
+                MoneyAccountId :payin.moneyAccountId,
+                Description :payin.description,
+                Currency :payin.currency,
+                Value :payin.value,
                 ExchangeRate :payin.exchangeRate,
-                Notes :payin.Notes,
+                Notes :payin.notes,
                 fetchDone:false
             }
         }
@@ -112,19 +112,17 @@ class PayINAddEdit extends Component {
             ExchangeRate :this.state.ExchangeRate,
             Notes :this.state.Notes
         }
-        await axios.post("https://localhost:5001/Accounting/PayIN/Update",payin)
+        await axios.put("https://localhost:5001/Accounting/PayIN/Update",payin)
         .then(res=>{
             this.props.fetchAccountInfo();
             this.props.fetchReport();
-            $(div).css('background-color','green').text('PayIN Added').fadeIn(500)
-            .delay(1500).fadeOut(500,this.props.closePopUpComponent)
-            }
-        )
-        .catch(err=>$(div).css('background-color','red').text(ExtractErrorMessage(err)).fadeIn(500)
-            .delay(2000).fadeOut(500))
-
-        document.getElementById('buttonAdd').disabled=false;
-
+            this.props.closePopUpComponent();
+        })
+        .catch(err=>{
+            document.getElementById('buttonAdd').disabled=false;
+            $(div).css('background-color','red').text(ExtractErrorMessage(err)).fadeIn(500)
+            .delay(2000).fadeOut(500)
+        })
     }
     render() {
         if(this.props.currencyList.length===0){

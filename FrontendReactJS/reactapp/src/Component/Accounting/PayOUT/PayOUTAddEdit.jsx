@@ -11,14 +11,14 @@ class PayOUTAddEdit extends Component {
         if(props.PayOUT){
             const payout=props.PayOUT;
             this.state={
-                Id:payout.Id,
-                Date:payout.Date,
-                MoneyAccountId :payout.MoneyAccountId,
-                Description :payout.Description,
-                Currency :payout.Currency,
-                Value :payout.Value,
+                Id:payout.id,
+                Date:new Date(payout.date),
+                MoneyAccountId :payout.moneyAccountId,
+                Description :payout.description,
+                Currency :payout.currency,
+                Value :payout.value,
                 ExchangeRate :payout.exchangeRate,
-                Notes :payout.Notes,
+                Notes :payout.notes,
                 fetchDone:false
             }
         }
@@ -112,21 +112,22 @@ class PayOUTAddEdit extends Component {
             ExchangeRate :this.state.ExchangeRate,
             Notes :this.state.Notes
         }
-        await axios.post("https://localhost:5001/Accounting/PayOUT/Update",payout)
+        await axios.put("https://localhost:5001/Accounting/PayOUT/Update",payout)
         .then(res=>{
             this.props.fetchAccountInfo();
             this.props.fetchReport();
-            $(div).css('background-color','green').text('PayOUT Added').fadeIn(500)
-            .delay(1500).fadeOut(500,this.props.closePopUpComponent)
-            }
-        )
-        .catch(err=>$(div).css('background-color','red').text(ExtractErrorMessage(err)).fadeIn(500)
-            .delay(2000).fadeOut(500))
+            this.props.closePopUpComponent();
+            })
+        .catch(err=>{
+            document.getElementById('buttonAdd').disabled=false;
+            $(div).css('background-color','red').text(ExtractErrorMessage(err)).fadeIn(500)
+            .delay(2000).fadeOut(500)
+        })
 
-        document.getElementById('buttonAdd').disabled=false;
 
     }
     render() {
+
         if(this.props.currencyList.length===0){
             return (
                 <div className='App error'>
@@ -152,12 +153,10 @@ class PayOUTAddEdit extends Component {
                 </div>
             )
         }
-        
-        
         return (
-            <div id="PayoutAdd" className="color-red"  >
+            <div id="PayoutAdd" className="color-red font-white"   >
                 <div id="PayoutAdd_displaymessage" className="App error-div">
-            </div>                                        
+                </div>                                        
                 <div >
                     <div  className="form-group" >
                         <div >

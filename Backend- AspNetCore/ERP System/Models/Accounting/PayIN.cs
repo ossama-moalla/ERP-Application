@@ -13,6 +13,7 @@ namespace ERP_System.Models.Accounting
         public int MoneyAccountId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public MoneyAccount MoneyAccount { get; set; }
+        [Key]
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public int? OperationId { get; set; }

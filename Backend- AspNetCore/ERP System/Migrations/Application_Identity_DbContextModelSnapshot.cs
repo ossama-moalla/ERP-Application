@@ -612,7 +612,8 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Accounting.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId");
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ERP_System.Models.Accounting.MoneyAccount", "MoneyAccount")
                         .WithMany()
@@ -629,7 +630,8 @@ namespace ERP_System.Migrations
                 {
                     b.HasOne("ERP_System.Models.Accounting.Currency", "Currency")
                         .WithMany()
-                        .HasForeignKey("CurrencyId");
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ERP_System.Models.Accounting.MoneyAccount", "MoneyAccount")
                         .WithMany()

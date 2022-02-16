@@ -24,14 +24,15 @@ namespace ERP_System.Repositories.Accounting_Repository
 
         public void Delete(int id)
         {
-            var exchangeopr = GetByID(id);
+            var exchangeopr = DbContext.Accounting_ExchangeOPR.SingleOrDefault(x => x.Id == id);
+            if (exchangeopr == null) return;
             DbContext.Accounting_ExchangeOPR.Remove(exchangeopr);
             DbContext.SaveChanges();
         }
 
         public void Update(ExchangeOPR entity)
         {
-            var exchangeopr = GetByID(entity.Id);
+            var exchangeopr = DbContext.Accounting_ExchangeOPR.SingleOrDefault(x => x.Id == entity.Id);
             if (exchangeopr != null)
             {
                 exchangeopr.MoneyAccountId = entity.MoneyAccountId;
