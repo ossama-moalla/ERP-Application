@@ -1,5 +1,6 @@
 ﻿using ERP_System.Models.Accounting;
 using ERP_System.Repositories;
+using ERP_System.Repositories.Accounting_Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,10 +18,13 @@ namespace ERP_System.Controllers.Accounting
 
         private readonly ILogger logger;
         private readonly IApplicationRepository<PayIN> PayIN_repo;
-        public PayinController(ILogger<PayinController> logger, IApplicationRepository<PayIN> PayIN_repo)
+        private readonly MoneyAccountReport_Repo MoneyAccountReport_Repo;
+        public PayinController(ILogger<PayinController> logger, IApplicationRepository<PayIN> PayIN_repo, MoneyAccountReport_Repo MoneyAccountReport_Repo)
         {
             this.logger = logger;
             this.PayIN_repo = PayIN_repo;
+            this.MoneyAccountReport_Repo = MoneyAccountReport_Repo;
+
         }
         [HttpPost("Add")]
         public async Task<ActionResult> Add([FromBody] PayIN PayIN)
@@ -79,6 +83,13 @@ namespace ERP_System.Controllers.Accounting
         {
             try
             {
+                var payin = PayIN_repo.GetByID(id);
+                if (payin == null) return NotFound();
+                double moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(payin.MoneyAccountId
+                    , Convert.ToInt32(payin.CurrencyId));
+                if(moneyaccount_currency_value-payin.Value<0) 
+                    return BadRequest(new ErrorResponse()
+                        { Message = "delete failed! money value in account  cant be under  zero" });
                 PayIN_repo.Delete(id);
                 return Ok();
             }
@@ -86,7 +97,7 @@ namespace ERP_System.Controllers.Accounting
             {
                 logger.LogError("Controller:PayIN,Method:Delete,Error:" + e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
-            }
+            } 
         }
         [HttpGet("Info")]
         public async Task<ActionResult<PayIN>> Info([FromQuery] int id)
@@ -124,7 +135,12 @@ namespace ERP_System.Controllers.Accounting
                 var oldpayin = PayIN_repo.GetByID(PayIN.Id);
                 if (oldpayin != null)
                 {
-                    if(oldpayin.OperationId!=PayIN.OperationId||oldpayin.OperationType!=PayIN.OperationType)
+                    double moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(oldpayin.MoneyAccountId
+                        , Convert.ToInt32(oldpayin.CurrencyId));
+                    if (moneyaccount_currency_value - oldpayin.Value +PayIN.Value< 0)
+                        return BadRequest(new ErrorResponse()
+                        { Message = "update failed! money value in account  cant be under  zero" });
+                    if (oldpayin.OperationId!=PayIN.OperationId||oldpayin.OperationType!=PayIN.OperationType)
                         return BadRequest(new ErrorResponse()
                         { Message = "Operation Info Cant Be Changed" });
                 }

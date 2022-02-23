@@ -1,5 +1,6 @@
 ﻿using ERP_System.Models.Accounting;
 using ERP_System.Repositories;
+using ERP_System.Repositories.Accounting_Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,10 +18,12 @@ namespace ERP_System.Controllers.Accounting
 
         private readonly ILogger logger;
         private readonly IApplicationRepository<ExchangeOPR> ExchangeOpr_repo;
-        public ExchangeOprController(ILogger<ExchangeOprController> logger, IApplicationRepository<ExchangeOPR> ExchangeOpr_repo)
+        private readonly MoneyAccountReport_Repo MoneyAccountReport_Repo;
+        public ExchangeOprController(ILogger<ExchangeOprController> logger, IApplicationRepository<ExchangeOPR> ExchangeOpr_repo, MoneyAccountReport_Repo MoneyAccountReport_Repo)
         {
             this.logger = logger;
             this.ExchangeOpr_repo = ExchangeOpr_repo;
+            this.MoneyAccountReport_Repo = MoneyAccountReport_Repo;
         }
         [HttpPost("Add")]
         public async Task<ActionResult> Add([FromBody] ExchangeOPR ExchangeOPR)
@@ -80,6 +83,15 @@ namespace ERP_System.Controllers.Accounting
         {
             try
             {
+                var exchangeopr = ExchangeOpr_repo.GetByID(id);
+                if (exchangeopr == null) return NotFound();
+                double taget_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(exchangeopr.MoneyAccountId
+                    , Convert.ToInt32(exchangeopr.TargetCurrencyId));
+                if (taget_moneyaccount_currency_value -
+                    ( exchangeopr.OutMoneyValue * exchangeopr.TargetExchangeRate/ exchangeopr.SourceExchangeRate)< 0)
+                    return BadRequest(new ErrorResponse()
+                    { Message = "delete failed! money value in account  cant be less than  zero" });
+
                 ExchangeOpr_repo.Delete(id);
                 return Ok();
             }
@@ -123,6 +135,22 @@ namespace ERP_System.Controllers.Accounting
         {
             try
             {
+                var oldopr = ExchangeOpr_repo.GetByID(ExchangeOPR.Id);
+                double source_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(ExchangeOPR.MoneyAccountId
+                    , Convert.ToInt32(ExchangeOPR.SourceCurrencyId));
+                if (oldopr != null)
+                {
+                    if (source_moneyaccount_currency_value + oldopr.OutMoneyValue- ExchangeOPR.OutMoneyValue<0)
+                        return BadRequest(new ErrorResponse()
+                        { Message = "Money Value in Account by source currency cant be less than zero" });
+                    var target_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(ExchangeOPR.MoneyAccountId
+                    , Convert.ToInt32(ExchangeOPR.TargetCurrencyId));
+                    var new_invalue = (ExchangeOPR.OutMoneyValue * ExchangeOPR.TargetExchangeRate / ExchangeOPR.SourceExchangeRate);
+                    var old_invalue = (oldopr.OutMoneyValue * oldopr.TargetExchangeRate / oldopr.SourceExchangeRate);
+                    if (target_moneyaccount_currency_value - old_invalue+new_invalue<0)
+                        return BadRequest(new ErrorResponse()
+                        { Message = "Money Value in Account by target currency cant be less than zero" });
+                }
                 if (ExchangeOPR.SourceExchangeRate <= 0 || ExchangeOPR.TargetExchangeRate <= 0)
                     return Ok(new ErrorResponse()
                     { Message = "ExchangeRate Must Be Greater Than Zero" });
@@ -132,10 +160,13 @@ namespace ERP_System.Controllers.Accounting
                 else if (ExchangeOPR.OutMoneyValue <= 0)
                     return Ok(new ErrorResponse()
                     { Message = "Out Money Value Must Be Greater Than Zero" });
-                else if((ExchangeOPR.SourceCurrencyId==null&&ExchangeOPR.SourceExchangeRate!=1)
-                    ||(ExchangeOPR.TargetCurrencyId == null && ExchangeOPR.TargetExchangeRate != 1))
+                else if((ExchangeOPR.SourceCurrencyId==-1&&ExchangeOPR.SourceExchangeRate!=1)
+                    ||(ExchangeOPR.TargetCurrencyId == -1 && ExchangeOPR.TargetExchangeRate != 1))
                     return Ok(new ErrorResponse()
                     { Message = "Exchange Rate For Reference Currency[Dollar] Must Be 1" });
+                else if ( source_moneyaccount_currency_value- ExchangeOPR.OutMoneyValue<0)
+                    return BadRequest(new ErrorResponse()
+                    { Message = "No Enough Money to do this operation" });
                 else return Ok(null);
             }
             catch (Exception e)

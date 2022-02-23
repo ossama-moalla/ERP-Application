@@ -24,6 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IApplicationRepository<PayOUT>, PayOUT_Repo>();
             services.AddScoped<IApplicationRepository<ExchangeOPR>, ExchangeOPR_Repo>();
             services.AddScoped<IApplicationRepository<MoneyTransFormOPR>, MoneyTransFormOPR_Repo>();
+            services.AddScoped<MoneyAccountReport_Repo>();
             return services;
         }
     }

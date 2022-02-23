@@ -6,7 +6,7 @@ import { ExtractErrorMessage } from '../../../GeneralMethods.js';
 class MoneyTransformOPRAddEdit extends Component {
     constructor(props){
         super(props);
-        this.selectedMoneyAccount=props.moneyAccountList.find(x=>x.id===props.selectedMoneyAccountID);
+        this.selectedMoneyAccount=props.moneyAccountList.find(x=>x.id===Number(props.selectedMoneyAccountID));
         this.moneyAccountList= props.moneyAccountList.filter(x=>x.id!==this.selectedMoneyAccount.id);
 
         const date=new Date();

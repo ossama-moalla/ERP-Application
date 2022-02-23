@@ -1,6 +1,9 @@
 .color-gray{
     background-color: lightgray;
 }
+.color-gray-dark{
+    background-color: #6c757d;
+}
 .color-blue{
     background-color: #23c6e766;
 }

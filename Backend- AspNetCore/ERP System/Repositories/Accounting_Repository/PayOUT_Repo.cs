@@ -17,7 +17,7 @@ namespace ERP_System.Repositories.Accounting_Repository
         }
         public void Add(PayOUT entity)
         {
-            if (entity.CurrencyId == -1) entity.CurrencyId = null;
+            if (entity.CurrencyId == -1) { entity.CurrencyId = null; }
             DbContext.Accounting_PayOUT.Add(entity);
             DbContext.SaveChanges();
         }
@@ -49,7 +49,12 @@ namespace ERP_System.Repositories.Accounting_Repository
         public PayOUT GetByID(int id)
         {
             var payout= DbContext.Accounting_PayOUT.Include(y => y.Currency).Include(y => y.MoneyAccount).SingleOrDefault(x => x.Id == id);
-            if (payout!=null&&payout.Currency == null) payout.Currency = Currency.ReferenceCurrency;
+            if (payout == null) return null;
+            DbContext.Entry(payout).State = EntityState.Detached;
+            if ( payout.Currency == null)
+            {
+                payout.Currency = Currency.ReferenceCurrency;
+            }
             return payout;
         }
         public IList<PayOUT> List()
@@ -57,7 +62,11 @@ namespace ERP_System.Repositories.Accounting_Repository
             var list = DbContext.Accounting_PayOUT.Include(y => y.Currency).Include(y => y.MoneyAccount).ToList();
             foreach (var payout in list)
             {
-                if (payout.Currency == null) payout.Currency = Currency.ReferenceCurrency;
+                DbContext.Entry(payout).State = EntityState.Detached;
+                if (payout.Currency == null) 
+                { 
+                    payout.Currency = Currency.ReferenceCurrency;
+                }
             }
             return list;
         }

@@ -1,5 +1,6 @@
 ﻿using ERP_System.Models.Accounting;
 using ERP_System.Repositories;
+using ERP_System.Repositories.Accounting_Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,10 +18,13 @@ namespace ERP_System.Controllers.Accounting
 
         private readonly ILogger logger;
         private readonly IApplicationRepository<MoneyTransFormOPR> MoneyTransFormOPR_repo;
-        public MoneyTransformOprController(ILogger<MoneyTransformOprController> logger, IApplicationRepository<MoneyTransFormOPR> MoneyTransFormOPR_repo)
+        private readonly MoneyAccountReport_Repo MoneyAccountReport_Repo;
+        public MoneyTransformOprController(ILogger<MoneyTransformOprController> logger
+            , IApplicationRepository<MoneyTransFormOPR> MoneyTransFormOPR_repo, MoneyAccountReport_Repo MoneyAccountReport_Repo)
         {
             this.logger = logger;
             this.MoneyTransFormOPR_repo = MoneyTransFormOPR_repo;
+            this.MoneyAccountReport_Repo = MoneyAccountReport_Repo;
         }
         [HttpPost("Add")]
         public async Task<ActionResult> Add([FromBody] MoneyTransFormOPR MoneyTransFormOPR)
@@ -80,6 +84,14 @@ namespace ERP_System.Controllers.Accounting
         {
             try
             {
+                var moneytransformopr = MoneyTransFormOPR_repo.GetByID(id);
+                if (moneytransformopr == null) return NotFound();
+                double target_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(moneytransformopr.TargetMoneyAccountId
+                    , Convert.ToInt32(moneytransformopr.CurrencyId));
+                if (target_moneyaccount_currency_value - moneytransformopr.Value < 0)
+                    return BadRequest(new ErrorResponse()
+                    { Message = "delete failed! money value in account  cant be less than  zero" });
+
                 MoneyTransFormOPR_repo.Delete(id);
                 return Ok();
             }
@@ -123,6 +135,21 @@ namespace ERP_System.Controllers.Accounting
         {
             try
             {
+                var oldopr = MoneyTransFormOPR_repo.GetByID(MoneyTransFormOPR.Id);
+                double source_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(MoneyTransFormOPR.SourceMoneyAccountId
+                    ,Convert.ToInt32( MoneyTransFormOPR.CurrencyId));
+                if (oldopr != null)
+                {
+                    if (source_moneyaccount_currency_value + oldopr.Value- MoneyTransFormOPR.Value<0)
+                        return BadRequest(new ErrorResponse()
+                        { Message = "No Enough Money to do this operation" });
+                    var target_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(MoneyTransFormOPR.TargetMoneyAccountId
+                    , Convert.ToInt32(MoneyTransFormOPR.CurrencyId));
+                    if (target_moneyaccount_currency_value - oldopr.Value+ MoneyTransFormOPR.Value <0)
+                        return BadRequest(new ErrorResponse()
+                        { Message = "Money Value in Account by target currency cant be less than zero" });
+                }
+                
                 if (MoneyTransFormOPR.ExchangeRate <= 0 )
                     return Ok(new ErrorResponse()
                     { Message = "ExchangeRate Must Be Greater Than Zero" });
@@ -132,9 +159,13 @@ namespace ERP_System.Controllers.Accounting
                 else if (MoneyTransFormOPR.Value <= 0)
                     return Ok(new ErrorResponse()
                     { Message = "Out Money Value Must Be Greater Than Zero" });
-                else if (MoneyTransFormOPR.CurrencyId == null && MoneyTransFormOPR.ExchangeRate != 1)
+
+                else if (MoneyTransFormOPR.CurrencyId == -1 && MoneyTransFormOPR.ExchangeRate != 1)
                     return Ok(new ErrorResponse()
                     { Message = "Exchange Rate For Reference Currency[Dollar] Must Be 1" });
+                else if (source_moneyaccount_currency_value - MoneyTransFormOPR.Value<0)
+                    return BadRequest(new ErrorResponse()
+                    { Message = "No Enough Money to do this operation" });
                 else return Ok(null);
             }
             catch (Exception e)

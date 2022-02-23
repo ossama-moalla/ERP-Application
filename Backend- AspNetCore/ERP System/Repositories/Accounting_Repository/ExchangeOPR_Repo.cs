@@ -53,10 +53,17 @@ namespace ERP_System.Repositories.Accounting_Repository
                 .Include(x => x.TargetCurrency)
                 .Include(x => x.MoneyAccount)
                 .SingleOrDefault(x => x.Id == id);
-            if (exchangeopr != null)
+            if (exchangeopr == null) return null;
+            DbContext.Entry(exchangeopr).State = EntityState.Detached;
+            if (exchangeopr.SourceCurrency == null)
             {
-                if (exchangeopr.SourceCurrency == null) exchangeopr.SourceCurrency = Currency.ReferenceCurrency;
-                if (exchangeopr.TargetCurrency == null) exchangeopr.TargetCurrency = Currency.ReferenceCurrency;
+                exchangeopr.SourceCurrencyId = -1;
+                exchangeopr.SourceCurrency = Currency.ReferenceCurrency; 
+            }
+            if (exchangeopr.TargetCurrency == null) 
+            {
+                exchangeopr.TargetCurrencyId = -1;
+                exchangeopr.TargetCurrency = Currency.ReferenceCurrency; 
             }
             return exchangeopr;
         }
@@ -68,9 +75,17 @@ namespace ERP_System.Repositories.Accounting_Repository
                 .Include(x => x.MoneyAccount).ToList();
             foreach (var exchangeopr in list)
             {
-                if (exchangeopr.SourceCurrency == null) exchangeopr.SourceCurrency = Currency.ReferenceCurrency;
-                if (exchangeopr.TargetCurrency == null) exchangeopr.TargetCurrency = Currency.ReferenceCurrency;
-
+                DbContext.Entry(exchangeopr).State = EntityState.Detached;
+                if (exchangeopr.SourceCurrency == null)
+                {
+                    exchangeopr.SourceCurrencyId = -1;
+                    exchangeopr.SourceCurrency = Currency.ReferenceCurrency;
+                }
+                if (exchangeopr.TargetCurrency == null)
+                {
+                    exchangeopr.TargetCurrencyId = -1;
+                    exchangeopr.TargetCurrency = Currency.ReferenceCurrency;
+                }
             }
             return list;
         }

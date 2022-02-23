@@ -16,13 +16,14 @@ import MoneyTransformOPRInfo from '../MoneyTransformOPR/MoneyTransformOPRInfo.js
 class MoneyAccountReport extends Component {
     constructor(props){
         super(props);
-        const date=new Date();
+        this.dateNow=new Date();
+        
         this.state={
-            minYear:date.getFullYear()-2,
-            maxYear:date.getFullYear()+2,
-            year:date.getFullYear(),
-            month:date.getMonth()+1,
-            day:date.getDate(),
+            minYear:this.dateNow.getFullYear()-5,
+            maxYear:this.dateNow.getFullYear()+5,
+            year:this.dateNow.getFullYear(),
+            month:this.dateNow.getMonth()+1,
+            day:this.dateNow.getDate(),
 
             fetchAccount_ReportDone:false,
             fetchAccount_ReportError:null,
@@ -86,19 +87,7 @@ class MoneyAccountReport extends Component {
         }
         else return;
     }
-    accountDateUP=()=>{
-        if(this.state.day!=null){
-            this.setState({day:null},this.fetchReport)
-        }
-        else if(this.state.month!=null){
-            this.setState({month:null},this.fetchReport)
-        }
-        else if(this.state.year!=null){
-            this.setState({year:null},this.fetchReport)
-        }
-        else return;
-    }
-     accountDateDown=(value,operation)=>{
+    accountDateDown=(value,operation)=>{
         if(this.state.year==null){
             this.setState({year:value},this.fetchReport)
         }
@@ -135,43 +124,8 @@ class MoneyAccountReport extends Component {
             return;
         }
     }
-    acountDateShift=(value)=>{
-        if(this.state.day!=null){
-                const newdate=new Date(
-                    new Date(this.state.year,this.state.month-1,this.state.day).getTime()
-                    +value* 60 * 60 * 24 * 1000);
-                this.setState({
-                    day:newdate.getDate(),
-                    month:newdate.getMonth()+1,
-                    year:newdate.getFullYear(),
-                    minYear:newdate.getFullYear()-2,
-                    maxYear:newdate.getFullYear()+2
-                },this.fetchReport)
-            }
-            else if(this.state.month!=null){
-                const newdate=new Date(this.state.year,this.state.month-1,1);
-                newdate.setMonth(newdate.getMonth()+value);
-                this.setState({
-                    month:newdate.getMonth()+1,
-                    year:newdate.getFullYear(),
-                    minYear:newdate.getFullYear()-2,
-                    maxYear:newdate.getFullYear()+2
-                },this.fetchReport)
-            }
-            else if(this.state.year!=null){
-                this.setState({
-                    year:this.state.year+value,
-                    minYear:this.state.year+value-2,
-                    maxYear:this.state.year+value+2
-                },this.fetchReport)
-            }
-            else {
-                this.setState({
-                    minYear:(value>0?this.state.minYear+4:this.state.minYear-4),
-                    maxYear:(value>0?this.state.maxYear+4:this.state.maxYear-4)
-                },this.fetchReport)
-
-            }
+    acountDateSet=(data)=>{
+        this.setState(data,this.fetchReport)
     }
     fetchReport=async()=>{
         this.setState({
@@ -249,29 +203,15 @@ class MoneyAccountReport extends Component {
          }
     }
     render(){
-        const dateAccount={day:this.state.day,month:this.state.month,year:this.state.year}
-        let accountType,accountDate;
-        if(this.state.day!=null){
-            accountDate=this.state.day+" - "+this.state.month+" - "+this.state.year
-            accountType="Today Account";
-        }
-        else if(this.state.month!=null){ 
-            accountDate=this.state.month+" - "+this.state.year
-            accountType="Month Account";
-        }
-        else if(this.state.year!=null){
-            accountDate=this.state.year
-            accountType="Year Account";
-        }
-        else{
-            accountDate=this.state.minYear+" - "+this.state.maxYear
-            accountType="Year Range Account";
-        }
+        const dateAccount={day:this.state.day,month:this.state.month
+            ,year:this.state.year,minYear:this.state.minYear,maxYear:this.state.maxYear}
+        const accountselector=<AccountSelector dateAccount={dateAccount}
+            acountDateShift={this.acountDateShift} accountDateUP={this.accountDateUP}
+            acountDateSet={this.acountDateSet}/>;
         if(this.state.fetchAccount_ReportDone===false){
             return(
                 <React.Fragment>
-                    <AccountSelector accountDate={accountDate} accountType={accountType}
-                                acountDateShift={this.acountDateShift} accountDateUP={this.accountDateUP}/>
+                   {accountselector}
                     <div  className="App" style={{padding:50}}>
                         Loading.......
                     </div>
@@ -281,8 +221,7 @@ class MoneyAccountReport extends Component {
         if(this.state.fetchAccount_ReportError){
             return(
                 <React.Fragment>
-                    <AccountSelector accountDate={accountDate} accountType={accountType}
-                                acountDateShift={this.acountDateShift} accountDateUP={this.accountDateUP}/>       
+                    {accountselector}
                     <div  className="App error" >
                     {this.state.fetchAccount_ReportError}<br/>
                     <button className="btn btn-primary" onClick={this.fetchReport}>Retry</button>
@@ -292,8 +231,7 @@ class MoneyAccountReport extends Component {
         }
         return (
             <React.Fragment>
-                <AccountSelector accountDate={accountDate} accountType={accountType}
-                                acountDateShift={this.acountDateShift} accountDateUP={this.accountDateUP}/>
+                {accountselector}
                 <div className="standalone-div borderbuttom">
                     {this.state.day&&(<div>
                     <button className="btn-flat color-button radius"

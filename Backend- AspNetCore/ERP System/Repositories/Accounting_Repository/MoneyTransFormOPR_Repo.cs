@@ -51,7 +51,13 @@ namespace ERP_System.Repositories.Accounting_Repository
                 .Include(x => x.TargetMoneyAccount)
                 .Include(x => x.Currency)
                 .SingleOrDefault(x => x.Id == id);
-            if (moneytransformopr != null && moneytransformopr.Currency == null) moneytransformopr.Currency = Currency.ReferenceCurrency;
+            if (moneytransformopr == null) return null;
+            DbContext.Entry(moneytransformopr).State = EntityState.Detached;
+            if (moneytransformopr.Currency == null)
+            {
+                moneytransformopr.CurrencyId = -1;
+                moneytransformopr.Currency = Currency.ReferenceCurrency;
+            }
             return moneytransformopr;
 
         }
@@ -63,7 +69,12 @@ namespace ERP_System.Repositories.Accounting_Repository
                 .Include(x => x.Currency).ToList();
             foreach (var moneytransformopr in list)
             {
-                if (moneytransformopr.Currency == null) moneytransformopr.Currency = Currency.ReferenceCurrency;
+                DbContext.Entry(moneytransformopr).State = EntityState.Detached;
+                if (moneytransformopr.Currency == null)
+                {
+                    moneytransformopr.CurrencyId = -1;
+                    moneytransformopr.Currency = Currency.ReferenceCurrency;
+                }
             }
             return list;
         }

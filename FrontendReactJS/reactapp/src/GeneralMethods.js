@@ -31,6 +31,7 @@ const getOperationName=(typeID)=>{
     default:return "unknown operation"
   }
 }
+
 const toggleDivByCheckbox=(e,divId)=>{
     var s=document.getElementById(divId);
     if(e.target.checked) s.style.display="block";

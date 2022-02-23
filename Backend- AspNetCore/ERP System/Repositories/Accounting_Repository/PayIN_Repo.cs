@@ -47,9 +47,15 @@ namespace ERP_System.Repositories.Accounting_Repository
         }
 
         public PayIN GetByID(int id)
-        {
+        { 
             var payin= DbContext.Accounting_PayIN.Include(y=>y.Currency).Include(y => y.MoneyAccount).SingleOrDefault(x => x.Id == id);
-            if (payin!=null&&payin.Currency == null) payin.Currency = Currency.ReferenceCurrency;
+            if (payin == null) return null;
+            DbContext.Entry(payin).State = EntityState.Detached;
+            if ( payin.Currency == null)
+            {
+                payin.CurrencyId = -1;
+                payin.Currency = Currency.ReferenceCurrency;
+            }
             return payin;
         }
         public IList<PayIN> List()
@@ -57,8 +63,14 @@ namespace ERP_System.Repositories.Accounting_Repository
             var list = DbContext.Accounting_PayIN.Include(y => y.Currency).Include(y=>y.MoneyAccount).ToList();
             foreach(var payin in list)
             {
-                if (payin.Currency == null) payin.Currency = Currency.ReferenceCurrency;
+                DbContext.Entry(payin).State = EntityState.Detached;
+                if (payin.Currency == null)
+                {
+                    payin.CurrencyId = -1;
+                    payin.Currency = Currency.ReferenceCurrency;
+                }
             }
+
             return list;
         }
     }

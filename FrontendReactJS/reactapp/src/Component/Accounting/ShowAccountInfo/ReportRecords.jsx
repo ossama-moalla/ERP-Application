@@ -27,13 +27,13 @@ const ReportRecords = (props) => {
                     <th style={{width:60}}> Value</th>
                     <th style={{width:60}}>ExchangeRate</th>
                     <th style={{width:60}}>Real Value($)</th>
-                    <th style={{width:100,whiteSpace:"unset",overflowWrap:"break-word"}}>Belong to</th> 
+                    <th style={{width:100,whiteSpace:"unset",overflowWrap:"break-word"}}>Details</th> 
                 </tr>
             </thead>;
            
             tableRecords=props.moneyAccount_Report_Records.map((operation,index)=>{
                 const date=new Date(operation.date);
-                let type,belongTO;
+                let type;
                 let classname=" tablerow-button font-white ";
                 switch(operation.oprType){
                     case 0:
@@ -47,10 +47,6 @@ const ReportRecords = (props) => {
                     case 2:type="Money Transform OPR";classname="color-cadetblue"+classname;break;
                     default:type="unknown"
                 }
-                if(operation.tradeOperationId!==null &&operation.tradeOperationType!=null){
-                    belongTO=getOperationName(operation.tradeOperationType)+" - ID:"+operation.tradeOperationId;
-                }
-                else belongTO="-";
                 return(
                     <tr   className={classname} key={index}
                      onClick={()=>props.accountDateDown(operation.id,operation)}>
@@ -62,7 +58,7 @@ const ReportRecords = (props) => {
                         <td>{operation.value+" "+operation.currencySymbol}</td>     
                         <td>{operation.exchangeRate}</td>
                         <td>{operation.realValue}</td>
-                        <td>{belongTO}</td>
+                        <td>{operation.details}</td>
                     </tr>
                 )
             }
@@ -116,9 +112,18 @@ const ReportRecords = (props) => {
             }
             tableRecords=props.moneyAccount_Report_Records.map((report,index)=>{
                 
-                let classname="color-gray tablerow-button";
-                if(report.moneyIN_Real_Value>0||report.moneyOUT_Real_Value>0)
-                classname="color-moneyin tablerow-button";
+                let classname="tablerow-button  font-white ";
+                if(report.moneyIN_Real_Value>0||report.moneyOUT_Real_Value>0){
+                    if(report.moneyIN_Real_Value>report.moneyOUT_Real_Value){
+                        classname+="color-green"
+                    }
+                    else{
+                        classname+="color-red"
+                    }
+                }
+                else{
+                    classname+="color-gray-dark";
+                }
                 return(
                     <tr   className={classname} key={index}
                      onClick={()=>props.accountDateDown(report[firstCellValue])}>
