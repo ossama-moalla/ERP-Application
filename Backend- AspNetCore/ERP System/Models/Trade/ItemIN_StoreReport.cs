@@ -7,24 +7,12 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Models.Trade
 {
-    public class ItemIN_StoreReport
+    public class ItemINStoreReport//display where ur items stored ,place=null mean that the items have  not been sent to store
     {
-        public ItemIN _ItemIN;
-        public StorePlace Place;
-        public ConsumeUnit _ConsumeUnit;
-        public double StoreAmount;
-        public double SpentAmount;
-        public ItemIN_StoreReport(ItemIN ItemIN_,
-         StorePlace Place_,
-         ConsumeUnit ConsumeUnit_,
-         double StoreAmount_,
-         double SpentAmount_)
-        {
-            _ItemIN = ItemIN_;
-            Place = Place_;
-            _ConsumeUnit = ConsumeUnit_;
-            StoreAmount = StoreAmount_;
-            SpentAmount = SpentAmount_;
-        }
+        public ItemIN ItemIN { get; set; }
+        public StorePlace Place { get; set; }
+        public ConsumeUnit ConsumeUnit { get; set; }
+        public double StoreAmount { get; set; }
+        public double SpentAmount { get; set; }
     }
 }

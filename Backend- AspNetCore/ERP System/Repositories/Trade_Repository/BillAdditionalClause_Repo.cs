@@ -17,35 +17,36 @@ namespace ERP_System.Repositories.Trade_Repository
 
         public void Add(BillAdditionalClause entity)
         {
-            throw new NotImplementedException();
+            DbContext.Trade_BillAdditionalClause.Add(entity);
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = GetByID(id);
+            DbContext.Trade_BillAdditionalClause.Remove(entity);
+            DbContext.SaveChanges();
         }
 
         public void Update(BillAdditionalClause entity)
         {
-            throw new NotImplementedException();
+            var BillAdditionalClause = GetByID(entity.Id);
+            if (BillAdditionalClause != null)
+            {
+                BillAdditionalClause.Description = entity.Description;
+                BillAdditionalClause.Value = entity.Value;
+                DbContext.SaveChanges();
+            }
         }
 
         public BillAdditionalClause GetByID(int id)
         {
-            throw new NotImplementedException();
-        }
-        public List<BillAdditionalClause> GetBill_AdditionalClauses(Operation Operation_)
-        {
-            throw new NotImplementedException();
-        }
-        internal IEnumerable<Money_Currency> GetBill_AdditionalClauses_AS_Money_Currency(Currency _Currency, double exchangeRate, Operation _Operation)
-        {
-            throw new NotImplementedException();
+            return DbContext.Trade_BillAdditionalClause.SingleOrDefault(x => x.Id == id);
         }
 
         public IList<BillAdditionalClause> List()
         {
-            throw new NotImplementedException();
+            return DbContext.Trade_BillAdditionalClause.ToList();
         }
     }
 }

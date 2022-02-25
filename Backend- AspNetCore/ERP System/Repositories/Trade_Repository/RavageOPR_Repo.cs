@@ -15,32 +15,36 @@ namespace ERP_System.Repositories.Trade_Repository
         }
         public void Add(RavageOPR entity)
         {
-            throw new NotImplementedException();
+            DbContext.Trade_RavageOPR.Add(entity);
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = GetByID(id);
+            DbContext.Trade_RavageOPR.Remove(entity);
+            DbContext.SaveChanges();
         }
 
         public void Update(RavageOPR entity)
         {
-            throw new NotImplementedException();
+            var RavageOPR = GetByID(entity.Id);
+            if (RavageOPR != null)
+            {
+                RavageOPR.Date = entity.Date;
+                RavageOPR.Notes = entity.Notes;
+                DbContext.SaveChanges();
+            }
         }
 
         public RavageOPR GetByID(int id)
         {
-            throw new NotImplementedException();
+            return DbContext.Trade_RavageOPR.SingleOrDefault(x => x.Id == id);
         }
 
         public IList<RavageOPR> List()
         {
-            throw new NotImplementedException();
-        }
-
-        internal List<RavageOPR> Get_All_RavageOPR_List()
-        {
-            throw new NotImplementedException();
+            return DbContext.Trade_RavageOPR.ToList();
         }
     }
 }

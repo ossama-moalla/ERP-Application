@@ -16,31 +16,35 @@ namespace ERP_System.Repositories.Trade_Repository
 
         public void Add(TradeState entity)
         {
-            throw new NotImplementedException();
+            DbContext.Trade_TradeState.Add(entity);
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = GetByID(id);
+            DbContext.Trade_TradeState.Remove(entity);
+            DbContext.SaveChanges();
         }
 
         public void Update(TradeState entity)
         {
-            throw new NotImplementedException();
+            var TradeState = GetByID(entity.Id);
+            if (TradeState != null)
+            {
+                TradeState.Name = entity.Name;
+                DbContext.SaveChanges();
+            }
         }
 
         public TradeState GetByID(int id)
         {
-            throw new NotImplementedException();
-        }
-        public List<TradeState> GetTradeStateList()
-        {
-            throw new NotImplementedException();
+            return DbContext.Trade_TradeState.SingleOrDefault(x => x.Id == id);
         }
 
         public IList<TradeState> List()
         {
-            throw new NotImplementedException();
+            return DbContext.Trade_TradeState.ToList();
         }
     }
 }

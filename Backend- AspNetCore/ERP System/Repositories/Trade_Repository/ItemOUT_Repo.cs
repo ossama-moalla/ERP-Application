@@ -18,52 +18,39 @@ namespace ERP_System.Repositories.Trade_Repository
 
         public void Add(ItemOUT entity)
         {
-            throw new NotImplementedException();
+            DbContext.Trade_ItemOUT.Add(entity);
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = GetByID(id);
+            DbContext.Trade_ItemOUT.Remove(entity);
+            DbContext.SaveChanges();
         }
 
         public void Update(ItemOUT entity)
         {
-            throw new NotImplementedException();
+            var ItemOUT = GetByID(entity.Id);
+            if (ItemOUT != null)
+            {
+                ItemOUT.ItemINId = entity.ItemINId;
+                ItemOUT.PlaceId = entity.PlaceId;
+                ItemOUT.ConsumeUnitId = entity.ConsumeUnitId;
+                ItemOUT.Amount = entity.Amount;
+                ItemOUT.SingleOUTValue = entity.SingleOUTValue;
+                DbContext.SaveChanges();
+            }
         }
 
         public ItemOUT GetByID(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        private OUTValue GetOUTValue(int itemoutid)
-        {
-            throw new NotImplementedException();
-        }
-        public bool Does_Operation_Has_ItemsOUT(int oprtype, int oprid)
-        {
-            throw new NotImplementedException();
-        }
-        public List<ItemOUT> GetItemOUTList(Operation operation)
-        {
-            throw new NotImplementedException();
-        }
-        public List<Money_Currency> GetItemOUTList_AS_Money_Currency(Operation operation)
-        {
-            throw new NotImplementedException();
-        }
-        public List<ItemOUT> GetItemIN_ItemOUTList(string Source, ItemIN itemin)
-        {
-            throw new NotImplementedException();
-        }
-        internal List<ItemOUT> GetItemOUTList_ForItem(Item Item_)
-        {
-            throw new NotImplementedException();
+            return DbContext.Trade_ItemOUT.SingleOrDefault(x => x.Id == id);
         }
 
         public IList<ItemOUT> List()
         {
-            throw new NotImplementedException();
+            return DbContext.Trade_ItemOUT.ToList();
         }
     }
 }

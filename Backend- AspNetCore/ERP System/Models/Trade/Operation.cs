@@ -7,81 +7,42 @@ namespace ERP_System.Models.Trade
 {
     public class Operation
     {
-        public const int BILL_BUY = 1;
-        public const int BILL_SELL = 2;
-        public const int BILL_MAINTENANCE = 3;
+        //operation is used becuase some objects need to belong to many objects like:
+        // payin belong to :no thing,salses bill,mainteneace bill
+        //payout belong to :no thing,purchases bill,employeepayorder
+        //itemin by:purchases bill or assembly operation
+        //itemout by:sales bill,repair operation(belong to maintenance bill),internal consume,ravage opr ,disassmbly
+        public const int PURCHASES_BILL = 1;
+        public const int SALES_BILL = 2;
+        public const int MAINTENANCE_BILL = 3;
         public const int Employee_PayOrder = 4;
         public const int MAINTENANCE_OPR = 5;
         public const int ASSEMBLAGE = 6;
         public const int DISASSEMBLAGE = 7;
-        public const int RavageOPR = 8;
-        public const int REPAIROPR = 9;
+        public const int RAVAGEOPR = 8;
+        public const int INTERNALCONSUME = 9;
+        public const int REPAIROPR = 10;
         /// <summary>
         /// ////////////
         /// </summary>
-        public int OperationType { get; }
-        public int OperationID { get; }
-        public Operation(int OperationType_, int OperationID_)
-        {
-            OperationType = OperationType_;
-            OperationID = OperationID_;
-        }
+        public int OperationType { get; set; }
+        public int OperationID { get; set; }
         public static string GetOperationName(int operationtype)
         {
-            switch (operationtype)
+            return (operationtype) switch
             {
-                case BILL_BUY:
-                    return "Buy Bill";
-                case BILL_SELL:
-                    return "Sell Bill";
-                case BILL_MAINTENANCE:
-                    return "Maintenance Bill";
-                case Employee_PayOrder:
-                    return "Pay Order";
-                case MAINTENANCE_OPR:
-                    return "Maintenance Operation";
-                case ASSEMBLAGE:
-                    return "Assemblage Operation";
-                case DISASSEMBLAGE:
-                    return "Disassemlage Operation";
-                case RavageOPR:
-                    return "Ravage Operation";
-                case REPAIROPR:
-                    return "Repair Operation";
-                default:
-                    throw new Exception( "Incorrect Operation");
-            }
-        }
-        public static string GetOperationItemOutDesc(int operationtype)
-        {
-
-            string operationname = "";
-            switch (operationtype)
-            {
-
-                case BILL_SELL:
-                    operationname = "اخراج مادة عن طريق فاتورة مبيع";
-                    break;
-
-                case BILL_MAINTENANCE:
-                    operationname = "اخراج مادة عن طريق فاتورة صيانة";
-                    break;
-                case ASSEMBLAGE:
-                    operationname = "ادراج عنصر في عملية تجميع";
-                    break;
-                case DISASSEMBLAGE:
-                    operationname = "تفكيك عنصر";
-                    break;
-                case RavageOPR:
-                    operationname = "اتلاف عنصر";
-                    break;
-                case REPAIROPR:
-                    operationname = "اخراج مادة عن طريق عملية اصلاح";
-                    break;
-                default:
-                    throw new Exception("عملية غير صحيحة");
-            }
-            return operationname;
+                PURCHASES_BILL => "Purchases Bill",
+                SALES_BILL => "Sales Bill",
+                MAINTENANCE_BILL => "Maintenance Bill",
+                Employee_PayOrder => "Pay Order",
+                MAINTENANCE_OPR => "Maintenance Operation",
+                ASSEMBLAGE => "Assemblage Operation",
+                DISASSEMBLAGE => "Disassemlage Operation",
+                RAVAGEOPR => "Ravage Operation",
+                INTERNALCONSUME => "Internal Consume Operation",
+                REPAIROPR => "Repair Operation",
+                _ => throw new Exception("Incorrect Operation"),
+            };
         }
         
     }

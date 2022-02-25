@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Models.Trade
 {
-    public class TradeState
+    public class TradeState //item tradestade mean:new or used or  used second class or scrap ....
     {
         [Key]
-        public int TradeStateID { get; set; }
-        public string TradeStateName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

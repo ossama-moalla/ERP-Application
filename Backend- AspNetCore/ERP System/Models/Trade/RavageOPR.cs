@@ -1,32 +1,21 @@
 ﻿using ERP_System.Models.HR;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ERP_System.Models.Trade
 {
    
-    public class RavageOPR
+    public class RavageOPR //items out by value =0 $
     {
-        public Operation _Operation { get; }
-        public DateTime RavageOPRDate { get; }
-        public Department _Part { get; }
-        public int ClauseCount { get; }
-        public string Notes { get; }
+        [Key]
+        public int Id { get; set; }
+        public int OperationType { get { return Operation.RAVAGEOPR; } }
+        public DateTime Date { get; set; }
+        public string Notes { get; set; }
 
-        public RavageOPR(int RavageOPRID_, DateTime RavageOPRDate_,
-            Department Part_, int ClauseCount_, string Notes_)
-        {
-
-            _Operation = new Operation(Operation.RavageOPR, RavageOPRID_);
-
-            RavageOPRDate = RavageOPRDate_;
-            _Part = Part_;
-
-            ClauseCount = ClauseCount_;
-            Notes = Notes_;
-        }
 
     }
 }

@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ERP_System.Models.Trade
 {
-    public class BillAdditionalClause
+    public class BillAdditionalClause //additional clause any thing u want to add to bill (sales,maintenenace,purchases) like transport or install or ....
     {
-        public Operation _Operation;
-        public int ClauseID;
-        public string Description;
-        public double Value;
-        public BillAdditionalClause(Operation Operation_, int ClauseID_
-            , string Description_, double Value_)
-        {
-            _Operation = Operation_;
-            ClauseID = ClauseID_;
-            Description = Description_;
-            Value = Value_;
-
-        }
+        [Key]
+        public int Id { get; set; }
+        public int OperationId { get; set; }
+        public int OperationType { get; set; }
+        public string Description { get; set; }
+        public double Value { get; set; }
+        
     }
 }

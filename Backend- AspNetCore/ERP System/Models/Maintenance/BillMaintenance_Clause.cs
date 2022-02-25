@@ -27,7 +27,7 @@ namespace ERP_System.Models.Maintenance
             ClauseType = (ushort)BillMaintenance_Clause_Types. ITEMOUT_TYPE;
             BillID = BillID_;
             _ItemOUT = ItemOUT_;
-            Value = _ItemOUT._OUTValue.Value;
+            Value = _ItemOUT.SingleOUTValue;
         }
         public BillMaintenance_Clause(int BillID_, BillAdditionalClause BillAdditionalClause_)
         {

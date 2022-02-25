@@ -16,31 +16,35 @@ namespace ERP_System.Repositories.Trade_Repository
 
         public void Add(SellType entity)
         {
-            throw new NotImplementedException();
+            DbContext.Trade_SellType.Add(entity);
+            DbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = GetByID(id);
+            DbContext.Trade_SellType.Remove(entity);
+            DbContext.SaveChanges();
         }
 
         public void Update(SellType entity)
         {
-            throw new NotImplementedException();
+            var SellType = GetByID(entity.Id);
+            if (SellType != null)
+            {
+                SellType.Name = entity.Name;
+                DbContext.SaveChanges();
+            }
         }
 
         public SellType GetByID(int id)
         {
-            throw new NotImplementedException();
-        }
-        public List<SellType> GetSellTypeList()
-        {
-            throw new NotImplementedException();
+            return DbContext.Trade_SellType.SingleOrDefault(x => x.Id == id);
         }
 
         public IList<SellType> List()
         {
-            throw new NotImplementedException();
+            return DbContext.Trade_SellType.ToList();
         }
     }
 }

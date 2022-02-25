@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace ERP_System.Models.Trade
 {
-    public class ItemINSellPrice//set the price(us dolldar) you want to sell by, with conditions ,like:price for specefic selltype and consume unit
+    public class CommonItemSellPrice //item or product common sell price in dollar 
     {
-        public int ItemINId { get; set; }
+        public int ItemId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ItemIN ItemIN { get; set; }
-        public int? ConsumeUnitId { get; set; }
+        public Item Item { get; set; }
+        public int ConsumeUnitId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ConsumeUnit ConsumeUnit { get; set; }
         public int SellTypeId { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+
         public SellType SellType { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public double Price { get; set; }
     }
 }

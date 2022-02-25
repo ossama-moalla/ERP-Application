@@ -1,6 +1,7 @@
 ﻿using ERP_System.Models.Accounting;
 using ERP_System.Models.HR.UsersAccounts;
 using ERP_System.Models.Materials;
+using ERP_System.Models.Trade;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -95,6 +96,19 @@ namespace ERP_System
         public DbSet<PayOUT> Accounting_PayOUT { get; set; }
         public DbSet<ExchangeOPR> Accounting_ExchangeOPR { get; set; }
         public DbSet<MoneyTransFormOPR> Accounting_MoneyTransFormOPR { get; set; }
+        //------------------
+        public DbSet<Dealer> Trade_Dealer { get; set; }
+        public DbSet<BillAdditionalClause> Trade_BillAdditionalClause { get; set; }
+        public DbSet<ItemIN> Trade_ItemIN { get; set; }
+        public DbSet<ItemINSellPrice> Trade_ItemINSellPrice { get; set; }
+        public DbSet<ItemOUT> Trade_ItemOUT { get; set; }
+        public DbSet<PurchasesBill> Trade_PurchasesBill { get; set; }
+        public DbSet<RavageOPR> Trade_RavageOPR { get; set; }
+        public DbSet<SalesBill> Trade_SalesBill { get; set; }
+        public DbSet<SellType> Trade_SellType { get; set; }
+        public DbSet<TradeState> Trade_TradeState { get; set; }
+
+
 
     }
 }

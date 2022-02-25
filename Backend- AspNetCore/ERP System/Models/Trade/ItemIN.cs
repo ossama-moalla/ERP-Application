@@ -2,34 +2,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ERP_System.Models.Trade
 {
-    public class ItemIN
+    public class ItemIN //products u bring it to your company by(purchasesbill or assembly operation)
     {
-        public int ItemINID;
-        public Operation _Operation;
-        public Item _Item;
-        public TradeState _TradeState;
-        public double Amount;
-        public ConsumeUnit _ConsumeUnit;
-        public INCost _INCost;
-        public string Notes;
-        public ItemIN(int ItemINID_, Operation Operation_,
-            Item Item_, TradeState TradeState_, double Amount_,
-            ConsumeUnit ConsumeUnit_, INCost INCost_, string Notes_)
-        {
-
-            ItemINID = ItemINID_;
-            _Operation = Operation_;
-            _Item = Item_;
-            _TradeState = TradeState_;
-            Amount = Amount_;
-            _ConsumeUnit = ConsumeUnit_;
-            _INCost = INCost_;
-            Notes = Notes_;
-
-        }
+        public int Id { get; set; }
+        public int OperationId { get; set; }
+        public int OperationType { get; set; }
+        public int ItemId { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public Item Item { get; set; }
+        public int TradeStateId { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public TradeState TradeState { get; set; }
+        public int? ConsumeUnitId { get; set; }//if null it will be default item consume unit
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ConsumeUnit ConsumeUnit { get; set; }
+        public double Amount { get; set; }
+        public double SingleCost { get; set; }
     }
 }

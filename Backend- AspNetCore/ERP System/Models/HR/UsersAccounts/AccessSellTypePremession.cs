@@ -9,7 +9,7 @@ namespace ERP_System.Models.HR.UsersAccounts
     public class AccessSellTypePremession
     {
         public int UserID;
-        public SellType _SellType;
+        public SellType SellType;
         public bool Access;
         public AccessSellTypePremession(
          int UserID_,
@@ -18,7 +18,7 @@ namespace ERP_System.Models.HR.UsersAccounts
         {
 
             UserID = UserID_;
-            _SellType = SellType_;
+            SellType = SellType_;
             Access = Access_;
         }
     }

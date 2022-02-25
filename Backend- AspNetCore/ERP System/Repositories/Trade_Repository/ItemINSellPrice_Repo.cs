@@ -14,29 +14,27 @@ namespace ERP_System.Repositories.Trade_Repository
         {
             DbContext = DbContext_;
         }
-        public bool IsPriceSet(ItemIN ItemIN_, ConsumeUnit ConsumeUnit_, SellType SellType_)
+        public void Set(ItemINSellPrice entity)
         {
-            throw new NotImplementedException();
+            DbContext.Trade_ItemINSellPrice.Add(entity);
+            DbContext.SaveChanges();
         }
-        public bool SetItemINPrice(ItemIN ItemIN_, ConsumeUnit ConsumeUnit_, SellType SellType_, double price)
+
+        public void UnSet(int ItemINId,int SellTypeId,int? ConsumeUnitId)
         {
-            throw new NotImplementedException();
+            var entity = GetByID(ItemINId,SellTypeId,ConsumeUnitId);
+            DbContext.Trade_ItemINSellPrice.Remove(entity);
+            DbContext.SaveChanges();
         }
-        public bool UNSetBuyOPRPrice(ItemIN ItemIN_, ConsumeUnit ConsumeUnit_, SellType SellType_)
+
+        public ItemINSellPrice GetByID(int ItemINId, int SellTypeId, int? ConsumeUnitId)
         {
-            throw new NotImplementedException();
+            return DbContext.Trade_ItemINSellPrice.SingleOrDefault(x => x.ItemINId == ItemINId&&x.SellTypeId==SellTypeId&&x.ConsumeUnitId==ConsumeUnitId);
         }
-        public double? GetPrice(ItemIN ItemIN_, SellType SellType_, ConsumeUnit ConsumeUnit_)
+
+        public IList<ItemINSellPrice> List(int ItemINId)
         {
-            throw new NotImplementedException();
-        }
-        public List<ItemINSellPrice> GetItemINPrices(ItemIN ItemIN_)
-        {
-            throw new NotImplementedException();
-        }
-        internal bool ClearINSellPrices(ItemIN ItemIN_)
-        {
-            throw new NotImplementedException();
+            return DbContext.Trade_ItemINSellPrice.Where(x=>x.ItemINId==ItemINId).ToList();
         }
     }
 }

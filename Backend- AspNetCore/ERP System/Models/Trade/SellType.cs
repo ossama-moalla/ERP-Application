@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ERP_System.Models.Trade
 {
-    public class SellType
+    public class SellType //like wholesale ,retail ,.....
     {
-        public int SellTypeID { get; set; }
-        public string SellTypeName { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
 
 
     }

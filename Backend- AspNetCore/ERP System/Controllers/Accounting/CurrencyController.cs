@@ -132,14 +132,14 @@ namespace ERP_System.Controllers.Accounting
                     {
                         if (currency.Name.Length < 1 || currency.Name.Length > 50)
                             nameError = "Name must be maximum 50 charecters and minimum 1 charecter ";
-                        else if (Currency_repo.List().Where(x => x.Name == currency.Name).Count() > 0)
+                        else if (Currency_repo.List().Where(x => x.Name == currency.Name).Any())
                             nameError = $"Currency Name '{currency.Name}' is already in use.";
                     }
                     if (oldcurrency.Symbol != currency.Symbol)
                     {
                         if(currency.Symbol.Length<1 || currency.Symbol.Length>25)
                             symbolError = "Symbol must be maximum 25 charecters and minimum 1 charecter ";
-                        else if (Currency_repo.List().Where(x => x.Symbol == currency.Symbol).Count() > 0)
+                        else if (Currency_repo.List().Where(x => x.Symbol == currency.Symbol).Any())
                             symbolError = $"Symbol  [{ currency.Symbol}] is already in use.";
 
                     }
@@ -152,14 +152,14 @@ namespace ERP_System.Controllers.Accounting
                         nameError = "Currency Name 'US Dollar' Is Reversed.";
                     else if (currency.Name.Length < 1 || currency.Name.Length > 50)
                         nameError = "Name must be maximum 50 charecters and minimum 1 charecter ";
-                    else if (Currency_repo.List().Where(x => x.Name.ToLower() == currency.Name.ToLower()).Count() > 0)
+                    else if (Currency_repo.List().Where(x => x.Name.ToLower() == currency.Name.ToLower()).Any())
                         nameError = $"Currency Name '{currency.Name}' is already in use.";
 
 		            if (currency.Symbol== Currency.ReferenceCurrency.Symbol)
                         symbolError = "Currency Symbol'$' Is Reversed.";
                     else if (currency.Symbol.Length < 1 || currency.Symbol.Length > 25)
                         symbolError = "Symbol must be maximum 25 charecters and minimum 1 charecter ";
-                    else if (Currency_repo.List().Where(x => x.Symbol.ToLower() == currency.Symbol.ToLower()).Count() > 0)
+                    else if (Currency_repo.List().Where(x => x.Symbol.ToLower() == currency.Symbol.ToLower()).Any())
                         symbolError = $"Symbol [{ currency.Symbol}] is already in use.";
 
                     if (currency.ExchangeRate <= 0)
