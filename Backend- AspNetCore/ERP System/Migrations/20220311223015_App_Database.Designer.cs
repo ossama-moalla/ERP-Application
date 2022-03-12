@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP_System.Migrations
 {
     [DbContext(typeof(Application_Identity_DbContext))]
-    [Migration("20220215220754_App_Database")]
+    [Migration("20220311223015_App_Database")]
     partial class App_Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -332,6 +332,29 @@ namespace ERP_System.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("ERP_System.Models.Materials.ConsumeUnit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Factor")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("Item_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("Item_Id");
+
+                    b.ToTable("ConsumeUnit");
+                });
+
             modelBuilder.Entity("ERP_System.Models.Materials.Item", b =>
                 {
                     b.Property<int>("Id")
@@ -400,7 +423,7 @@ namespace ERP_System.Migrations
 
             modelBuilder.Entity("ERP_System.Models.Materials.ItemCategorySpec", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -408,25 +431,331 @@ namespace ERP_System.Migrations
                     b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
-                    b.Property<int>("index")
+                    b.Property<int>("Index")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isRestricted")
+                    b.Property<bool>("IsRestricted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex(new[] { "CategoryID", "index" }, "Unique Index In Category Spec's")
+                    b.HasIndex(new[] { "CategoryID", "Index" }, "Unique Index In Category Spec's")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "CategoryID", "name" }, "Unique name In Category Spec's")
+                    b.HasIndex(new[] { "CategoryID", "Name" }, "Unique name In Category Spec's")
                         .IsUnique();
 
                     b.ToTable("Materials_ItemCategorySpec");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Store.StorePlace", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StorePlace");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.BillAdditionalClause", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OperationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OperationType")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Trade_BillAdditionalClause");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.Dealer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Trade_Dealer");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.ItemIN", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("ConsumeUnitId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OperationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OperationType")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("SingleCost")
+                        .HasColumnType("float");
+
+                    b.Property<int>("TradeStateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsumeUnitId");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("TradeStateId");
+
+                    b.ToTable("Trade_ItemIN");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.ItemINSellPrice", b =>
+                {
+                    b.Property<int>("ItemINId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ConsumeUnitId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemINId1")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("SellTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemINId");
+
+                    b.HasIndex("ConsumeUnitId");
+
+                    b.HasIndex("ItemINId1");
+
+                    b.HasIndex("SellTypeId");
+
+                    b.ToTable("Trade_ItemINSellPrice");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.ItemOUT", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("ConsumeUnitId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemINId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OperationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OperationType")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlaceId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("SingleOUTValue")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsumeUnitId");
+
+                    b.HasIndex("ItemINId");
+
+                    b.HasIndex("PlaceId");
+
+                    b.ToTable("Trade_ItemOUT");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.PurchasesBill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DealerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ExchangeRate")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SellTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("DealerId");
+
+                    b.HasIndex("SellTypeId");
+
+                    b.ToTable("Trade_PurchasesBill");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.RavageOPR", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Trade_RavageOPR");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.SalesBill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DealerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ExchangeRate")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SellTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("DealerId");
+
+                    b.HasIndex("SellTypeId");
+
+                    b.ToTable("Trade_SalesBill");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.SellType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Trade_SellType");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.TradeState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Trade_TradeState");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -646,6 +975,15 @@ namespace ERP_System.Migrations
                     b.Navigation("MoneyAccount");
                 });
 
+            modelBuilder.Entity("ERP_System.Models.Materials.ConsumeUnit", b =>
+                {
+                    b.HasOne("ERP_System.Models.Materials.Item", "Item_")
+                        .WithMany()
+                        .HasForeignKey("Item_Id");
+
+                    b.Navigation("Item_");
+                });
+
             modelBuilder.Entity("ERP_System.Models.Materials.Item", b =>
                 {
                     b.HasOne("ERP_System.Models.Materials.ItemCategory", "ItemCategory")
@@ -673,6 +1011,129 @@ namespace ERP_System.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.ItemIN", b =>
+                {
+                    b.HasOne("ERP_System.Models.Materials.ConsumeUnit", "ConsumeUnit")
+                        .WithMany()
+                        .HasForeignKey("ConsumeUnitId");
+
+                    b.HasOne("ERP_System.Models.Materials.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP_System.Models.Trade.TradeState", "TradeState")
+                        .WithMany()
+                        .HasForeignKey("TradeStateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ConsumeUnit");
+
+                    b.Navigation("Item");
+
+                    b.Navigation("TradeState");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.ItemINSellPrice", b =>
+                {
+                    b.HasOne("ERP_System.Models.Materials.ConsumeUnit", "ConsumeUnit")
+                        .WithMany()
+                        .HasForeignKey("ConsumeUnitId");
+
+                    b.HasOne("ERP_System.Models.Trade.ItemIN", "ItemIN")
+                        .WithMany()
+                        .HasForeignKey("ItemINId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP_System.Models.Trade.SellType", "SellType")
+                        .WithMany()
+                        .HasForeignKey("SellTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ConsumeUnit");
+
+                    b.Navigation("ItemIN");
+
+                    b.Navigation("SellType");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.ItemOUT", b =>
+                {
+                    b.HasOne("ERP_System.Models.Materials.ConsumeUnit", "ConsumeUnit")
+                        .WithMany()
+                        .HasForeignKey("ConsumeUnitId");
+
+                    b.HasOne("ERP_System.Models.Trade.ItemIN", "ItemIN")
+                        .WithMany()
+                        .HasForeignKey("ItemINId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP_System.Models.Store.StorePlace", "Place")
+                        .WithMany()
+                        .HasForeignKey("PlaceId");
+
+                    b.Navigation("ConsumeUnit");
+
+                    b.Navigation("ItemIN");
+
+                    b.Navigation("Place");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.PurchasesBill", b =>
+                {
+                    b.HasOne("ERP_System.Models.Accounting.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId");
+
+                    b.HasOne("ERP_System.Models.Trade.Dealer", "Dealer")
+                        .WithMany()
+                        .HasForeignKey("DealerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP_System.Models.Trade.SellType", "SellType")
+                        .WithMany()
+                        .HasForeignKey("SellTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("Dealer");
+
+                    b.Navigation("SellType");
+                });
+
+            modelBuilder.Entity("ERP_System.Models.Trade.SalesBill", b =>
+                {
+                    b.HasOne("ERP_System.Models.Accounting.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId");
+
+                    b.HasOne("ERP_System.Models.Trade.Dealer", "Dealer")
+                        .WithMany()
+                        .HasForeignKey("DealerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP_System.Models.Trade.SellType", "SellType")
+                        .WithMany()
+                        .HasForeignKey("SellTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("Dealer");
+
+                    b.Navigation("SellType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

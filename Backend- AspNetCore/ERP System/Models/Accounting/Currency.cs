@@ -29,27 +29,4 @@ namespace ERP_System.Models.Accounting
         public bool Disable { get; set; }
 
     }
-    public class Currency_ValidationError
-    {
-        public string nameError { get; set; }
-        public string symbolError { get; set; }
-        public string exchangeRateError { get; set; }
-
-        public string ConvertToString()
-        {
-            string message = string.Empty;
-            if (this.nameError != null) message = this.nameError;
-            if (this.symbolError != null)
-            {
-                if (message.Length > 0) message += " /n ";
-                message += this.symbolError;
-            }
-            if (this.exchangeRateError != null)
-            {
-                if (message.Length > 0) message += " /n ";
-                message += this.exchangeRateError;
-            }
-            return message;
-        }
-    }
 }

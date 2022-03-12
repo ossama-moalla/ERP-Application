@@ -3,13 +3,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ERP_System.Repositories.Materials_Repository
 {
-    public class ItemCategory_Repo : IApplicationRepositoryEntityAddReturn<ItemCategory>
+    public class ItemCategory_Repo : IApplicationRepository<ItemCategory>
     {
-        Application_Identity_DbContext Db_Context;
+        private readonly Application_Identity_DbContext Db_Context;
         private readonly ILogger logger;
         public ItemCategory_Repo(Application_Identity_DbContext Db_Context_, ILogger<ItemCategory_Repo> _logger)
         {
@@ -18,28 +17,30 @@ namespace ERP_System.Repositories.Materials_Repository
         }
         public ItemCategory Add(ItemCategory entity)
         {
-             Db_Context.Materials_ItemCategory.Add(entity);
-             Db_Context.SaveChanges();
+            Db_Context.Materials_ItemCategory.Add(entity);
+            Db_Context.SaveChanges();
             return entity;
         }
 
         public void Delete(int id)
         {
             var itemcategory = GetByID(id);
+            if (itemcategory == null) LocalException.ThrowNotFound("Delete Failed! Item Category with Id:" + id + " Not Exists");
             Db_Context.Materials_ItemCategory.Remove(itemcategory);
             Db_Context.SaveChanges();
+            
         }
 
         public void Update(ItemCategory entity)
         {
             var category = GetByID(entity.Id);
-            if(category!=null)
-            {
-                category.name = entity.name;
-                category.defaultConsumeUnit = entity.defaultConsumeUnit;
-                category.parentID = entity.parentID;
-                Db_Context.SaveChanges();
-            }
+            if (category == null) LocalException.ThrowNotFound("Update Failed! Item Category with Id:" + entity.Id + " Not Exists");
+            category.name = entity.name;
+            category.defaultConsumeUnit = entity.defaultConsumeUnit;
+            category.parentID = entity.parentID;
+            Db_Context.SaveChanges();
+            
+
         }
 
         public ItemCategory GetByID(int id)

@@ -25,7 +25,7 @@ namespace ERP_System.Controllers.Materials
 
         [HttpPost("add")]
         [Consumes(MediaTypeNames.Application.Json)]
-        public ActionResult Add([FromBody] ItemCategorySpec CategorySpec)
+        public async Task<ActionResult> Add([FromBody] ItemCategorySpec CategorySpec)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace ERP_System.Controllers.Materials
                     ItemCategorySpec_ValidationError error = (ItemCategorySpec_ValidationError)d.Value;
                     if (error == null)
                     {
-                        ItemCategorySpec_Repo.Add(CategorySpec);
+                         ItemCategorySpec_Repo.Add(CategorySpec);
                         return Ok();
                     }
                     else
@@ -56,7 +56,7 @@ namespace ERP_System.Controllers.Materials
         }
         [HttpPut("update")]
         [Consumes(MediaTypeNames.Application.Json)]
-        public ActionResult Update(ItemCategorySpec CategorySpec)
+        public async Task<ActionResult> Update(ItemCategorySpec CategorySpec)
         {
             try
             {
@@ -66,10 +66,10 @@ namespace ERP_System.Controllers.Materials
                     ItemCategorySpec_ValidationError error = (ItemCategorySpec_ValidationError)d.Value;
                     if (error == null)
                     {
-                        ItemCategorySpec oldspec =ItemCategorySpec_Repo. GetByID(CategorySpec.id);
-                        if (oldspec.isRestricted != CategorySpec.isRestricted)
+                        ItemCategorySpec oldspec =ItemCategorySpec_Repo. GetByID(CategorySpec.Id);
+                        if (oldspec.IsRestricted != CategorySpec.IsRestricted)
                             return BadRequest(new ErrorResponse() { Message = "Change [IsRestricted] Not Allowed" });
-                        ItemCategorySpec_Repo.Update(CategorySpec);
+                         ItemCategorySpec_Repo.Update(CategorySpec);
                         return Ok();
                     }
                     else
@@ -89,11 +89,11 @@ namespace ERP_System.Controllers.Materials
             }
         }
         [HttpDelete("delete")]
-        public ActionResult Delete([FromQuery] int id)
+        public async Task< ActionResult> Delete([FromQuery] int id)
         {
             try
             {
-                ItemCategorySpec_Repo.Delete(id);
+                 ItemCategorySpec_Repo.Delete(id);
                 return Ok();
             }
             catch(Exception e)
@@ -137,31 +137,31 @@ namespace ERP_System.Controllers.Materials
             try
             {
                 string nameError = null, indexError = null;
-                var oldspec = ItemCategorySpec_Repo.GetByID(categoryspec.id);
+                var oldspec = ItemCategorySpec_Repo.GetByID(categoryspec.Id);
                 if (oldspec != null)
                 {
-                    if (oldspec.name != categoryspec.name)
+                    if (oldspec.Name != categoryspec.Name)
                     {
-                        if (ItemCategorySpec_Repo.List().Where(x => x.name == categoryspec.name
+                        if (ItemCategorySpec_Repo.List().Where(x => x.Name == categoryspec.Name
                             && x.CategoryID == categoryspec.CategoryID).Count() > 0)
-                            nameError = $"SpecName '{categoryspec.name}' is already in use.";
+                            nameError = $"SpecName '{categoryspec.Name}' is already in use.";
                     }
-                    if (oldspec.index != categoryspec.index)
+                    if (oldspec.Index != categoryspec.Index)
                     {
-                        if (ItemCategorySpec_Repo.List().Where(x => x.index == categoryspec.index
+                        if (ItemCategorySpec_Repo.List().Where(x => x.Index == categoryspec.Index
                             && x.CategoryID == categoryspec.CategoryID).Count() > 0)
-                            indexError = $"Index [{ categoryspec.index}] is already in use.";
+                            indexError = $"Index [{ categoryspec.Index}] is already in use.";
 
                     }
                 }
                 else
                 {
-                    if (ItemCategorySpec_Repo.List().Where(x => x.name == categoryspec.name
+                    if (ItemCategorySpec_Repo.List().Where(x => x.Name == categoryspec.Name
                                         && x.CategoryID == categoryspec.CategoryID).Count() > 0)
-                        nameError = $"SpecName '{categoryspec.name}' is already in use.";
-                    if (ItemCategorySpec_Repo.List().Where(x => x.index == categoryspec.index
+                        nameError = $"SpecName '{categoryspec.Name}' is already in use.";
+                    if (ItemCategorySpec_Repo.List().Where(x => x.Index == categoryspec.Index
                         && x.CategoryID == categoryspec.CategoryID).Count() > 0)
-                        indexError = $"Index [{ categoryspec.index}] is already in use.";
+                        indexError = $"Index [{ categoryspec.Index}] is already in use.";
 
                 }
                 if (nameError == null && indexError == null)

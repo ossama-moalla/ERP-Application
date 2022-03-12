@@ -1,6 +1,7 @@
 ﻿using ERP_System.Models.Materials;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace ERP_System.Models.Trade
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ConsumeUnit ConsumeUnit { get; set; }
         public double Amount { get; set; }
-        public double SingleCost { get; set; }
+        public double? SingleCost { get; set; }//not null by purchases bill, null by disassemply and assemply
+        [NotMapped]
+        public virtual MoneyValue_Currency SingleCost_MoneyValue_Currency { get; set; }
     }
 }

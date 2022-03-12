@@ -134,7 +134,7 @@ class MoneyAccountReport extends Component {
             moneyAccount_Report:null
         });
         if(this.state.day!=null){
-           await  axios.get("https://localhost:5001/Accounting/MoneyAccountReport/day_report?MoneyAccountId="
+           await  axios.get("https://localhost:5001/Accounting/MoneyAccount/day_report?MoneyAccountId="
                 +this.props.selectedMoneyAccountID+"&&day="+this.state.day+"&&month="+this.state.month
                 +"&&year="+this.state.year)
             .then(res=>{ this.setState({
@@ -152,7 +152,7 @@ class MoneyAccountReport extends Component {
             )
         }
         else if(this.state.month!=null){
-            await  axios.get("https://localhost:5001/Accounting/MoneyAccountReport/month_report?MoneyAccountId="
+            await  axios.get("https://localhost:5001/Accounting/MoneyAccount/month_report?MoneyAccountId="
                 +this.props.selectedMoneyAccountID+"&&month="+this.state.month
                 +"&&year="+this.state.year)
             .then(res=>this.setState({
@@ -169,7 +169,7 @@ class MoneyAccountReport extends Component {
             )           
         }
         else if(this.state.year!=null){
-            await  axios.get("https://localhost:5001/Accounting/MoneyAccountReport/year_report?MoneyAccountId="
+            await  axios.get("https://localhost:5001/Accounting/MoneyAccount/year_report?MoneyAccountId="
                 +this.props.selectedMoneyAccountID +"&&year="+this.state.year)
             .then(res=>this.setState({
                 fetchAccount_ReportDone:true,
@@ -185,7 +185,7 @@ class MoneyAccountReport extends Component {
             )              
          }
          else {
-            await  axios.get("https://localhost:5001/Accounting/MoneyAccountReport/year_range_report?MoneyAccountId="
+            await  axios.get("https://localhost:5001/Accounting/MoneyAccount/year_range_report?MoneyAccountId="
                 +this.props.selectedMoneyAccountID
                 +"&&year1="+this.state.minYear+"&&year2="+this.state.maxYear)
             .then(res=>this.setState({

@@ -7,6 +7,7 @@ namespace ERP_System.Models.Accounting.Reports
 {
     public class MoneyAccount_YearReport
     {
+        public int Year { get; set; }
         public List<MoneyAccountReport_InMonth> MoneyAccountReport_InMonth_List { get; set; }
         public List<MoneyAccount_CurrencyReport> CurrencyReportList { get; set; }
     }

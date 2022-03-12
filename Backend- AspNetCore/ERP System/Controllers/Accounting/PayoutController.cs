@@ -18,13 +18,14 @@ namespace ERP_System.Controllers.Accounting
 
         private readonly ILogger logger;
         private readonly IApplicationRepository<PayOUT> PayOUT_repo;
-        private readonly MoneyAccountReport_Repo MoneyAccountReport_Repo;
+        private readonly IApplicationRepository<MoneyAccount> MoneyAccount_Repo;
 
-        public PayoutController(ILogger<PayoutController> logger, IApplicationRepository<PayOUT> PayOUT_repo,MoneyAccountReport_Repo MoneyAccountReport_Repo)
+        public PayoutController(ILogger<PayoutController> logger,
+            IApplicationRepository<PayOUT> PayOUT_repo, IApplicationRepository<MoneyAccount> MoneyAccount_Repo)
         {
             this.logger = logger;
             this.PayOUT_repo = PayOUT_repo;
-            this.MoneyAccountReport_Repo = MoneyAccountReport_Repo;
+            this.MoneyAccount_Repo = MoneyAccount_Repo;
         }
         [HttpPost("Add")]
         public async Task<ActionResult> Add([FromBody] PayOUT PayOUT)
@@ -37,7 +38,7 @@ namespace ERP_System.Controllers.Accounting
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        PayOUT_repo.Add(PayOUT);
+                         PayOUT_repo.Add(PayOUT);
                         return Ok();
                     }
                     else
@@ -49,7 +50,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:PayOUT,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -63,7 +64,7 @@ namespace ERP_System.Controllers.Accounting
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        PayOUT_repo.Update(PayOUT);
+                          PayOUT_repo.Update(PayOUT);
                         return Ok();
                     }
                     else
@@ -75,7 +76,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:PayOUT,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
@@ -84,13 +85,13 @@ namespace ERP_System.Controllers.Accounting
             try
             {
                 //check money ammount if value exists in money account
-                PayOUT_repo.Delete(id);
+                 PayOUT_repo.Delete(id);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:PayOUT,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("Info")]
@@ -105,7 +106,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:PayOUT,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
@@ -119,7 +120,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:PayOUT,Method:List,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPost("verifydata")]
@@ -128,8 +129,13 @@ namespace ERP_System.Controllers.Accounting
             try
             {
                 var oldpayin = PayOUT_repo.GetByID(PayOUT.Id);
-                double moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(PayOUT.MoneyAccountId
-                    , Convert.ToInt32(PayOUT.CurrencyId));
+                double moneyaccount_currency_value;
+                {
+                    var moneyaccount = MoneyAccount_Repo.GetByID(PayOUT.MoneyAccountId);
+                    moneyaccount_currency_value =
+                        moneyaccount.MoneyAccountValue_By_Currency(PayOUT.CurrencyId);
+                }
+
                 if (oldpayin != null)
                 {
                     if (PayOUT.Value > moneyaccount_currency_value+ oldpayin.Value)

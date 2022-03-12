@@ -33,7 +33,7 @@ namespace ERP_System.Controllers.Trade
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        ItemINStoreReport_repo.Add(ItemINStoreReport);
+                         ItemINStoreReport_repo.Add(ItemINStoreReport);
                         return Ok();
                     }
                     else
@@ -45,7 +45,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINStoreReport,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -59,7 +59,7 @@ namespace ERP_System.Controllers.Trade
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        ItemINStoreReport_repo.Update(ItemINStoreReport);
+                         ItemINStoreReport_repo.Update(ItemINStoreReport);
                         return Ok();
                     }
                     else
@@ -73,7 +73,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINStoreReport,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
@@ -81,13 +81,13 @@ namespace ERP_System.Controllers.Trade
         {
             try
             {
-                ItemINStoreReport_repo.Delete(id);
+                 ItemINStoreReport_repo.Delete(id);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINStoreReport,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("Info")]
@@ -100,7 +100,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINStoreReport,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
@@ -114,7 +114,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINStoreReport,Method:List,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPost("verifydata")]

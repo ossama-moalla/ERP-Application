@@ -10,8 +10,8 @@ using System.Text.Json.Serialization;
 namespace ERP_System.Models.Materials
 {
 
-    [Index(nameof(CategoryID), nameof(index), IsUnique = true, Name = "Unique Index In Category Spec's")]
-    [Index(nameof(CategoryID), nameof(name), IsUnique = true, Name = "Unique name In Category Spec's")]
+    [Index(nameof(CategoryID), nameof(Index), IsUnique = true, Name = "Unique Index In Category Spec's")]
+    [Index(nameof(CategoryID), nameof(Name), IsUnique = true, Name = "Unique name In Category Spec's")]
     public class ItemCategorySpec
     {
         [ForeignKey("CategoryID")]
@@ -19,14 +19,14 @@ namespace ERP_System.Models.Materials
         [JsonIgnore]
         public virtual ItemCategory Category { get; set; }
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
         [Required]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        public bool isRestricted { get; set; }
+        public bool IsRestricted { get; set; }
         [Required]
-        public int index { get; set; }
+        public int Index { get; set; }
 
     }
     public class ItemCategorySpec_ValidationError

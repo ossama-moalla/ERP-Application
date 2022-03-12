@@ -17,12 +17,14 @@ import Navbar from './Component/Navbar.jsx';
 import ShowMaterials from './Component/Materials/ShowMaterials/ShowMaterials.jsx';
 import MoneyAccountWindow from './Component/Accounting/ShowAccountInfo/MoneyAccountWindow.jsx'
 import Configuration from './Component/Configuration/Configuration';
+import Dealers from './Component/Trade/Dealer/Dealers.jsx';
 const App=()=>(
   <React.Fragment>
     {<Navbar/>}
     <BrowserRouter>
         <Routes>
-        <Route path="/"  element={<MoneyAccountWindow/>}/>
+        <Route path="/"  element={<Dealers/>}/>
+        <Route path="/Trade/dealers"  element={<Dealers/>}/>
         <Route path="/configuration"  element={<Configuration/>}/>
         <Route path="accounting/*"  element={<MoneyAccountWindow/>}/>
         <Route  path={'materials/*'}  element={<ShowMaterials/>} />

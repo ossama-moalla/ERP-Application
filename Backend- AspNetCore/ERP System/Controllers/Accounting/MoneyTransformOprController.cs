@@ -18,13 +18,13 @@ namespace ERP_System.Controllers.Accounting
 
         private readonly ILogger logger;
         private readonly IApplicationRepository<MoneyTransFormOPR> MoneyTransFormOPR_repo;
-        private readonly MoneyAccountReport_Repo MoneyAccountReport_Repo;
-        public MoneyTransformOprController(ILogger<MoneyTransformOprController> logger
-            , IApplicationRepository<MoneyTransFormOPR> MoneyTransFormOPR_repo, MoneyAccountReport_Repo MoneyAccountReport_Repo)
+        private readonly IApplicationRepository<MoneyAccount> MoneyAccount_Repo;
+        public MoneyTransformOprController(ILogger<MoneyTransformOprController> logger,
+            IApplicationRepository<MoneyTransFormOPR> MoneyTransFormOPR_repo, IApplicationRepository<MoneyAccount> MoneyAccount_Repo)
         {
             this.logger = logger;
             this.MoneyTransFormOPR_repo = MoneyTransFormOPR_repo;
-            this.MoneyAccountReport_Repo = MoneyAccountReport_Repo;
+            this.MoneyAccount_Repo = MoneyAccount_Repo;
         }
         [HttpPost("Add")]
         public async Task<ActionResult> Add([FromBody] MoneyTransFormOPR MoneyTransFormOPR)
@@ -37,7 +37,7 @@ namespace ERP_System.Controllers.Accounting
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        MoneyTransFormOPR_repo.Add(MoneyTransFormOPR);
+                         MoneyTransFormOPR_repo.Add(MoneyTransFormOPR);
                         return Ok();
                     }
                     else
@@ -49,7 +49,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:MoneyTransFormOPR,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -63,7 +63,7 @@ namespace ERP_System.Controllers.Accounting
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        MoneyTransFormOPR_repo.Update(MoneyTransFormOPR);
+                         MoneyTransFormOPR_repo.Update(MoneyTransFormOPR);
                         return Ok();
                     }
                     else
@@ -76,7 +76,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:MoneyTransFormOPR,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
@@ -86,19 +86,25 @@ namespace ERP_System.Controllers.Accounting
             {
                 var moneytransformopr = MoneyTransFormOPR_repo.GetByID(id);
                 if (moneytransformopr == null) return NotFound();
-                double target_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(moneytransformopr.TargetMoneyAccountId
-                    , Convert.ToInt32(moneytransformopr.CurrencyId));
+                double target_moneyaccount_currency_value;
+                {
+                    var Target_moneyaccount = MoneyAccount_Repo.GetByID(moneytransformopr.TargetMoneyAccountId);
+                    target_moneyaccount_currency_value =
+                        Target_moneyaccount.MoneyAccountValue_By_Currency(moneytransformopr.CurrencyId);
+
+                }
+
                 if (target_moneyaccount_currency_value - moneytransformopr.Value < 0)
                     return BadRequest(new ErrorResponse()
                     { Message = "delete failed! money value in account  cant be less than  zero" });
 
-                MoneyTransFormOPR_repo.Delete(id);
+                 MoneyTransFormOPR_repo.Delete(id);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:MoneyTransFormOPR,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("Info")]
@@ -113,7 +119,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:MoneyTransFormOPR,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
@@ -127,7 +133,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:MoneyTransFormOPR,Method:List,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPost("verifydata")]
@@ -136,15 +142,27 @@ namespace ERP_System.Controllers.Accounting
             try
             {
                 var oldopr = MoneyTransFormOPR_repo.GetByID(MoneyTransFormOPR.Id);
-                double source_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(MoneyTransFormOPR.SourceMoneyAccountId
-                    ,Convert.ToInt32( MoneyTransFormOPR.CurrencyId));
+                double source_moneyaccount_currency_value;
+                {
+                    var Source_moneyaccount = MoneyAccount_Repo.GetByID(MoneyTransFormOPR.SourceMoneyAccountId);
+                    source_moneyaccount_currency_value =
+                        Source_moneyaccount.MoneyAccountValue_By_Currency(MoneyTransFormOPR.CurrencyId);
+                }
+                
+
                 if (oldopr != null)
                 {
                     if (source_moneyaccount_currency_value + oldopr.Value- MoneyTransFormOPR.Value<0)
                         return BadRequest(new ErrorResponse()
                         { Message = "No Enough Money to do this operation" });
-                    var target_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(MoneyTransFormOPR.TargetMoneyAccountId
-                    , Convert.ToInt32(MoneyTransFormOPR.CurrencyId));
+                    double target_moneyaccount_currency_value;
+                    {
+                        var Target_moneyaccount = MoneyAccount_Repo.GetByID(MoneyTransFormOPR.TargetMoneyAccountId);
+                        target_moneyaccount_currency_value =
+                            Target_moneyaccount.MoneyAccountValue_By_Currency(MoneyTransFormOPR.CurrencyId);
+
+                    }
+
                     if (target_moneyaccount_currency_value - oldopr.Value+ MoneyTransFormOPR.Value <0)
                         return BadRequest(new ErrorResponse()
                         { Message = "Money Value in Account by target currency cant be less than zero" });

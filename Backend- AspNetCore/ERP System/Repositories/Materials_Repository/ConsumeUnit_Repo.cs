@@ -1,4 +1,5 @@
 ﻿using ERP_System.Models.Materials;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace ERP_System.Repositories.Materials_Repository
 {
     public class ConsumeUnit_Repo:IApplicationRepository<ConsumeUnit>
     {
-        Application_Identity_DbContext Db_Context;
+        private readonly Application_Identity_DbContext Db_Context;
         public ConsumeUnit_Repo(Application_Identity_DbContext Db_Context_)
         {
-            Db_Context = Db_Context_;
+            this.Db_Context = Db_Context_;
         }
-        public void Add(ConsumeUnit entity)
+        public ConsumeUnit Add(ConsumeUnit entity)
         {
             throw new NotImplementedException();
         }

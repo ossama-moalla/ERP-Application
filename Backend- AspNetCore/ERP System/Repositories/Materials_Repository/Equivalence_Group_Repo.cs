@@ -1,4 +1,5 @@
 ﻿using ERP_System.Models.Materials;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace ERP_System.Repositories.Materials_Repository
 {
     public class Equivalence_Group_Repo : IApplicationRepository<Equivalence_Group>
     {
-        Application_Identity_DbContext Db_Context;
+        private readonly Application_Identity_DbContext Db_Context;
         public Equivalence_Group_Repo(Application_Identity_DbContext Db_Context_)
         {
             Db_Context = Db_Context_;
         }
-        public void Add(Equivalence_Group entity)
+        public Equivalence_Group Add(Equivalence_Group entity)
         {
             throw new NotImplementedException();
         }

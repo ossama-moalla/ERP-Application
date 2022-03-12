@@ -16,8 +16,8 @@ namespace ERP_System.Controllers.Trade
     {
 
         private readonly ILogger logger;
-        private readonly IApplicationRepository<CommonItemSellPrice> CommonItemSellPrice_repo;
-        public CommonItemSellPriceController(ILogger<CommonItemSellPriceController> logger, IApplicationRepository<CommonItemSellPrice> CommonItemSellPrice_repo)
+        private readonly IApplicationRepository_Set_Unset<CommonItemSellPrice> CommonItemSellPrice_repo;
+        public CommonItemSellPriceController(ILogger<CommonItemSellPriceController> logger, IApplicationRepository_Set_Unset<CommonItemSellPrice> CommonItemSellPrice_repo)
         {
             this.logger = logger;
             this.CommonItemSellPrice_repo = CommonItemSellPrice_repo;
@@ -27,25 +27,13 @@ namespace ERP_System.Controllers.Trade
         {
             try
             {
-                ObjectResult d = VerifyData(CommonItemSellPrice);
-                if (d.StatusCode == StatusCodes.Status200OK)
-                {
-                    ErrorResponse err = (ErrorResponse)d.Value;
-                    if (err == null)
-                    {
-                        CommonItemSellPrice_repo.Add(CommonItemSellPrice);
-                        return Ok();
-                    }
-                    else
-                        return BadRequest(err);
-                }
-                else
-                    return d;
+                CommonItemSellPrice_repo.Set(CommonItemSellPrice);
+                return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:CommonItemSellPrice,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -53,82 +41,58 @@ namespace ERP_System.Controllers.Trade
         {
             try
             {
-                ObjectResult d = VerifyData(CommonItemSellPrice);
-                if (d.StatusCode == StatusCodes.Status200OK)
-                {
-                    ErrorResponse err = (ErrorResponse)d.Value;
-                    if (err == null)
-                    {
-                        CommonItemSellPrice_repo.Update(CommonItemSellPrice);
-                        return Ok();
-                    }
-                    else
-                        return Conflict(err);
-
-                }
-                else
-                    return d;
+                CommonItemSellPrice_repo.Update(CommonItemSellPrice);
+                return Ok();
 
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:CommonItemSellPrice,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
-        public async Task<ActionResult> Delete([FromQuery] int id)
+        public async Task<ActionResult> Delete([FromQuery] int itemid, [FromQuery] int selltypeId, [FromQuery] int? consumeunitId)
         {
             try
             {
-                CommonItemSellPrice_repo.Delete(id);
+                List<int?> Ids = new List<int?> {itemid,selltypeId,consumeunitId };
+                CommonItemSellPrice_repo.UnSet(Ids);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:CommonItemSellPrice,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("Info")]
-        public async Task<ActionResult<CommonItemSellPrice>> Info([FromQuery] int id)
+        public async Task<ActionResult<CommonItemSellPrice>> Info([FromQuery] int itemid, [FromQuery] int selltypeId, [FromQuery] int? consumeunitId)
         {
             try
             {
-                return Ok(CommonItemSellPrice_repo.GetByID(id));
+                List<int?> Ids = new List<int?> { itemid, selltypeId, consumeunitId };
+                 return Ok(CommonItemSellPrice_repo.GetEntity(Ids));
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:CommonItemSellPrice,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
-        public async Task<ActionResult<IEnumerable<CommonItemSellPrice>>> List()
+        public async Task<ActionResult<IEnumerable<CommonItemSellPrice>>> List([FromQuery] int itemid)
         {
             try
             {
-                var CommonItemSellPriceies = CommonItemSellPrice_repo.List().ToList();
+                List<int?> Ids = new List<int?> { itemid };
+                var CommonItemSellPriceies = CommonItemSellPrice_repo.List(Ids).ToList();
                 return Ok(CommonItemSellPriceies);
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:CommonItemSellPrice,Method:List,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
-            }
-        }
-        [HttpPost("verifydata")]
-        public ObjectResult VerifyData(CommonItemSellPrice CommonItemSellPrice)
-        {
-            try
-            {
-                return Ok(null);
-            }
-            catch (Exception e)
-            {
-                logger.LogError("CommonItemSellPrice Controller- VerifyDataError:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError
-                                    , new ErrorResponse() { Message = "Internal Server Error" });
+                return LocalException.HanldeException(e);
             }
         }
 

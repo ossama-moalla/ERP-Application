@@ -18,12 +18,13 @@ namespace ERP_System.Controllers.Accounting
 
         private readonly ILogger logger;
         private readonly IApplicationRepository<PayIN> PayIN_repo;
-        private readonly MoneyAccountReport_Repo MoneyAccountReport_Repo;
-        public PayinController(ILogger<PayinController> logger, IApplicationRepository<PayIN> PayIN_repo, MoneyAccountReport_Repo MoneyAccountReport_Repo)
+        private readonly IApplicationRepository<MoneyAccount> MoneyAccount_Repo;
+        public PayinController(ILogger<PayinController> logger, IApplicationRepository<PayIN> PayIN_repo,
+            IApplicationRepository<MoneyAccount> MoneyAccount_Repo)
         {
             this.logger = logger;
             this.PayIN_repo = PayIN_repo;
-            this.MoneyAccountReport_Repo = MoneyAccountReport_Repo;
+            this.MoneyAccount_Repo = MoneyAccount_Repo;
 
         }
         [HttpPost("Add")]
@@ -37,7 +38,7 @@ namespace ERP_System.Controllers.Accounting
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        PayIN_repo.Add(PayIN);
+                         PayIN_repo.Add(PayIN);
                         return Ok();
                     }
                     else
@@ -49,7 +50,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:PayIN,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -63,7 +64,7 @@ namespace ERP_System.Controllers.Accounting
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        PayIN_repo.Update(PayIN);
+                         PayIN_repo.Update(PayIN);
                         return Ok();
                     }
                     else
@@ -75,7 +76,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:PayIN,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
@@ -85,18 +86,23 @@ namespace ERP_System.Controllers.Accounting
             {
                 var payin = PayIN_repo.GetByID(id);
                 if (payin == null) return NotFound();
-                double moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(payin.MoneyAccountId
-                    , Convert.ToInt32(payin.CurrencyId));
-                if(moneyaccount_currency_value-payin.Value<0) 
+                double moneyaccount_currency_value;
+                {
+                    var moneyaccount = MoneyAccount_Repo.GetByID(payin.MoneyAccountId);
+                    moneyaccount_currency_value =
+                        moneyaccount.MoneyAccountValue_By_Currency(payin.CurrencyId);
+                }
+                
+                if(moneyaccount_currency_value-payin.Value < 0) 
                     return BadRequest(new ErrorResponse()
                         { Message = "delete failed! money value in account  cant be under  zero" });
-                PayIN_repo.Delete(id);
+                 PayIN_repo.Delete(id);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:PayIN,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             } 
         }
         [HttpGet("Info")]
@@ -111,7 +117,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:PayIN,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
@@ -124,7 +130,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:PayIN,Method:List,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPost("verifydata")]
@@ -135,9 +141,14 @@ namespace ERP_System.Controllers.Accounting
                 var oldpayin = PayIN_repo.GetByID(PayIN.Id);
                 if (oldpayin != null)
                 {
-                    double moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(oldpayin.MoneyAccountId
-                        , Convert.ToInt32(oldpayin.CurrencyId));
-                    if (moneyaccount_currency_value - oldpayin.Value +PayIN.Value< 0)
+                    double moneyaccount_currency_value;
+                    {
+                        var moneyaccount = MoneyAccount_Repo.GetByID(PayIN.MoneyAccountId);
+                        moneyaccount_currency_value =
+                            moneyaccount.MoneyAccountValue_By_Currency(PayIN.CurrencyId);
+                    }
+                    
+                    if (moneyaccount_currency_value - oldpayin.Value + PayIN.Value < 0)
                         return BadRequest(new ErrorResponse()
                         { Message = "update failed! money value in account  cant be under  zero" });
                     if (oldpayin.OperationId!=PayIN.OperationId||oldpayin.OperationType!=PayIN.OperationType)

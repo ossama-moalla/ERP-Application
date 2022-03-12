@@ -12,16 +12,15 @@ class CurrencyAddEdit extends Component {
                 Name:props.Currency.name,
                 Symbol:props.Currency.symbol,
                 ExchangeRate:props.Currency.exchangeRate,
-                Disabled:props.Currency.disabled,
-                verifyError:null}
+                Disabled:props.Currency.disabled
+           }
         }else{
             this.state={
                 Id:undefined,
                 Name:'',
                 Symbol:'',
                 ExchangeRate:1,
-                Disabled:false,
-                verifyError:null
+                Disabled:false
             }
         }        
     }
@@ -33,42 +32,8 @@ class CurrencyAddEdit extends Component {
         }
         else{  
             if(e.target.name==="ExchangeRate" && isNaN (e.target.value) ) return;
-            this.setState({[e.target.name]:e.target.value},this.ValidateInput);
+            this.setState({[e.target.name]:e.target.value});
         }
-    }
-    ValidateInput=()=>{
-        if(this.state.ExchangeRate.toString().trim()===""){
-            this.setState(prevState=>({
-                ...prevState,
-                verifyError:{
-                    ...prevState.verifyError,
-                    exchangeRateError:'Exchange Rate Is Required!'
-                    
-                }
-            }))
-            document.getElementById('Name').readOnly=true;
-            document.getElementById('Symbol').readOnly=true;
-
-            return;
-        }
-        
-        
-        document.getElementById('Name').readOnly=false;
-        document.getElementById('Symbol').readOnly=false;
-        var currrency={
-            name:this.state.Name,
-            symbol:this.state.Symbol,
-            exchangeRate:this.state.ExchangeRate,
-            disabled:this.state.Disabled
-        }
-        axios.post("https://localhost:5001/Accounting/Currency/verifydata",currrency)
-        .then(res=>{
-            this.setState(prevState=>({
-                ...prevState,
-                verifyError:res.data
-            }))
-        })
-        .catch(err=>{})
     }
     addCurrency=async ()=>{
         document.getElementById('buttonAdd').disabled=true;
@@ -88,8 +53,7 @@ class CurrencyAddEdit extends Component {
                 Name:'',
                 Symbol:'',
                 ExchangeRate:1,
-                Disabled:false,
-                verifyError:null
+                Disabled:false
  
             })
         })
@@ -138,9 +102,6 @@ class CurrencyAddEdit extends Component {
                             value={this.state.Name}
                             onChange={this.onChangeInput}
                             />
-                            {this.state.verifyError?.nameError&&          
-                            <label className='form-input-err' >{this.state.verifyError.nameError}</label>
-                            }
                         </div>
                         <div>
                             <label>Symbol:</label>
@@ -149,9 +110,7 @@ class CurrencyAddEdit extends Component {
                             value={this.state.Symbol}
                             onChange={this.onChangeInput}
                             />
-                            {this.state.verifyError?.symbolError&&          
-                            <label className='form-input-err' >{this.state.verifyError.symbolError}</label>
-                            }
+                            
                         </div>
                         <div>
                             <label>ExchangeRate:</label>
@@ -160,9 +119,8 @@ class CurrencyAddEdit extends Component {
                             value={this.state.ExchangeRate}
                             onChange={this.onChangeInput}
                             />
-                            {this.state.verifyError?.exchangeRateError&&          
-                            <label className='form-input-err' >{this.state.verifyError.exchangeRateError}</label>
-                            }                        </div>
+                            
+                       </div>
                         
                         <br/>
                         <input type="checkbox" name="Disabled"

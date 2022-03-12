@@ -1,5 +1,4 @@
 import React from 'react';
-import {getOperationName} from '../../../GeneralMethods.js';
 const ReportRecords = (props) => {
     if(props.moneyAccount_Report_Records.length===0){
         return (

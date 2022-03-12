@@ -84,7 +84,7 @@ class MoneyAccountWindow extends Component {
     }
     fetchAccountInfo=()=>{
         this.setState({fetchAccountInfoDone:false,fetchAccountInfoError:null,moneyAccountValue:null})
-        axios.get("https://localhost:5001/Accounting/MoneyAccountReport/moneyaccount_value?MoneyAccountId="
+        axios.get("https://localhost:5001/Accounting/MoneyAccount/moneyaccount_value?MoneyAccountId="
         +this.state.selectedMoneyAccountID)
         .then(res=>this.setState({
             fetchAccountInfoDone:true,

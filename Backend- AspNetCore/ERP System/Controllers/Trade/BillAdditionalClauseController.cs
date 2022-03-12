@@ -33,7 +33,7 @@ namespace ERP_System.Controllers.Trade
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        BillAdditionalClause_repo.Add(BillAdditionalClause);
+                         BillAdditionalClause_repo.Add(BillAdditionalClause);
                         return Ok();
                     }
                     else
@@ -45,7 +45,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:BillAdditionalClause,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -59,7 +59,7 @@ namespace ERP_System.Controllers.Trade
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        BillAdditionalClause_repo.Update(BillAdditionalClause);
+                         BillAdditionalClause_repo.Update(BillAdditionalClause);
                         return Ok();
                     }
                     else
@@ -73,7 +73,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:BillAdditionalClause,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
@@ -81,13 +81,13 @@ namespace ERP_System.Controllers.Trade
         {
             try
             {
-                BillAdditionalClause_repo.Delete(id);
+                 BillAdditionalClause_repo.Delete(id);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:BillAdditionalClause,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("Info")]
@@ -100,7 +100,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:BillAdditionalClause,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
@@ -114,7 +114,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:BillAdditionalClause,Method:List,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPost("verifydata")]
@@ -122,6 +122,8 @@ namespace ERP_System.Controllers.Trade
         {
             try
             {
+                if (BillAdditionalClause.Value <= 0) 
+                    return Ok(new ErrorResponse() { Message = "Value must be Greater than Zero" });
                 return Ok(null);
             }
             catch (Exception e)

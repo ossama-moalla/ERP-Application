@@ -16,8 +16,8 @@ namespace ERP_System.Controllers.Trade
     {
 
         private readonly ILogger logger;
-        private readonly IApplicationRepository<ItemINSellPrice> ItemINSellPrice_repo;
-        public ItemINSellPriceController(ILogger<ItemINSellPriceController> logger, IApplicationRepository<ItemINSellPrice> ItemINSellPrice_repo)
+        private readonly IApplicationRepository_Set_Unset<ItemINSellPrice> ItemINSellPrice_repo;
+        public ItemINSellPriceController(ILogger<ItemINSellPriceController> logger, IApplicationRepository_Set_Unset<ItemINSellPrice> ItemINSellPrice_repo)
         {
             this.logger = logger;
             this.ItemINSellPrice_repo = ItemINSellPrice_repo;
@@ -33,7 +33,7 @@ namespace ERP_System.Controllers.Trade
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        ItemINSellPrice_repo.Add(ItemINSellPrice);
+                         ItemINSellPrice_repo.Set(ItemINSellPrice);
                         return Ok();
                     }
                     else
@@ -45,7 +45,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINSellPrice,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -73,48 +73,54 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINSellPrice,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
-        public async Task<ActionResult> Delete([FromQuery] int id)
+        public async Task<ActionResult> Delete([FromQuery] int itemInId, [FromQuery] int sellTypeId,[FromQuery] int? consumeUnitId)
         {
             try
             {
-                ItemINSellPrice_repo.Delete(id);
+                List<int?> Ids = new() { itemInId, sellTypeId, consumeUnitId };
+                ItemINSellPrice_repo.UnSet(Ids);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINSellPrice,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("Info")]
-        public async Task<ActionResult<ItemINSellPrice>> Info([FromQuery] int id)
+        public async Task<ActionResult<ItemINSellPrice>> Info([FromQuery] int itemInId, [FromQuery] int sellTypeId, [FromQuery] int? consumeUnitId)
         {
             try
             {
-                return Ok(ItemINSellPrice_repo.GetByID(id));
+                List<int?> Ids = new () { itemInId, sellTypeId, consumeUnitId };
+                var iteminsellprice = ItemINSellPrice_repo.GetEntity(Ids);
+                if (iteminsellprice == null) return NotFound();
+                return Ok(iteminsellprice);
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINSellPrice,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
-        public async Task<ActionResult<IEnumerable<ItemINSellPrice>>> List()
+        public async Task<ActionResult<IEnumerable<ItemINSellPrice>>> List([FromQuery] int itemInId)
         {
             try
             {
-                var ItemINSellPriceies = ItemINSellPrice_repo.List().ToList();
+                List<int?> Ids = new () { itemInId };
+
+                var ItemINSellPriceies = ItemINSellPrice_repo.List(Ids).ToList();
                 return Ok(ItemINSellPriceies);
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:ItemINSellPrice,Method:List,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPost("verifydata")]

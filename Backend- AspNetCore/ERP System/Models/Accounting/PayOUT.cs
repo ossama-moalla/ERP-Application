@@ -31,9 +31,21 @@ namespace ERP_System.Models.Accounting
         public int? CurrencyId { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Currency Currency { get; set; }
-        [Required]
         public double ExchangeRate { get; set; }
         public string Notes { get; set; }
-      
+        [NotMapped]
+        public virtual MoneyValue_Currency MoneyValue_Currency
+        {
+            get
+            {
+                return new MoneyValue_Currency()
+                {
+                    MoneyValue = this.Value,
+                    Currency = this.Currency,
+                    ExchangeRate = this.ExchangeRate
+                };
+            }
+        }
+
     }
 }

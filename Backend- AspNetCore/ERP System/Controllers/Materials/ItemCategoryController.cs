@@ -9,16 +9,15 @@ using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ERP_System.Controllers.Materials
 {
     [Route("materials/[controller]")]
     public class ItemCategoryController : ControllerBase
     {
-        private readonly IApplicationRepositoryEntityAddReturn<ItemCategory> ItemCategory_repo;
+        private readonly IApplicationRepository<ItemCategory> ItemCategory_repo;
         private readonly ILogger logger;
-        public ItemCategoryController(IApplicationRepositoryEntityAddReturn<ItemCategory> ItemCategory_repo,ILogger<ItemCategoryController> _logger)
+        public ItemCategoryController(IApplicationRepository<ItemCategory> ItemCategory_repo,ILogger<ItemCategoryController> _logger)
         {
             this.ItemCategory_repo = ItemCategory_repo;
             logger = _logger;
@@ -93,8 +92,8 @@ namespace ERP_System.Controllers.Materials
                     ItemCategory_ValidationError error = (ItemCategory_ValidationError)d.Value;
                     if (error == null)
                     {
-                        var category = ItemCategory_repo.Add(itemCategory);
-                        return Ok(category);
+                         ItemCategory_repo.Add(itemCategory);
+                        return Ok();
                     }
                     else
                     {
@@ -131,7 +130,7 @@ namespace ERP_System.Controllers.Materials
                     ItemCategory_ValidationError error = (ItemCategory_ValidationError)d.Value;
                     if (error == null)
                     {
-                        ItemCategory_repo.Update(itemCategory);
+                         ItemCategory_repo.Update(itemCategory);
                         return Ok();
                     }
                     else
@@ -156,9 +155,9 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                if (ItemCategory_repo.List().Where(x => x.parentID == id).Count()>0)
+                if (ItemCategory_repo.List().Where(x => x.parentID == id).Any())
                     return Conflict( "Category Not Empty,Delete Childs First!");
-                ItemCategory_repo.Delete(id);
+                 ItemCategory_repo.Delete(id);
                 return Ok();
             }
             catch (Exception e)

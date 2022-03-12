@@ -1,5 +1,6 @@
 ﻿using ERP_System.Models.Accounting;
 using ERP_System.Models.Trade;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,40 +11,41 @@ namespace ERP_System.Repositories.Accounting_Repository
 {
     public class PayOUT_Repo : IApplicationRepository<PayOUT>
     {
-        Application_Identity_DbContext DbContext;
+        private readonly Application_Identity_DbContext DbContext;
         public PayOUT_Repo(Application_Identity_DbContext DbContext_)
         {
             DbContext = DbContext_;
         }
-        public void Add(PayOUT entity)
+        public PayOUT Add(PayOUT entity)
         {
             if (entity.CurrencyId == -1) { entity.CurrencyId = null; }
             DbContext.Accounting_PayOUT.Add(entity);
             DbContext.SaveChanges();
+            return entity;
         }
 
         public void Delete(int id)
         {
             var payout = DbContext.Accounting_PayOUT.SingleOrDefault(x => x.Id == id);
-            if (payout == null) return;
+            if (payout == null) LocalException.ThrowNotFound("Delete Failed! PayOUT with Id:" + id + " Not Exists");
             DbContext.Accounting_PayOUT.Remove(payout);
             DbContext.SaveChanges();
+            
         }
 
         public void Update(PayOUT entity)
         {
             var payout = DbContext.Accounting_PayOUT.SingleOrDefault(x => x.Id == entity.Id);
-            if (payout != null)
-            {
-                if (payout.CurrencyId == null) payout.Currency = null;
-                payout.MoneyAccountId = entity.MoneyAccountId;
-                payout.CurrencyId = entity.CurrencyId == -1 ? null : entity.CurrencyId;
-                payout.ExchangeRate = entity.ExchangeRate;
-                payout.Value = entity.Value;
-                payout.Description = entity.Description;
-                payout.Notes = entity.Notes;
-                DbContext.SaveChanges();
-            }
+            if (payout == null) LocalException.ThrowNotFound("Update Failed! PayOUT with Id:" + entity.Id + " Not Exists");
+            if (payout.CurrencyId == null) payout.Currency = null;
+            //payout.MoneyAccountId = entity.MoneyAccountId;
+            payout.CurrencyId = entity.CurrencyId == -1 ? null : entity.CurrencyId;
+            payout.ExchangeRate = entity.ExchangeRate;
+            payout.Value = entity.Value;
+            payout.Description = entity.Description;
+            payout.Notes = entity.Notes;
+            DbContext.SaveChanges();
+            
         }
 
         public PayOUT GetByID(int id)

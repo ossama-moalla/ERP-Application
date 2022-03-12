@@ -1,4 +1,5 @@
 ﻿using ERP_System.Models.Materials;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace ERP_System.Repositories.Materials_Repository
 {
     public class ItemSpec_Restrict_Value_Repo : IApplicationRepository<ItemCategorySpec_Restrict_Item_Value>
     {
-        Application_Identity_DbContext Db_Context;
+        private readonly Application_Identity_DbContext Db_Context;
         public ItemSpec_Restrict_Value_Repo(Application_Identity_DbContext Db_Context_)
         {
             Db_Context = Db_Context_;
         }
-        public void Add(ItemCategorySpec_Restrict_Item_Value entity)
+        public ItemCategorySpec_Restrict_Item_Value Add(ItemCategorySpec_Restrict_Item_Value entity)
         {
             throw new NotImplementedException();
         }

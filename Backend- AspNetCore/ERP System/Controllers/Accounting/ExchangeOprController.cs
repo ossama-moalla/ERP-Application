@@ -18,12 +18,13 @@ namespace ERP_System.Controllers.Accounting
 
         private readonly ILogger logger;
         private readonly IApplicationRepository<ExchangeOPR> ExchangeOpr_repo;
-        private readonly MoneyAccountReport_Repo MoneyAccountReport_Repo;
-        public ExchangeOprController(ILogger<ExchangeOprController> logger, IApplicationRepository<ExchangeOPR> ExchangeOpr_repo, MoneyAccountReport_Repo MoneyAccountReport_Repo)
+        private readonly IApplicationRepository<MoneyAccount> MoneyAccount_Repo;
+        public ExchangeOprController(ILogger<ExchangeOprController> logger, 
+            IApplicationRepository<ExchangeOPR> ExchangeOpr_repo, IApplicationRepository<MoneyAccount> MoneyAccount_Repo)
         {
             this.logger = logger;
             this.ExchangeOpr_repo = ExchangeOpr_repo;
-            this.MoneyAccountReport_Repo = MoneyAccountReport_Repo;
+            this.MoneyAccount_Repo = MoneyAccount_Repo;
         }
         [HttpPost("Add")]
         public async Task<ActionResult> Add([FromBody] ExchangeOPR ExchangeOPR)
@@ -36,7 +37,7 @@ namespace ERP_System.Controllers.Accounting
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        ExchangeOpr_repo.Add(ExchangeOPR);
+                         ExchangeOpr_repo.Add(ExchangeOPR);
                         return Ok();
                     }
                     else
@@ -48,7 +49,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:ExchangeOPR,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -62,7 +63,7 @@ namespace ERP_System.Controllers.Accounting
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        ExchangeOpr_repo.Update(ExchangeOPR);
+                         ExchangeOpr_repo.Update(ExchangeOPR);
                         return Ok();
                     }
                     else
@@ -75,7 +76,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:ExchangeOPR,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
@@ -85,20 +86,21 @@ namespace ERP_System.Controllers.Accounting
             {
                 var exchangeopr = ExchangeOpr_repo.GetByID(id);
                 if (exchangeopr == null) return NotFound();
-                double taget_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(exchangeopr.MoneyAccountId
-                    , Convert.ToInt32(exchangeopr.TargetCurrencyId));
+                var moneyaccount = MoneyAccount_Repo.GetByID(exchangeopr.MoneyAccountId);
+                double taget_moneyaccount_currency_value =
+                    moneyaccount.MoneyAccountValue_By_Currency(exchangeopr.TargetCurrencyId);
                 if (taget_moneyaccount_currency_value -
                     ( exchangeopr.OutMoneyValue * exchangeopr.TargetExchangeRate/ exchangeopr.SourceExchangeRate)< 0)
                     return BadRequest(new ErrorResponse()
                     { Message = "delete failed! money value in account  cant be less than  zero" });
 
-                ExchangeOpr_repo.Delete(id);
+                 ExchangeOpr_repo.Delete(id);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:ExchangeOPR,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("Info")]
@@ -113,7 +115,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:ExchangeOPR,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
@@ -127,7 +129,7 @@ namespace ERP_System.Controllers.Accounting
             catch (Exception e)
             {
                 logger.LogError("Controller:ExchangeOPR,Method:List,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPost("verifydata")]
@@ -136,15 +138,27 @@ namespace ERP_System.Controllers.Accounting
             try
             {
                 var oldopr = ExchangeOpr_repo.GetByID(ExchangeOPR.Id);
-                double source_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(ExchangeOPR.MoneyAccountId
-                    , Convert.ToInt32(ExchangeOPR.SourceCurrencyId));
+                double source_moneyaccount_currency_value;
+                {
+                    var moneyaccount = MoneyAccount_Repo.GetByID(ExchangeOPR.MoneyAccountId);
+                    source_moneyaccount_currency_value =
+                        moneyaccount.MoneyAccountValue_By_Currency(ExchangeOPR.SourceCurrencyId);
+                }
+                
+                
                 if (oldopr != null)
                 {
                     if (source_moneyaccount_currency_value + oldopr.OutMoneyValue- ExchangeOPR.OutMoneyValue<0)
                         return BadRequest(new ErrorResponse()
                         { Message = "Money Value in Account by source currency cant be less than zero" });
-                    var target_moneyaccount_currency_value = MoneyAccountReport_Repo.MoneyAccountValueByCurrency(ExchangeOPR.MoneyAccountId
-                    , Convert.ToInt32(ExchangeOPR.TargetCurrencyId));
+
+                    double target_moneyaccount_currency_value;
+                    {
+                        var moneyaccount = MoneyAccount_Repo.GetByID(ExchangeOPR.MoneyAccountId);
+                        target_moneyaccount_currency_value =
+                            moneyaccount.MoneyAccountValue_By_Currency(ExchangeOPR.TargetCurrencyId);
+                    }
+                    
                     var new_invalue = (ExchangeOPR.OutMoneyValue * ExchangeOPR.TargetExchangeRate / ExchangeOPR.SourceExchangeRate);
                     var old_invalue = (oldopr.OutMoneyValue * oldopr.TargetExchangeRate / oldopr.SourceExchangeRate);
                     if (target_moneyaccount_currency_value - old_invalue+new_invalue<0)

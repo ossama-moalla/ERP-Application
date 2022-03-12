@@ -1,4 +1,5 @@
 ﻿using ERP_System.Models.Materials;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,38 +9,41 @@ namespace ERP_System.Repositories.Materials_Repository
 {
     public class ItemCategorySpec_Repo : IApplicationRepository<ItemCategorySpec>
     {
-        Application_Identity_DbContext Db_Context;
+        private readonly Application_Identity_DbContext Db_Context;
         public ItemCategorySpec_Repo(Application_Identity_DbContext Db_Context_)
         {
             Db_Context = Db_Context_;
         }
-        public void Add(ItemCategorySpec entity)
+        public ItemCategorySpec Add(ItemCategorySpec entity)
         {
             Db_Context.Materials_ItemCategorySpec.Add(entity);
             Db_Context.SaveChanges();
+            return entity;
+            
         }
 
         public void Delete(int id)
         {
-            Db_Context.Materials_ItemCategorySpec.Remove(GetByID(id));
-            Db_Context.SaveChanges(); 
+            var entity = GetByID(id);
+            if (entity == null) LocalException.ThrowNotFound("Delete Failed! Spec with Id:" + id + " Not Exists");
+            Db_Context.Materials_ItemCategorySpec.Remove(entity);
+            Db_Context.SaveChanges();
+            
         }
 
         public void Update(ItemCategorySpec entity)
         {
-            var spec = GetByID(entity.id);
-            if(spec!=null)
-            {
-
-                spec.name = entity.name;
-                spec.index = entity.index;
-                Db_Context.SaveChanges();
-            }
+            var spec = GetByID(entity.Id);
+            if(spec==null) LocalException.ThrowNotFound("Update Failed! Spec with Id:" + entity.Id + " Not Exists");
+            spec.Name = entity.Name;
+            spec.Index = entity.Index;
+            Db_Context.SaveChanges();
+            
         }
 
         public ItemCategorySpec GetByID(int id)
         {
-            return Db_Context.Materials_ItemCategorySpec.SingleOrDefault(x => x.id == id);
+            return Db_Context.Materials_ItemCategorySpec.SingleOrDefault(x => x.Id == id);
         }
 
 

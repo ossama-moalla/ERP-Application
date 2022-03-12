@@ -1,5 +1,6 @@
 ﻿using ERP_System.Models.Accounting;
 using ERP_System.Models.Trade;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,40 +11,41 @@ namespace ERP_System.Repositories.Accounting_Repository
 {
     public class PayIN_Repo : IApplicationRepository<PayIN>
     {
-        Application_Identity_DbContext DbContext;
+        private readonly Application_Identity_DbContext DbContext;
         public PayIN_Repo(Application_Identity_DbContext DbContext_)
         {
             DbContext = DbContext_;
         }
-       public void Add(PayIN entity)
+       public PayIN Add(PayIN entity)
         {
             if (entity.CurrencyId == -1) entity.CurrencyId = null;
             DbContext.Accounting_PayIN.Add(entity);
             DbContext.SaveChanges();
+            return entity;
         }
 
         public void Delete(int id)
         {
             var payin = DbContext.Accounting_PayIN.SingleOrDefault(x => x.Id == id);
-            if (payin == null) return;
+            if (payin == null) LocalException.ThrowNotFound("Delete Failed! PayIN with Id:" + id + " Not Exists");
             DbContext.Accounting_PayIN.Remove(payin);
             DbContext.SaveChanges();
+            
         }
 
         public void Update(PayIN entity)
         {
             var payin = DbContext.Accounting_PayIN.SingleOrDefault(x => x.Id == entity.Id);
-            if (payin != null)
-            {
-                if (payin.CurrencyId == null) payin.Currency = null;
-                payin.MoneyAccountId = entity.MoneyAccountId;
-                payin.CurrencyId = entity.CurrencyId == -1 ? null : entity.CurrencyId;
-                payin.ExchangeRate = entity.ExchangeRate;
-                payin.Value = entity.Value;
-                payin.Description = entity.Description;
-                payin.Notes = entity.Notes;
-                DbContext.SaveChanges();
-            }
+            if (payin == null) LocalException.ThrowNotFound("Update Failed! PayIN with Id:" + entity.Id + " Not Exists");
+            if (payin.CurrencyId == null) payin.Currency = null;
+            //payin.MoneyAccountId = entity.MoneyAccountId;
+            payin.CurrencyId = entity.CurrencyId == -1 ? null : entity.CurrencyId;
+            payin.ExchangeRate = entity.ExchangeRate;
+            payin.Value = entity.Value;
+            payin.Description = entity.Description;
+            payin.Notes = entity.Notes;
+            DbContext.SaveChanges();
+            
         }
 
         public PayIN GetByID(int id)

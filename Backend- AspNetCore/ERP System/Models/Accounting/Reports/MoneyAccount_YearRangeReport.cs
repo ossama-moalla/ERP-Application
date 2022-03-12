@@ -7,6 +7,8 @@ namespace ERP_System.Models.Accounting.Reports
 {
     public class MoneyAccount_YearRangeReport
     {
+        public int MinYear { get; set; }
+        public int MaxYear { get; set; }
         public List<MoneyAccountReport_InYear> MoneyAccountReport_InYear_List { get; set; }
         public List<MoneyAccount_CurrencyReport> CurrencyReportList { get; set; }
     }

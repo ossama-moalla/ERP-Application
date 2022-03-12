@@ -33,7 +33,7 @@ namespace ERP_System.Controllers.Trade
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        Dealer_repo.Add(Dealer);
+                         Dealer_repo.Add(Dealer);
                         return Ok();
                     }
                     else
@@ -45,7 +45,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:Dealer,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -59,7 +59,7 @@ namespace ERP_System.Controllers.Trade
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        Dealer_repo.Update(Dealer);
+                         Dealer_repo.Update(Dealer);
                         return Ok();
                     }
                     else
@@ -73,7 +73,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:Dealer,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
@@ -87,7 +87,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:Dealer,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("Info")]
@@ -100,7 +100,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:Dealer,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
@@ -114,7 +114,7 @@ namespace ERP_System.Controllers.Trade
             catch (Exception e)
             {
                 logger.LogError("Controller:Dealer,Method:List,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPost("verifydata")]
@@ -122,6 +122,18 @@ namespace ERP_System.Controllers.Trade
         {
             try
             {
+
+                var olddealer = Dealer_repo.GetByID(Dealer.Id);
+                if (olddealer != null)
+                {
+                    if (olddealer.FullName != Dealer.FullName && Dealer_repo.List().Where(x => x.FullName == Dealer.FullName).Any())
+                        return Ok(new ErrorResponse() { Message = $"DealerFull Name '{Dealer.FullName}' is already in use." });
+                }
+                else
+                {
+                    if (Dealer_repo.List().Where(x => x.FullName == Dealer.FullName).Any())
+                        return Ok(new ErrorResponse() { Message = $"DealerFull Name '{Dealer.FullName}' is already in use." });
+                }
                 return Ok(null);
             }
             catch (Exception e)

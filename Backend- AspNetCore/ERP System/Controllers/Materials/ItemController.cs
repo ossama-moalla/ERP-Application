@@ -14,8 +14,8 @@ namespace ERP_System.Controllers.Materials
     public class ItemController : ControllerBase
     {
         private readonly ILogger logger;
-        private readonly IApplicationRepositoryEntityAddReturn<Item> Item_repo;
-        public ItemController(ILogger<ItemController> logger,IApplicationRepositoryEntityAddReturn<Item> Item_repo)
+        private readonly IApplicationRepository<Item> Item_repo;
+        public ItemController(ILogger<ItemController> logger, IApplicationRepository<Item> Item_repo)
         {
             this.logger = logger;
             this.Item_repo = Item_repo;
@@ -30,7 +30,10 @@ namespace ERP_System.Controllers.Materials
                 {
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
-                        return Ok(Item_repo.Add(item));
+                    { 
+                        Item_repo.Add(item); 
+                        return Ok(); 
+                    }
                     else
                         return Conflict(err);
 
@@ -41,7 +44,7 @@ namespace ERP_System.Controllers.Materials
             catch(Exception e)
             {
                 logger.LogError("Controller:Item,Method:Add,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPut("Update")]
@@ -55,7 +58,7 @@ namespace ERP_System.Controllers.Materials
                     ErrorResponse err = (ErrorResponse)d.Value;
                     if (err == null)
                     {
-                        Item_repo.Update(item);
+                         Item_repo.Update(item);
                         return Ok();
                     }
                     else
@@ -68,7 +71,7 @@ namespace ERP_System.Controllers.Materials
             catch (Exception e)
             {
                 logger.LogError("Controller:Item,Method:Update,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpDelete("Delete")]
@@ -76,13 +79,13 @@ namespace ERP_System.Controllers.Materials
         {
             try
             {
-                Item_repo.Delete(id);
+                 Item_repo.Delete(id);
                 return Ok();
             }
             catch (Exception e)
             {
                 logger.LogError("Controller:Item,Method:Delete,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("Info")]
@@ -95,7 +98,7 @@ namespace ERP_System.Controllers.Materials
             catch (Exception e)
             {
                 logger.LogError("Controller:Item,Method:Info,Error:" + e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpGet("List")]
@@ -109,7 +112,7 @@ namespace ERP_System.Controllers.Materials
             catch (Exception e)
             {
                 logger.LogError("Controller:Item,Method:List,Error:"+e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                return LocalException.HanldeException(e);
             }
         }
         [HttpPost("verifydata")]
@@ -125,7 +128,7 @@ namespace ERP_System.Controllers.Materials
                         if (Item_repo.List().Where(x =>
                             x.Name == item.Name
                             && x.Company == item.Company
-                            && x.ItemCategoryId == item.ItemCategoryId).Count() > 0)
+                            && x.ItemCategoryId == item.ItemCategoryId).Any())
                             return Ok(new ErrorResponse()
                             { Message = $"Item name:{item.Name} and Company:{item.Company} already in use !" });
                         else return Ok(null);
@@ -138,7 +141,7 @@ namespace ERP_System.Controllers.Materials
                     if (Item_repo.List().Where(x =>
                             x.Name == item.Name
                             && x.Company == item.Company
-                            && x.ItemCategoryId == item.ItemCategoryId).Count() > 0)
+                            && x.ItemCategoryId == item.ItemCategoryId).Any())
                         return Ok(new ErrorResponse()
                         { Message = $"Item name:{item.Name} and Company:{item.Company} already in use !" });
 

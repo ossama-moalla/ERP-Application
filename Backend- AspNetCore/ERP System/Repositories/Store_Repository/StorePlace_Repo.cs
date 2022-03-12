@@ -1,4 +1,5 @@
 ﻿using ERP_System.Models.Store;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,13 @@ namespace ERP_System.Repositories.Store_Repository
 {
     public class StorePlace_Repo : IApplicationRepository<StorePlace>
     {
-        Application_Identity_DbContext DbContext;
+        private readonly Application_Identity_DbContext DbContext;
         public StorePlace_Repo(Application_Identity_DbContext DbContext_)
         {
             DbContext = DbContext_;
         }
 
-        public void Add(StorePlace entity)
+        public StorePlace Add(StorePlace entity)
         {
             throw new NotImplementedException();
         }
